@@ -1,0 +1,176 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
+class RoleController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $roles = Role::all();
+        if ($roles->count() < 1) {
+            return response()->json(['data' => null, 'status' => 'success', 'message' => 'No data found!'], 200);
+        }
+        return response()->json([
+            'data' => $roles, 
+            'status' => 'success', 
+            'message' => 'List of roles'
+        ], 200);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'label' => 'required|string|max:255|unique:roles'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 500);
+        }
+
+        $role = Role::create([
+            'name' => $request->name,
+            'label' => Str::slug($request->name),
+            'slots' => $request->slots
+        ]);
+
+        return response()->json([
+            'data' => $role, 
+            'status' => 'success', 
+            'message' => 'Role created successfully!'
+        ], 201);
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function show($role)
+    {
+        $role = Role::where('label', $role)->first();
+        if (! $role) {
+            return response()->json([
+                'data' => null,
+                'status' => 'invalid',
+                'message' => 'This role does not exist'
+            ], 500);
+        }
+        return response()->json([
+                'data' => $role,
+                'status' => 'success',
+                'message' => 'Data found successfully!'
+            ], 200);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($role)
+    {
+        $role = Role::where('label', $role)->first();
+        if (! $role) {
+            return response()->json([
+                'data' => null,
+                'status' => 'invalid',
+                'message' => 'This role does not exist'
+            ], 500);
+        }
+        return response()->json([
+                'data' => $role,
+                'status' => 'success',
+                'message' => 'Data found successfully!'
+            ], 200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $role)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'label' => 'required|string|max:255|unique:roles'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 500);
+        }
+
+        $role = Role::where('label', $role)->first();
+        if (! $role) {
+            return response()->json([
+                'data' => null,
+                'status' => 'invalid',
+                'message' => 'This role does not exist'
+            ], 500);
+        }
+
+        $role->update([
+            'name' => $request->name,
+            'label' => Str::slug($request->name),
+            'slots' => $request->slots
+        ]);
+
+        return response()->json([
+            'data' => $role, 
+            'status' => 'success', 
+            'message' => 'Role has been updated successfully!'
+        ], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($role)
+    {
+        $role = Role::where('label', $role)->first();
+        if (! $role) {
+            return response()->json([
+                'data' => null,
+                'status' => 'invalid',
+                'message' => 'This role does not exist'
+            ], 500);
+        }
+        $role->delete();
+        return response()->json(['data' => null, 'status' => 'success', 'message' => 'Role deleted successfully'], 200);
+    }
+}
