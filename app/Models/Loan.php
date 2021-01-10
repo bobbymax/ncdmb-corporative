@@ -12,6 +12,11 @@ class Loan extends Model
     protected $guarded = [''];
     protected $dates = ['start_date', 'end_date'];
 
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
+
     public function member()
     {
     	return $this->belongsTo(User::class, 'user_id');

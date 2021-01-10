@@ -19,6 +19,7 @@ class CreateLoansTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('code')->unique();
             $table->bigInteger('amount')->default(0);
             $table->string('reason')->nullable();
             $table->longText('description')->nullable();
