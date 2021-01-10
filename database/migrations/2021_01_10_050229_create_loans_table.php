@@ -25,6 +25,7 @@ class CreateLoansTable extends Migration
             $table->longText('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->enum('frequency', ['undefined', 'monthly', 'annually'])->default('undefined');
             $table->enum('status', ['pending', 'registered', 'approved', 'denied', 'disbursed', 'closed'])->default('pending');
             $table->boolean('closed')->default(false);
             $table->timestamps();

@@ -18,7 +18,6 @@ class CreateSchedulesTable extends Migration
             $table->bigInteger('loan_id')->unsigned();
             $table->foreign('loan_id')->references('id')->on('loans')->onDelete('cascade');
             $table->bigInteger('amount')->default(0);
-            $table->enum('frequency', ['undefined', 'monthly', 'annually'])->default('undefined');
             $table->date('due_date')->nullable();
             $table->enum('status', ['pending', 'paid', 'overdue'])->default('pending');
             $table->timestamps();

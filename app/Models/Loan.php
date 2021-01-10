@@ -26,4 +26,9 @@ class Loan extends Model
     {
     	return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

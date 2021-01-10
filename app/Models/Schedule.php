@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     use HasFactory;
+
+    protected $guarded = [''];
+    protected $dates = ['due_date'];
+
+    public function loan()
+    {
+    	return $this->belongsTo(Loan::class, 'loan_id');
+    }
 }
