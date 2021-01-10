@@ -5,29 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Investment extends Model
 {
     use HasFactory;
 
     protected $guarded = [''];
+    protected $dates = ['date_acquired', 'expiry_date'];
 
     public function getRouteKeyName()
     {
     	return 'label';
     }
 
-    public function expenditures()
+    public function category()
     {
-    	return $this->hasMany(Expenditure::class);
+    	return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function services()
+    public function specifications()
     {
-        return $this->hasMany(Service::class);
-    }
-
-    public function loans()
-    {
-        return $this->hasMany(Loan::class);
+    	return $this->hasMany(Specification::class);
     }
 }

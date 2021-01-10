@@ -57,4 +57,19 @@ class User extends Authenticatable
     {
         return $this->morphedByMany(Group::class, 'userable');
     }
+
+    public function kin()
+    {
+        return $this->hasOne(Kin::class);
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Expenditure;
-use App\Models\Budget;
+use App\Models\Investment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
-class ExpenditureController extends Controller
+class InvestmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,20 +17,18 @@ class ExpenditureController extends Controller
      */
     public function index()
     {
-        $expenditures = Expenditure::all();
-
-        if ($counter = $expenditures->count() < 1) {
+        $investments = Investment::latest()->get();
+        if ($investments->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
-                'message' => 'No data was found'
+                'message' => 'No data was found!'
             ], 404);
         }
-
         return response()->json([
-            'data' => $expenditures,
+            'data' => $investments,
             'status' => 'success',
-            'message' => $expenditures->count() . ' data found!'
+            'message' => 'Data found successfully!'
         ], 200);
     }
 
@@ -52,103 +51,82 @@ class ExpenditureController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'budget_id' => 'required|integer',
             'category_id' => 'required|integer',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:expenditures',
-            'code' => 'required|string|max:255|unique:expenditures',
+            'label' => 'required|string|max:255|unqiue:investments',
+            'date_acquired' => 'required|date',
             'amount' => 'required|integer'
         ]);
 
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'error',
-                'message' => 'Please fix the following errors!'
+                'status' => 'danger',
+                'message' => 'Please fix the follwoing errors!'
             ], 500);
         }
 
-        $budget = Budget::find($request->budget_id);
-
-        if (! $budget) {
-            return response()->json([
-                'data' => null,
-                'status' => 'danger',
-                'message' => 'The budget code is invalid'
-            ], 500);
-        }
-
-        if (! ($budget->expenditures->sum('amount') < $budget->amount)) {
-            return response()->json([
-                'data' => null,
-                'status' => 'danger',
-                'message' => 'You cannot exceed the approved budget amount allocated!'
-            ], 403);
-        }
-
-        $expenditure = Expenditure::create([
-            'code' => $request->code,
-            'budget_id' => $budget->id,
+        $investment = Investment::create([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'label' => $request->label,
-            'amount' => $request->amount
+            'date_acquired' => Carbon::parse($request->date_acquired),
+            'expiry_date' => Carbon::parse($request->expiry_date),
+            'amount' => $request->amount,
+            'description' => $request->description,
+            'allocations' => $request->allocations
         ]);
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => $investment,
             'status' => 'success',
-            'message' => 'This expenditure has been created successfully!'
-        ], 200);
+            'message' => 'Investment created successfully!'
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Expenditure  $expenditure
+     * @param  \App\Models\Investment  $investment
      * @return \Illuminate\Http\Response
      */
-    public function show($expenditure)
+    public function show($investment)
     {
-        $expenditure = Expenditure::where('code', $expenditure)->first();
-
-        if (! $expenditure) {
+        $investment = Investment::where('label', $investment)->first();
+        if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'info',
-                'message' => 'Expenditure data not found'
+                'status' => 'danger',
+                'message' => 'Data not found'
             ], 404);
         }
-
         return response()->json([
-            'data' => $expenditure,
+            'data' => $investment,
             'status' => 'success',
-            'message' => 'Expenditure data found!'
+            'message' => 'Data found!'
         ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Expenditure  $expenditure
+     * @param  \App\Models\Investment  $investment
      * @return \Illuminate\Http\Response
      */
-    public function edit($expenditure)
+    public function edit($investment)
     {
-        $expenditure = Expenditure::where('code', $expenditure)->first();
-
-        if (! $expenditure) {
+        $investment = Investment::where('label', $investment)->first();
+        if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'info',
-                'message' => 'Expenditure data not found'
+                'status' => 'danger',
+                'message' => 'Data not found'
             ], 404);
         }
-
         return response()->json([
-            'data' => $expenditure,
+            'data' => $investment,
             'status' => 'success',
-            'message' => 'Expenditure data found!'
+            'message' => 'Data found!'
         ], 200);
     }
 
@@ -156,70 +134,75 @@ class ExpenditureController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Expenditure  $expenditure
+     * @param  \App\Models\Investment  $investment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $expenditure)
+    public function update(Request $request, $investment)
     {
         $validation = Validator::make($request->all(), [
+            'category_id' => 'required|integer',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255',
+            'label' => 'required|string|max:255|unqiue:investments',
+            'date_acquired' => 'required|date',
+            'amount' => 'required|integer'
         ]);
 
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'error',
-                'message' => 'Please fix the following errors!'
+                'status' => 'danger',
+                'message' => 'Please fix the follwoing errors!'
             ], 500);
         }
 
-        $expenditure = Expenditure::where('code', $expenditure)->first();
-
-        if (! $expenditure) {
+        $investment = Investment::where('label', $investment)->first();
+        if (! $investment) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
-                'message' => 'Expenditure data not found'
-            ], 500);
+                'message' => 'Data not found'
+            ], 404);
         }
 
-        $expenditure->update([
+        $investment->update([
+            'category_id' => $request->category_id,
             'title' => $request->title,
             'label' => $request->label,
+            'date_acquired' => Carbon::parse($request->date_acquired),
+            'expiry_date' => Carbon::parse($request->expiry_date),
+            'amount' => $request->amount,
+            'description' => $request->description,
+            'allocations' => $request->allocations
         ]);
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => $investment,
             'status' => 'success',
-            'message' => 'This expenditure has been created successfully!'
+            'message' => 'Investment updated successfully!'
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Expenditure  $expenditure
+     * @param  \App\Models\Investment  $investment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($expenditure)
+    public function destroy($investment)
     {
-        $expenditure = Expenditure::where('code', $expenditure)->first();
-
-        if (! $expenditure) {
+        $investment = Investment::where('label', $investment)->first();
+        if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'info',
-                'message' => 'Expenditure data not found'
+                'status' => 'danger',
+                'message' => 'Data not found'
             ], 404);
         }
-
-        $expenditure->delete();
-
+        $investment->delete();
         return response()->json([
             'data' => null,
             'status' => 'success',
-            'message' => 'Expenditure data deleted successfully!'
+            'message' => 'Investment details deleted successfully!'
         ], 200);
     }
 }

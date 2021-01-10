@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Service extends Model
 {
     use HasFactory;
 
@@ -16,18 +16,13 @@ class Category extends Model
     	return 'label';
     }
 
-    public function expenditures()
+    public function member()
     {
-    	return $this->hasMany(Expenditure::class);
+    	return $this->belongsTo(Member::class, 'user_id');
     }
 
-    public function services()
+    public function category()
     {
-        return $this->hasMany(Service::class);
-    }
-
-    public function loans()
-    {
-        return $this->hasMany(Loan::class);
+    	return $this->belongsTo(Category::class, 'category_id');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kin;
 use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -59,6 +60,9 @@ class MemberController extends Controller
             'designation' => 'required|string|max:255',
             'mobile' => 'required|unique:users',
             'type' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'relationship' => 'required|string|max:255',
+            'phone' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -85,6 +89,16 @@ class MemberController extends Controller
             $contribution = Contribution::create([
                 'user_id' => $member->id,
                 'fee' => $request->fee
+            ]);
+        }
+
+        if ($request->name !== null) {
+            $kin = Kin::create([
+                'user_id' => $member->id,
+                'name' => $request->name,
+                'relationship' => $request->relationship,
+                'mobile' => $request->phone,
+                'address' => $request->address,
             ]);
         }
 
