@@ -22,5 +22,6 @@ Route::apiResource('permissions', 'PermissionController');
 Route::apiResource('services', 'ServiceController');
 Route::apiResource('specifications', 'SpecificationController');
 Route::apiResource('contributions', 'ContributionController');
+Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
 

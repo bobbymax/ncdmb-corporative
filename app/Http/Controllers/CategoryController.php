@@ -68,6 +68,8 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
+            'interest' => $request->interest,
+            'frequency' => $request->frequency,
             'fundable' => $request->fundable
         ]);
 
@@ -163,6 +165,8 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
+            'interest' => $request->interest,
+            'frequency' => $request->frequency,
             'fundable' => $request->fundable
         ]);
 

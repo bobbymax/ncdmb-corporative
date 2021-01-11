@@ -31,4 +31,9 @@ class Loan extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

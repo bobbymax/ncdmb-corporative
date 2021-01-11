@@ -26,4 +26,9 @@ class Investment extends Model
     {
     	return $this->hasMany(Specification::class);
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

@@ -30,4 +30,9 @@ class Category extends Model
     {
         return $this->hasMany(Loan::class);
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }
