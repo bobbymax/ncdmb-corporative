@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Investment;
 use App\Models\Specification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,7 @@ class SpecificationFactory extends Factory
     public function definition()
     {
         return [
-            'investment_id' => '1',
+            'investment_id' => Investment::factory(),
             'title' => $this->faker->word,
             'label' => $this->faker->word,
             'description' => $this->faker->sentence,
