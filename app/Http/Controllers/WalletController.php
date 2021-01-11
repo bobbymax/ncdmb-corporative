@@ -9,6 +9,11 @@ use Illuminate\Support\Str;
 
 class WalletController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -110,7 +115,7 @@ class WalletController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'bank_name' => 'required|string|max:255',
-            'account_number' => 'required|integer'
+            'account_number' => 'required|string|max:15',
         ]);
 
         if ($validation->fails()) {

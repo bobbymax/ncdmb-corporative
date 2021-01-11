@@ -20,4 +20,9 @@ class Specification extends Model
     {
     	return $this->belongsTo(Investment::class, 'investment_id');
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

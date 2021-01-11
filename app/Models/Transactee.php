@@ -5,24 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class Transactee extends Model
 {
     use HasFactory;
 
     protected $guarded = [''];
-
-    public function getRouteKeyName()
-    {
-    	return 'identifier';
-    }
 
     public function member()
     {
     	return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function transactions()
+    public function transaction()
     {
-        return $this->morphMany(Transaction::class, 'transactionable');
+    	return $this->belongsTo(Transaction::class, 'transaction_id');
     }
 }

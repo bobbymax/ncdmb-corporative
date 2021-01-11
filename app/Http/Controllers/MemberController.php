@@ -14,6 +14,11 @@ use Carbon\Carbon;
 
 class MemberController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('store');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -67,7 +72,7 @@ class MemberController extends Controller
             'relationship' => 'required|string|max:255',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
-            'account_number' => 'required|integer',
+            'account_number' => 'required|string|max:15|unique:wallets',
         ]);
 
         if ($validator->fails()) {

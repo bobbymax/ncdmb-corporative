@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -68,6 +73,8 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
+            'interest' => $request->interest,
+            'frequency' => $request->frequency,
             'fundable' => $request->fundable
         ]);
 
@@ -163,6 +170,8 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
+            'interest' => $request->interest,
+            'frequency' => $request->frequency,
             'fundable' => $request->fundable
         ]);
 
