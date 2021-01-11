@@ -13,6 +13,12 @@ use Carbon\Carbon;
 class LoanController extends Controller
 {
     protected $guarantors = [];
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
