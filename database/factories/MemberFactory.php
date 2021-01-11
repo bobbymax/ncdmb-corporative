@@ -24,7 +24,7 @@ class MemberFactory extends Factory
     {
         return [
             'membership_no' => Str::random(8),
-            'staff_no' => Str::random(8),
+            'staff_no' => 'josh', //Str::random(8),
             'designation' => $this->faker->randomElement(['Senior Officer', 'Junior Officer', 'DG']),
             'firstname' => $this->faker->name,
             'middlename' => $this->faker->name,
