@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'label' => $this->faker->unique()->word,
+            'label' => $this->faker->word,
             'path' => '/',
             'module' => $this->faker->word,
             'description' => $this->faker->sentence,
