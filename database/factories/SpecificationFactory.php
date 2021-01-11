@@ -22,7 +22,7 @@ class SpecificationFactory extends Factory
     public function definition()
     {
         return [
-            'investment_id' => '2',
+            'investment_id' => '1',
             'title' => $this->faker->word,
             'label' => $this->faker->word,
             'description' => $this->faker->sentence,
