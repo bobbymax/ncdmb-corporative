@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class WalletController extends Controller
 {
@@ -14,7 +16,20 @@ class WalletController extends Controller
      */
     public function index()
     {
-        //
+        $wallets = Wallet::all();
+        if ($wallets->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $wallets,
+            'status' => 'success',
+            'message' => 'Data was found!'
+        ], 200);
     }
 
     /**
@@ -44,9 +59,21 @@ class WalletController extends Controller
      * @param  \App\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function show(Wallet $wallet)
+    public function show($wallet)
     {
-        //
+        $wallet = Wallet::where('identifier', $wallet)->first();
+        if (! $wallet) {
+            return response()->json([
+                'data' => null,
+                'status' => 'danger',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => $wallet,
+            'status' => 'success',
+            'message' => 'Data was found!'
+        ], 200);
     }
 
     /**
@@ -55,9 +82,21 @@ class WalletController extends Controller
      * @param  \App\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function edit(Wallet $wallet)
+    public function edit($wallet)
     {
-        //
+        $wallet = Wallet::where('identifier', $wallet)->first();
+        if (! $wallet) {
+            return response()->json([
+                'data' => null,
+                'status' => 'danger',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => $wallet,
+            'status' => 'success',
+            'message' => 'Data was found!'
+        ], 200);
     }
 
     /**
@@ -67,9 +106,40 @@ class WalletController extends Controller
      * @param  \App\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Wallet $wallet)
+    public function update(Request $request, $wallet)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'bank_name' => 'required|string|max:255',
+            'account_number' => 'required|integer'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'danger',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        $wallet = Wallet::where('identifier', $wallet)->first();
+        if (! $wallet) {
+            return response()->json([
+                'data' => null,
+                'status' => 'danger',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+
+        $wallet->update([
+            'bank_name' => $request->bank_name,
+            'account_number' => $request->account_number
+        ]);
+
+        return response()->json([
+            'data' => $wallet,
+            'status' => 'success',
+            'message' => 'Data was updated successfully!'
+        ], 200);
     }
 
     /**

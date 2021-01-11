@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Kin;
+use App\Models\Wallet;
 use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -55,6 +57,7 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'staff_no' => 'required|unique:users',
             'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
@@ -62,7 +65,9 @@ class MemberController extends Controller
             'type' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'relationship' => 'required|string|max:255',
-            'phone' => 'required'
+            'phone' => 'required',
+            'bank_name' => 'required|string|max:255',
+            'account_number' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +83,8 @@ class MemberController extends Controller
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'surname' => $request->surname,
+            'email' => $request->email,
+            'password' => Hash::make('secret'),
             'location' => $request->location,
             'designation' => $request->designation,
             'mobile' => $request->mobile,
@@ -99,6 +106,15 @@ class MemberController extends Controller
                 'relationship' => $request->relationship,
                 'mobile' => $request->phone,
                 'address' => $request->address,
+            ]);
+        }
+
+        if ($request->bank_name) {
+            $wallet = Wallet::create([
+                'user_id' => $member->id,
+                'identifier' => Str::random(12),
+                'bank_name' => $request->bank_name,
+                'account_number' => $request->account_number
             ]);
         }
 
