@@ -148,7 +148,7 @@ class ServiceController extends Controller
             'title' => 'required|string|max:255',
             'label' => 'required|string|max:255|unique:services',
             'description' => 'required|min:5',
-            'category_id' => 'required|ineteger',
+            'category_id' => 'required|integer',
             'method' => 'required'
         ]);
 
