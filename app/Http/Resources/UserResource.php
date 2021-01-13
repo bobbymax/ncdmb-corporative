@@ -29,9 +29,9 @@ class UserResource extends JsonResource
             'type' => $this->type,
             'date_joined' => $this->date_joined->format('d M, Y'),
             'mobile' => $this->mobile,
-            'contribution' => isset($this->contribution) ? $this->contribution->only('fee') : $this->contribution,
-            'next of kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : $this->kin,
-            'wallet' => isset($this->wallet) ? $this->wallet->only('identifier', 'current', 'available', 'ledger') : $this->wallet, //->only(['identifier', 'current', 'available', 'ledger']),
+            'contribution' => $this->contribution->only('fee'),
+            'next of kin' => $this->kin->only('name', 'relationship', 'mobile'),
+            'wallet' => $this->wallet->only(['identifier', 'current', 'available', 'ledger']),
             'roles' => RoleResource::collection($this->roles),
         ];
     }
