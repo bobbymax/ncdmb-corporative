@@ -22,10 +22,10 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->randomElement(['SUPER ADMIN', 'USER', 'EXCO']),
-            'label' => $this->faker->word,
+            'name' => 'member',
+            'label' => 'member',
             'slots' => $this->faker->numberBetween(1, 10),
-            'deactivated' => $this->faker->boolean,
+            'deactivated' => 0,
         ];
     }
 }
