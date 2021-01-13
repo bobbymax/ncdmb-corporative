@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\UserResource;
 
 class LoginController extends Controller
 {
@@ -52,7 +53,7 @@ class LoginController extends Controller
                 'message' => 'Login Successful',
                 'data' => [
                     'token' => $token,
-                    'member' => Auth::user(),
+                    'member' => new UserResource(Auth::user()),
                 ]
             ]
         );

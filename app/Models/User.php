@@ -20,6 +20,8 @@ class User extends Authenticatable
      */
     protected $guarded = [''];
 
+    protected $dates = ['date_joined'];
+
     /**
      * The attributes that should be hidden for arrays.
      *

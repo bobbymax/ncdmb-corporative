@@ -10,6 +10,7 @@ use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -27,16 +28,18 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = User::all();
-        if ($members->count() < 1) {
+        $members = User::with(['roles', 'kin', 'contribution', 'wallet']);
+        $resource = UserResource::collection($members->latest()->get());
+        if ($resource->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
                 'message' => 'No data found'
             ], 404);
         }
+
         return response()->json([
-            'data' => $members,
+            'data' => $resource,
             'status' => 'success',
             'message' => 'List of members'
         ], 200);
