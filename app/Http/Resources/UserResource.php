@@ -32,7 +32,7 @@ class UserResource extends JsonResource
             'contribution' => $this->contribution,//->only('fee'),
             'next of kin' => $this->kin,//->only('name', 'relationship', 'mobile'),
             'wallet' => $this->wallet//->only(['identifier', 'current', 'available', 'ledger']),
-            // 'roles' => RoleResource::collection($this->roles),
+            'roles' => RoleResource::collection($this->roles),
         ];
     }
 }
