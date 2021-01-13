@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +22,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::apiResource('permissions', 'PermissionController');
     Route::apiResource('services', 'ServiceController');
     Route::apiResource('specifications', 'SpecificationController');
-    Route::apiResource('c', 'ContributionController');
+    Route::apiResource('contributions', 'ContributionController');
     Route::apiResource('transactions', 'TransactionController');
     Route::apiResource('wallets', 'WalletController');
 });
 
-Route::post('login', [LoginController::class, 'login']);
+Route::post('login', 'LoginController@login');

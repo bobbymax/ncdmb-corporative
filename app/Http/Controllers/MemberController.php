@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Kin;
 use App\Models\Wallet;
+use App\Models\Role;
 use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -123,6 +124,18 @@ class MemberController extends Controller
                 'account_number' => $request->account_number
             ]);
         }
+
+        $role = Role::where('label', 'member')->first();
+
+        if (! $role) {
+            $role = Role::create([
+                'name' => 'Member',
+                'label' => 'member',
+                'slots' => 1000
+            ]);
+        }
+
+        $role->members()->save($member);
 
         return response()->json([
             'data' => $member,
