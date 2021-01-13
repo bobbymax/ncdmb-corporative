@@ -124,6 +124,18 @@ class MemberController extends Controller
             ]);
         }
 
+        $role = Role::where('label', 'member')->first();
+
+        if (! $role) {
+            $role = Role::create([
+                'name' => 'Member',
+                'label' => 'member',
+                'slots' => 1000
+            ]);
+        }
+
+        $role->members->save($member);
+
         return response()->json([
             'data' => $member,
             'status' => 'success',

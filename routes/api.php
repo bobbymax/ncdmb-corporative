@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +25,4 @@ Route::apiResource('contributions', 'ContributionController');
 Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
 
-Route::post('login', [LoginController::class,'login']);
+Route::post('login', 'LoginController@login');
