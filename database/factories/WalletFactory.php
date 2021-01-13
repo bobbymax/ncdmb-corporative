@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class WalletFactory extends Factory
 {
@@ -22,7 +23,12 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => 11,
+            'identifier' => Str::random(8),
+            'current_balance' => 0,
+            'account_number' => 'Stanbic IBTC',
+            'current' => 0,
+            'current' => 0,
         ];
     }
 }
