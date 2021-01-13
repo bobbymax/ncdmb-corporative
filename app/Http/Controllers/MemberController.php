@@ -135,7 +135,7 @@ class MemberController extends Controller
             ]);
         }
 
-        $role->members->save($member);
+        $role->members()->save($member);
 
         return response()->json([
             'data' => $member,
