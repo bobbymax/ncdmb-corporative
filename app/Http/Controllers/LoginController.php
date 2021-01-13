@@ -10,6 +10,7 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+        // test change
         $loginRules = [
             'staff_no' => 'required|string|max:255',
             'password' => 'required|string',
