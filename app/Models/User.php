@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transactee::class);
     }
+
+    public function actAs(Role $role)
+    {
+        return $this->roles()->save($role);
+    }
 }

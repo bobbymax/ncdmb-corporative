@@ -16,13 +16,17 @@ Route::apiResource('groups', 'GroupController');
 Route::apiResource('guarantors', 'GuarantorController');
 Route::apiResource('investments', 'InvestmentController');
 Route::apiResource('loans', 'LoanController');
-Route::apiResource('roles', 'RoleController');
 Route::apiResource('schedules', 'ScheduleController');
 Route::apiResource('permissions', 'PermissionController');
+Route::apiResource('roles', 'RoleController');
 Route::apiResource('services', 'ServiceController');
 Route::apiResource('specifications', 'SpecificationController');
 Route::apiResource('contributions', 'ContributionController');
 Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
+
+// URL
+Route::post('assign/member/role', 'RoleController@addMember');
+
 
 Route::post('login', 'LoginController@login');
