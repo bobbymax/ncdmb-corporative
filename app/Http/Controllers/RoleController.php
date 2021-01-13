@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Str;
 
 class RoleController extends Controller
@@ -56,12 +58,16 @@ class RoleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 500);
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors'
+            ], 500);
         }
 
         $role = Role::create([
             'name' => $request->name,
-            'label' => Str::slug($request->name),
+            'label' => $request->label,
             'slots' => $request->slots
         ]);
 
@@ -71,6 +77,41 @@ class RoleController extends Controller
             'message' => 'Role created successfully!'
         ], 201);
 
+    }
+
+    public function addMember(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'staff_no' => 'required|string',
+            'role' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'danger',
+                'message' => 'Please fix the following error(s)!'
+            ], 500);
+        }
+
+        $member = User::where('staff_no', $request->staff_no)->first();
+        $role = Role::where('label', $request->role)->first();
+
+        if (! ($member && $role)) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Either the member of role input is invalid!'
+            ], 500);
+        }
+
+        $member->actAs($role);
+
+        return response()->json([
+            'data' => new UserResource($member),
+            'status' => 'success',
+            'message' => 'Role assigned to member successfully!'
+        ], 200);
     }
 
     /**

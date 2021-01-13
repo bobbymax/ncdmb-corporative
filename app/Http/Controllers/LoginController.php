@@ -21,29 +21,23 @@ class LoginController extends Controller
 
         // check if validation rules failed
         if ($validator->fails()) {
-            return response()->json(
-                [
-                    'data' => [
-                        'errors' => $validator->errors()
-                    ],
-                    'message' => 'An error occured',
-                    'status' => 'danger',
+            return response()->json([
+                'data' => [
+                    'errors' => $validator->errors()
                 ],
-                422
-            );
+                'message' => 'An error occured',
+                'status' => 'danger',
+            ], 422);
         }
 
         $loginCredentials = $request->only('staff_no', 'password');
         
         if (!Auth::attempt($loginCredentials)) {
-            return response()->json(
-                [
-                    'data' => [],
-                    'message' => 'Invalid login details',
-                    'status' => 'danger',
-                ],
-                422
-            );
+            return response()->json([
+                'data' => null,
+                'message' => 'Invalid login details',
+                'status' => 'danger',
+            ], 422);
         }
 
         $token = Auth::user()->createToken('authToken')->accessToken;
