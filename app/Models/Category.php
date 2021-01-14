@@ -16,9 +16,9 @@ class Category extends Model
     	return 'label';
     }
 
-    public function expenditures()
+    public function expenditure()
     {
-    	return $this->hasMany(Expenditure::class);
+    	return $this->hasOne(Expenditure::class);
     }
 
     public function services()

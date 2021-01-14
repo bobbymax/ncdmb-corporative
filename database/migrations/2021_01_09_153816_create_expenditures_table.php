@@ -23,7 +23,7 @@ class CreateExpendituresTable extends Migration
             $table->string('code')->unique()->nullable();
             $table->string('title');
             $table->string('label')->unique();
-            $table->bigInteger('amount')->default(0);
+            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
             $table->enum('status', ['pending', 'disbursed', 'exhausted'])->default('pending');
             $table->text('description')->nullable();
             $table->boolean('closed')->default(false);

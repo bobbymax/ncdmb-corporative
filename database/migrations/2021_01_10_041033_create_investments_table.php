@@ -22,7 +22,7 @@ class CreateInvestmentsTable extends Migration
             $table->longText('description')->nullable();
             $table->date('date_acquired')->nullable();
             $table->date('expiry_date')->nullable();
-            $table->bigInteger('amount')->default(0);
+            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
             $table->bigInteger('allocations')->default(0);
             $table->boolean('closed')->default(false);
             $table->timestamps();

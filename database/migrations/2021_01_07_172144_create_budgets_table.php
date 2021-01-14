@@ -19,7 +19,7 @@ class CreateBudgetsTable extends Migration
             $table->string('label')->unique();
             $table->string('code')->unique()->nullable();
             $table->text('description')->nullable();
-            $table->bigInteger('amount')->default(0);
+            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
             $table->dateTime('start')->nullable();
             $table->dateTime('end')->nullable();
             $table->integer('period')->default(0);
