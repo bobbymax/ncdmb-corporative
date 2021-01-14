@@ -22,9 +22,9 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'member',
-            'label' => 'member',
-            'slots' => $this->faker->numberBetween(1, 10),
+            'name' => 'admin',
+            'label' => 'admin',
+            'slots' => $this->faker->numberBetween(1, 1000),
             'deactivated' => 0,
         ];
     }
