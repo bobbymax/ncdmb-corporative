@@ -24,8 +24,8 @@ class WalletFactory extends Factory
     {
         return [
             'identifier' => Str::random(8),
-            'current_balance' => 0,
-            'account_number' => 'Stanbic IBTC',
+            'bank_name' => 'Stanbic IBTC',
+            'account_number' => '2219822083',
             'current' => 0,
         ];
     }
