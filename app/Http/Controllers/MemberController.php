@@ -77,6 +77,7 @@ class MemberController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
+            'fee'=>'required|numeric',
             'account_number' => 'required|string|max:15|unique:wallets',
         ]);
 
