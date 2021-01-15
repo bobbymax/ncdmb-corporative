@@ -97,7 +97,8 @@ class ExpenditureController extends Controller
             'category_id' => $request->category_id,
             'title' => $request->title,
             'label' => $request->label,
-            'amount' => $request->amount
+            'amount' => $request->amount,
+            'balance' => $request->amount
         ]);
 
         return response()->json([
