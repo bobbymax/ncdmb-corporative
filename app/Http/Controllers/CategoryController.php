@@ -75,7 +75,10 @@ class CategoryController extends Controller
             'description' => $request->description,
             'interest' => $request->interest,
             'frequency' => $request->frequency,
-            'fundable' => $request->fundable
+            'fundable' => $request->fundable,
+            'restriction' => $request->restriction,
+            'payable' => $request->payable,
+            'committment' => $request->committment 
         ]);
 
         if (! $category) {
@@ -172,7 +175,10 @@ class CategoryController extends Controller
             'description' => $request->description,
             'interest' => $request->interest,
             'frequency' => $request->frequency,
-            'fundable' => $request->fundable
+            'fundable' => $request->fundable,
+            'restriction' => $request->restriction,
+            'payable' => $request->payable,
+            'committment' => $request->committment 
         ]);
 
         return response()->json([

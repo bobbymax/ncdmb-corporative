@@ -2,10 +2,24 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Helpers\LoanCalculator;
+use App\Models\Category;
+use App\Models\User;
+use Carbon\Carbon;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/tests', function() {
+	$category = Category::where('label', 'molestias')->first();
+	$user = User::where('staff_no', 'josh')->first();
+	$value = 2000000;
+
+	$checker = (new LoanCalculator($category, $user, $value))->init();
+
+
+	dd($checker);
 });
 
 Route::apiResource('members', 'MemberController');
