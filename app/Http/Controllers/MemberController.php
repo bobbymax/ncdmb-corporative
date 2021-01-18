@@ -156,7 +156,7 @@ class MemberController extends Controller
      */
     public function show($user)
     {
-        $member = User::where('staff_no', $user)->first()->with(['roles', 'kin', 'contribution', 'wallet']);
+        $member = User::where('staff_no', $user)->first();
         if (! $member) {
             return response()->json([
                 'data' => null,
@@ -165,7 +165,7 @@ class MemberController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $member,
+            'data' => $member->with(['roles', 'kin', 'contribution', 'wallet']),
             'status' => 'success',
             'message' => 'Member found'
         ], 200);
