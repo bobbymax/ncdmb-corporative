@@ -165,7 +165,7 @@ class MemberController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $member->with(['roles', 'kin', 'contribution', 'wallet']),
+            'data' => $member,
             'status' => 'success',
             'message' => 'Member found'
         ], 200);
