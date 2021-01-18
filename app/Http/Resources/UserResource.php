@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             'date_joined' => $this->date_joined->format('d M, Y'),
             'mobile' => $this->mobile,
             'location' => $this->location,
+            'address' => $this->address,
             'contribution' => $this->contribution->only('fee'),
             // 'next of kin' => $this->kin->only('name', 'relationship', 'mobile'),
             // 'wallet' => $this->wallet->only(['identifier', 'current', 'available', 'ledger', 'account_number']),
