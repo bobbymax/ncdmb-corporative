@@ -32,8 +32,8 @@ class UserResource extends JsonResource
             'location' => $this->location,
             'contribution' => $this->contribution->only('fee'),
             'next of kin' => $this->kin->only('name', 'relationship', 'mobile'),
-            'wallet' => $this->wallet->only(['identifier', 'current', 'available', 'ledger', 'account_number']),
-            'roles' => RoleResource::collection($this->roles),
+            // 'wallet' => $this->wallet->only(['identifier', 'current', 'available', 'ledger', 'account_number']),
+            // 'roles' => RoleResource::collection($this->roles),
         ];
     }
 }
