@@ -55,7 +55,7 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             // 'charset' => 'utf8mb4', // local
-            'charset' => 'utf8', //heroku
+            // 'charset' => 'utf8', //heroku
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
