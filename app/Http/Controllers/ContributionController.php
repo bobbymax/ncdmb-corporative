@@ -114,7 +114,7 @@ class ContributionController extends Controller
      */
     public function update(Request $request, $contribution)
     {
-        $validation = Validation::make($request->all(), [
+        $validation = Validator::make($request->all(), [
             'fee' => 'required|integer',
         ]);
 

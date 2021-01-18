@@ -22,6 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // 	dd($checker);
 // });
 
+//	dd($checker);
+// });
+
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('expenditures', 'ExpenditureController');

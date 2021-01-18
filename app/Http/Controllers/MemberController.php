@@ -66,7 +66,7 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users',
             'staff_no' => 'required|unique:users',
             'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
@@ -77,6 +77,7 @@ class MemberController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
+            'fee'=>'required|numeric',
             'account_number' => 'required|string|max:15|unique:wallets',
         ]);
 
@@ -155,7 +156,7 @@ class MemberController extends Controller
      */
     public function show($user)
     {
-        $member = User::where('staff_no', $user)->first();
+        $member = User::with(['roles', 'kin', 'contribution', 'wallet'])->where('staff_no', $user)->first();
         if (! $member) {
             return response()->json([
                 'data' => null,

@@ -23,6 +23,7 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
+<<<<<<< HEAD
             'user_id' => 1,
             'identifier' => Str::random(8),
             'deposit' => $this->faker->numerify('######'),
@@ -34,3 +35,12 @@ class WalletFactory extends Factory
         ];
     }
 }
+=======
+            'identifier' => Str::random(8),
+            'bank_name' => 'Stanbic IBTC',
+            'account_number' => '2219822083',
+            'current' => 0,
+        ];
+    }
+}
+>>>>>>> 08866d6f4f14cc621e09b67e4979733bbc4bacc2
