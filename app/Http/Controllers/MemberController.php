@@ -77,7 +77,7 @@ class MemberController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
-            'fee'=>'required|numeric',
+            'fee' => 'required|numeric',
             'account_number' => 'required|string|max:15|unique:wallets',
         ]);
 
@@ -131,7 +131,7 @@ class MemberController extends Controller
 
         $role = Role::where('label', 'member')->first();
 
-        if (! $role) {
+        if (!$role) {
             $role = Role::create([
                 'name' => 'Member',
                 'label' => 'member',
@@ -156,8 +156,8 @@ class MemberController extends Controller
      */
     public function show($user)
     {
-        $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        $member = User::where('staff_no', $user)->with(['roles', 'kin', 'contribution', 'wallet'])->first();
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -180,7 +180,7 @@ class MemberController extends Controller
     public function edit($user)
     {
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -222,7 +222,7 @@ class MemberController extends Controller
         }
 
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -258,7 +258,7 @@ class MemberController extends Controller
     public function destroy($user)
     {
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -271,6 +271,5 @@ class MemberController extends Controller
             'status' => 'success',
             'message' => 'Member has been deleted successfully!'
         ], 200);
-
     }
 }

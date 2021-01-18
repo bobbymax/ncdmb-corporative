@@ -18,7 +18,6 @@ Route::get('/tests', function() {
 
 	$checker = (new LoanCalculator($category, $user, $value))->init();
 
-
 	dd($checker);
 });
 

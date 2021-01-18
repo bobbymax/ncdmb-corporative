@@ -29,17 +29,17 @@ class LoanCalculator
 		$this->value = $value;
 	}
 
-	public function existingLoan() : bool
+	public function existingLoan(): bool
 	{
 		return is_object($this->member->loans->first()) && $this->member->loans->first()->closed != 1;
 	}
 
-	public function balanceChecker() : bool
+	public function balanceChecker(): bool
 	{
 		return $this->member->wallet->current * 2 >= $this->value;
 	}
 
-	public function expenditureChecker() : bool
+	public function expenditureChecker(): bool
 	{
 		return $this->value < $this->category->expenditure->balance;
 	}
@@ -62,7 +62,7 @@ class LoanCalculator
 
 			$this->fee[] = round($this->splitValueInDays(), 2);
 
-			$this->sum+=$this->splitValueInDays();
+			$this->sum += $this->splitValueInDays();
 		}
 
 		return [$this->fee, round($this->sum, 2)];
@@ -84,7 +84,7 @@ class LoanCalculator
 			case "annually":
 				return $this->interestRatePlusValue();
 				break;
-			
+
 			default:
 				return $this->monthlyDue();
 				break;
