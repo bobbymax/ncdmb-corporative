@@ -157,7 +157,7 @@ class MemberController extends Controller
     public function show($user)
     {
         $member = User::where('staff_no', $user)->first();
-        $resource = UserResource::collection($member->latest()->get());
+        $resource = UserResource::collection($member);
         if (! $member) {
             return response()->json([
                 'data' => null,
