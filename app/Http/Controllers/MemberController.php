@@ -164,7 +164,7 @@ class MemberController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $member,
+            'data' => new UserResource($member),
             'status' => 'success',
             'message' => 'Member found'
         ], 200);
@@ -187,7 +187,7 @@ class MemberController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $member,
+            'data' => new UserResource($member),
             'status' => 'success',
             'message' => 'Member found'
         ], 200);
@@ -242,7 +242,7 @@ class MemberController extends Controller
         ]);
 
         return response()->json([
-            'data' => $member,
+            'data' => new UserResource($member),
             'status' => 'success',
             'message' => 'Member has been created successfully!'
         ], 200);

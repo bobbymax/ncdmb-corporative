@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class MemberFactory extends Factory
@@ -24,7 +25,7 @@ class MemberFactory extends Factory
     {
         return [
             'membership_no' => Str::random(8),
-            'staff_no' => 'josh', //Str::random(8),
+            'staff_no' => Str::random(5),
             'designation' => $this->faker->randomElement(['Senior Officer', 'Junior Officer', 'DG']),
             'firstname' => $this->faker->name,
             'middlename' => $this->faker->name,
@@ -35,7 +36,7 @@ class MemberFactory extends Factory
             'date_joined' => $this->faker->date('Y-m-d'),
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make('password'), // password
             'remember_token' => Str::random(10),
         ];
     }
