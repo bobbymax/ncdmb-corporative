@@ -31,9 +31,9 @@ class UserResource extends JsonResource
             'mobile' => $this->mobile,
             'location' => $this->location,
             'address' => $this->address,
-            'contribution' => isset($this->contribution) ? $this->contribution->only('fee') : [],
-            'next of kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : [],
-            'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'available', 'ledger', 'account_number']) : [],
+            'contribution' => isset($this->contribution) ? $this->contribution->only('fee') : "{}",
+            'next of kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : "{}",
+            'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'available', 'ledger', 'account_number']) : "{}",
             'roles' => RoleResource::collection($this->roles),
         ];
     }
