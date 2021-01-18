@@ -193,7 +193,7 @@ class LoanController extends Controller
                 'data' => null,
                 'status' => 'danger',
                 'message' => 'No data was found!'
-            ], 404);
+            ], 200);
         }
 
         $loan->update([
