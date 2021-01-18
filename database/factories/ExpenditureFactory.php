@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Expenditure;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ExpenditureFactory extends Factory
 {
@@ -26,7 +27,7 @@ class ExpenditureFactory extends Factory
             'category_id' => '1',
             'code' => $this->faker->word,
             'title' => $this->faker->word,
-            'label' => $this->faker->word,
+            'label' => Str::random(32),
             'amount' => $this->faker->numerify('######'),
             'status' => 'exhausted',
             'description' => $this->faker->sentence,

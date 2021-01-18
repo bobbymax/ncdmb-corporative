@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Http\Resources\LoanResource;
 
 class LoanController extends Controller
 {
@@ -35,7 +36,7 @@ class LoanController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $loans,
+            'data' => new LoanResource($loans),
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
@@ -110,7 +111,7 @@ class LoanController extends Controller
         }
 
         return response()->json([
-            'data' => $loan,
+            'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Loan has been registered successfully!'
         ], 201);
@@ -206,7 +207,7 @@ class LoanController extends Controller
         ]);
 
         return response()->json([
-            'data' => $loan,
+            'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Loan has been updated successfully!'
         ], 200);
@@ -237,7 +238,7 @@ class LoanController extends Controller
         }
         $loan->delete();
         return response()->json([
-            'data' => $loan,
+            'data' => null,
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
