@@ -157,7 +157,6 @@ class MemberController extends Controller
     public function show($user)
     {
         $member = User::with(['roles', 'kin', 'contribution', 'wallet'])->where('staff_no', $user)->first();
-        $resource = UserResource::collection($member->latest()->get());
         if (! $member) {
             return response()->json([
                 'data' => null,
@@ -166,7 +165,7 @@ class MemberController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $resource,
+            'data' => $member,
             'status' => 'success',
             'message' => 'Member found'
         ], 200);
