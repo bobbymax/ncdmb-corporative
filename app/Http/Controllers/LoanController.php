@@ -111,7 +111,7 @@ class LoanController extends Controller
         }
 
         return response()->json([
-            'data' => $loans,//new LoanResource($loans),
+            'data' => $loan,//new LoanResource($loans),
             'status' => 'success',
             'message' => 'Loan has been registered successfully!'
         ], 201);
