@@ -6,6 +6,7 @@ use App\Models\Expenditure;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ExpenditureResource;
 
 class ExpenditureController extends Controller
 {
@@ -32,7 +33,7 @@ class ExpenditureController extends Controller
         }
 
         return response()->json([
-            'data' => $expenditures,
+            'data' => ExpenditureResource::collection($expenditures),
             'status' => 'success',
             'message' => $expenditures->count() . ' data found!'
         ], 200);
@@ -102,7 +103,7 @@ class ExpenditureController extends Controller
         ]);
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => new ExpenditureResource($expenditure),
             'status' => 'success',
             'message' => 'This expenditure has been created successfully!'
         ], 200);
@@ -127,7 +128,7 @@ class ExpenditureController extends Controller
         }
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => new ExpenditureResource($expenditure),
             'status' => 'success',
             'message' => 'Expenditure data found!'
         ], 200);
@@ -152,7 +153,7 @@ class ExpenditureController extends Controller
         }
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => new ExpenditureResource($expenditure),
             'status' => 'success',
             'message' => 'Expenditure data found!'
         ], 200);
@@ -196,7 +197,7 @@ class ExpenditureController extends Controller
         ]);
 
         return response()->json([
-            'data' => $expenditure,
+            'data' => new ExpenditureResource($expenditure),
             'status' => 'success',
             'message' => 'This expenditure has been created successfully!'
         ], 200);

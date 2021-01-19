@@ -31,7 +31,7 @@ class CategoryController extends Controller
         }
 
         return response()->json([
-            'data' => null,
+            'data' => $categories,
             'status' => 'success',
             'message' => 'List of categories'
         ], 200);
@@ -173,12 +173,12 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
-            'interest' => $request->interest,
-            'frequency' => $request->frequency,
-            'fundable' => $request->fundable,
-            'restriction' => $request->restriction,
-            'payable' => $request->payable,
-            'committment' => $request->committment 
+            'interest' => isset($request->interest) ? $request->interest : 0,
+            'frequency' => isset($request->frequency) ? $request->frequency : 'na',
+            'fundable' => isset($request->fundable) ? $request->fundable : false,
+            'restriction' => isset($request->restriction) ? $request->restriction : 0,
+            'payable' => isset($request->payable) ? $request->payable : 'undefined',
+            'committment' => isset($request->committment) ? $request->committment : 0
         ]);
 
         return response()->json([

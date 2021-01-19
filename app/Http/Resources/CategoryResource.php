@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class CategoryResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        // return parent::toArray($request);
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'label' => $this->label,
+            'module' => $this->module,
+            'fundable' => $this->fundable == 1 ? true : false,
+            'interest' => $this->interest,
+            'frequency' => $this->frequency,
+            'restriction' => $this->restriction,
+            'payable' => $this->payable,
+            'committment' => $this->committment,
+            'created_at' => $this->created_at->format('d M, Y')
+        ];
+    }
+}
