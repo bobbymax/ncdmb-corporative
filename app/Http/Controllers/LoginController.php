@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         $loginCredentials = $request->only('staff_no', 'password');
         
-        if (!Auth::attempt($loginCredentials)) {
+        if (! Auth::attempt($loginCredentials)) {
             return response()->json([
                 'data' => null,
                 'message' => 'Invalid login details',
