@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             return response()->json([
                 'data' => $validation->errors(),
                 'status' => 'danger',
-                'message' => 'Please fix the following errors' 
+                'message' => 'Please fix the following errors'
             ], 500);
         }
 
@@ -81,7 +81,7 @@ class CategoryController extends Controller
             'committment' => isset($request->committment) ? $request->committment : 0
         ]);
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -106,7 +106,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -131,7 +131,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -164,7 +164,7 @@ class CategoryController extends Controller
             return response()->json([
                 'data' => $validation->errors(),
                 'status' => 'danger',
-                'message' => 'Please fix the following errors' 
+                'message' => 'Please fix the following errors'
             ], 500);
         }
 
@@ -173,12 +173,12 @@ class CategoryController extends Controller
             'label' => $request->label,
             'module' => $request->module,
             'description' => $request->description,
-            'interest' => $request->interest,
-            'frequency' => $request->frequency,
-            'fundable' => $request->fundable,
-            'restriction' => $request->restriction,
-            'payable' => $request->payable,
-            'committment' => $request->committment 
+            'interest' => isset($request->interest) ? $request->interest : 0,
+            'frequency' => isset($request->frequency) ? $request->frequency : 'na',
+            'fundable' => isset($request->fundable) ? $request->fundable : false,
+            'restriction' => isset($request->restriction) ? $request->restriction : 0,
+            'payable' => isset($request->payable) ? $request->payable : 'undefined',
+            'committment' => isset($request->committment) ? $request->committment : 0
         ]);
 
         return response()->json([
@@ -198,7 +198,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
