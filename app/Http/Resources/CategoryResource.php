@@ -22,10 +22,12 @@ class CategoryResource extends JsonResource
             'label' => $this->label,
             'module' => $this->module,
             'fundable' => $this->fundable == 1 ? true : false,
+            'isLoan' => $this->isLoan == 1 ? true : false,
             'interest' => $this->interest,
             'frequency' => $this->frequency,
             'restriction' => $this->restriction,
             'payable' => $this->payable,
+            'limit' => $this->limit,
             'committment' => $this->committment,
             'created_at' => $this->created_at->format('d M, Y')
         ];

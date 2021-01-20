@@ -18,7 +18,7 @@ class Category extends Model
 
     public function expenditure()
     {
-    	return $this->hasOne(Expenditure::class);
+    	return $this->hasOne(Expenditure::class, 'category_id');
     }
 
     public function services()

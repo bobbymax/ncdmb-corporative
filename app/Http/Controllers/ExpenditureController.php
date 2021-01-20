@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Expenditure;
 use App\Models\Budget;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Helpers\LoanCalculator;
+use App\Helpers\BudgetChecker;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ExpenditureResource;
 
@@ -47,6 +50,27 @@ class ExpenditureController extends Controller
     public function create()
     {
         //
+    }
+
+    public function budgetChecker(Request $request)
+    {
+        $category = Category::where('label', $request->category)->first();
+
+        if (! $category) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This input was invalid'
+            ], 404);
+        }
+
+        $results = (new BudgetChecker($category, $request->amount))->init();
+
+        return response()->json([
+            'data' => $results,
+            'status' => 'success',
+            'message' => 'Data collection!'
+        ], 200);
     }
 
     /**
