@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Investment::factory(3)->create();
         \App\Models\Kin::factory(1)->create();
         // \App\Models\Permission::factory(3)->create();
-        \App\Models\Role::factory(3)->create();
+        \App\Models\Role::factory(1)->create();
         // \App\Models\Schedule::factory(3)->create();
         // \App\Models\Service::factory(3)->create();
         // \App\Models\Specification::factory(3)->create();

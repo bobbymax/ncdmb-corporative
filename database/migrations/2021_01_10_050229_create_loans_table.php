@@ -20,7 +20,7 @@ class CreateLoansTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('code')->unique();
-            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
             $table->string('reason')->nullable();
             $table->longText('description')->nullable();
             $table->date('start_date')->nullable();

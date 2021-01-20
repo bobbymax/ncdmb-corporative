@@ -6,6 +6,7 @@ use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\ContributionResource;
 
 class ContributionController extends Controller
 {
@@ -30,7 +31,7 @@ class ContributionController extends Controller
             ], 200);
         }
         return response()->json([
-            'data' => $contributions, 
+            'data' => ContributionResource::collection($contributions), 
             'status' => 'success', 
             'message' => 'List of contributions'
         ], 200);
@@ -75,7 +76,7 @@ class ContributionController extends Controller
         }
 
         return response()->json([
-            'data' => $contribution,
+            'data' => new ContributionResource($contribution),
             'status' => 'success',
             'message' => 'Contribution found'
         ], 200);
@@ -99,7 +100,7 @@ class ContributionController extends Controller
         }
 
         return response()->json([
-            'data' => $contribution,
+            'data' => new ContributionResource($contribution),
             'status' => 'success',
             'message' => 'Contribution found'
         ], 200);
@@ -140,7 +141,7 @@ class ContributionController extends Controller
         ]);
 
         return response()->json([
-            'data' => $contribution,
+            'data' => new ContributionResource($contribution),
             'status' => 'success',
             'message' => 'Contribution updated successfully!'
         ], 200);

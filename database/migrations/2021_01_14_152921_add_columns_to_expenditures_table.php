@@ -14,7 +14,7 @@ class AddColumnsToExpendituresTable extends Migration
     public function up()
     {
         Schema::table('expenditures', function (Blueprint $table) {
-            $table->decimal('balance', $precision = 15, $scale = 2)->default(0)->after('amount');
+            $table->decimal('balance', $precision = 30, $scale = 2)->default(0)->after('amount');
         });
     }
 

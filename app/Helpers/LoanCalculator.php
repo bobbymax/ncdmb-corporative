@@ -56,6 +56,17 @@ class LoanCalculator
 
 	private function monthlyDue()
 	{
+		// Check Current Month
+		$current_month = $this->currentMonth();
+		// Compare Month Values
+		$months_section = $this->remainingMonths();
+		// Slice
+		
+		// Check Restrictions
+		// Compare Slice & Restrictions
+		// If Slice < Restrictions (Restrictions - Slice)
+		// Start from beginning after months have finished
+
 		foreach (range(1, $this->category->restriction) as $month) {
 			// $this->proposed = new Carbon($month); 
 			// $due = $this->splitValueInDays() * $this->proposed->daysInMonth;
@@ -68,9 +79,14 @@ class LoanCalculator
 		return [$this->fee, round($this->sum, 2)];
 	}
 
+	private function currentMonth()
+	{
+		return now()->month;
+	}
+
 	private function remainingMonths()
 	{
-		return array_slice($this->months, now()->month - 1);
+		return array_slice($this->months, $this->currentMonth() - 1);
 	}
 
 	private function interestRatePlusValue()
