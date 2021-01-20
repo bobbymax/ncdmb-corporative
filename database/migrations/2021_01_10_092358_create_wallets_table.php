@@ -18,10 +18,10 @@ class CreateWalletsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('identifier')->unique()->nullable();
-            $table->decimal('deposit', $precision = 15, $scale = 2)->default(0);
-            $table->decimal('current', $precision = 15, $scale = 2)->default(0);
-            $table->decimal('available', $precision = 15, $scale = 2)->default(0);
-            $table->decimal('ledger', $precision = 15, $scale = 2)->default(0);
+            $table->decimal('deposit', $precision = 30, $scale = 2)->default(0);
+            $table->decimal('current', $precision = 30, $scale = 2)->default(0);
+            $table->decimal('available', $precision = 30, $scale = 2)->default(0);
+            $table->decimal('ledger', $precision = 30, $scale = 2)->default(0);
             $table->string('bank_name');
             $table->string('account_number')->unique();
             $table->timestamps();

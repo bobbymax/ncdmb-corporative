@@ -20,7 +20,7 @@ class CreateSpecificationsTable extends Migration
             $table->string('title');
             $table->string('label')->unique();
             $table->longText('description')->nullable();
-            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
             $table->bigInteger('slots')->default(0);
             $table->enum('status', ['pending', 'exhausted'])->default('pending');
             $table->timestamps();

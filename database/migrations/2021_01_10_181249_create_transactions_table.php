@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->string('transactionable_type');
             $table->string('code')->unique();
             $table->string('type')->nullable();
-            $table->decimal('amount', $precision = 15, $scale = 2)->default(0);
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
             $table->enum('status', ['pending', 'disbursed', 'paid', 'unpaid'])->default('pending');
             $table->boolean('completed')->default(false);
             $table->timestamps();
