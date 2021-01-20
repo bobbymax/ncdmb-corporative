@@ -11,16 +11,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/tests', function() {
-// 	$category = Category::where('label', 'molestias')->first();
-// 	$user = User::where('staff_no', 'josh')->first();
-// 	$value = 2000000;
+Route::get('/tests', function() {
+	$category = Category::where('label', 'quo')->first();
+	$user = User::where('staff_no', 'josh')->first();
+	$value = 2000000;
 
-// 	$checker = (new LoanCalculator($category, $user, $value))->init();
+	$checker = (new LoanCalculator($category, $user, $value))->init();
 
 
-// 	dd($checker);
-// });
+	dd($checker);
+});
 
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
