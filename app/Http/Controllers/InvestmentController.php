@@ -147,7 +147,7 @@ class InvestmentController extends Controller
         $validation = Validator::make($request->all(), [
             'category_id' => 'required|integer',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unqiue:investments',
+            'label' => 'required|string|max:255|unique:investments',
             'date_acquired' => 'required|date',
             'amount' => 'required|integer'
         ]);
