@@ -29,6 +29,10 @@ class LoanCalculator
 		$this->value = $value;
 	}
 
+	/**
+	 * Check for existing user loan
+	 * return bool
+	 */
 	public function existingLoan(): bool
 	{
 		return is_object($this->member->loans->first()) && $this->member->loans->first()->closed != 1;
@@ -61,7 +65,7 @@ class LoanCalculator
 		// Compare Month Values
 		$months_section = $this->remainingMonths();
 		// Slice
-		
+
 		// Check Restrictions
 		// Compare Slice & Restrictions
 		// If Slice < Restrictions (Restrictions - Slice)
@@ -82,6 +86,11 @@ class LoanCalculator
 	private function currentMonth()
 	{
 		return now()->month;
+	}
+
+	private function remenderMonths($value)
+	{
+		return array_slice($this->months, 0, $value + 1);
 	}
 
 	private function remainingMonths()

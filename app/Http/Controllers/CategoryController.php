@@ -76,7 +76,9 @@ class CategoryController extends Controller
             'interest' => isset($request->interest) ? $request->interest : 0,
             'frequency' => isset($request->frequency) ? $request->frequency : 'na',
             'fundable' => isset($request->fundable) ? $request->fundable : false,
+            'isLoan' => isset($request->isLoan) ? $request->isLoan : false,
             'restriction' => isset($request->restriction) ? $request->restriction : 0,
+            'limit' => isset($request->limit) ? $request->limit : 0,
             'payable' => isset($request->payable) ? $request->payable : 'undefined',
             'committment' => isset($request->committment) ? $request->committment : 0
         ]);
@@ -176,7 +178,9 @@ class CategoryController extends Controller
             'interest' => isset($request->interest) ? $request->interest : 0,
             'frequency' => isset($request->frequency) ? $request->frequency : 'na',
             'fundable' => isset($request->fundable) ? $request->fundable : false,
+            'isLoan' => isset($request->isLoan) ? $request->isLoan : false,
             'restriction' => isset($request->restriction) ? $request->restriction : 0,
+            'limit' => isset($request->limit) ? $request->limit : 0,
             'payable' => isset($request->payable) ? $request->payable : 'undefined',
             'committment' => isset($request->committment) ? $request->committment : 0
         ]);

@@ -11,17 +11,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/tests', function() {
-	$category = Category::where('label', 'quo')->first();
-	$user = User::where('staff_no', 'josh')->first();
-	$value = 2000000;
-
-	$checker = (new LoanCalculator($category, $user, $value))->init();
-
-
-	dd($checker);
-});
-
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('expenditures', 'ExpenditureController');
@@ -41,6 +30,9 @@ Route::apiResource('wallets', 'WalletController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
+
+// Loan Checker
+Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 
 
 Route::post('login', 'LoginController@login');
