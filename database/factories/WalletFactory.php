@@ -25,7 +25,7 @@ class WalletFactory extends Factory
         return [
             'identifier' => Str::random(8),
             'bank_name' => 'Stanbic IBTC',
-            'account_number' => $this->faker->randomNumber(11),
+            'account_number' => $this->faker->randomNumber(10),
             'deposit' => 10000,
             'current' => 10000,
             'available' => 100000,
