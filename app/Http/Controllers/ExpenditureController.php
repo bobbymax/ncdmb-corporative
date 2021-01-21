@@ -54,8 +54,7 @@ class ExpenditureController extends Controller
 
     public function budgetChecker(Request $request)
     {
-        return $request->amount;
-        $category = Category::where('label', $request->category)->first();
+        return $request->amount;$category = Category::where('label', $request->category)->first();
 
         if (! $category) {
             return response()->json([
