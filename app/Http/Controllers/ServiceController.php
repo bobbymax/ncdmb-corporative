@@ -72,7 +72,7 @@ class ServiceController extends Controller
         }
 
         $service = Service::create([
-            'user_id' => $request->user(),
+            'user_id' => $request->user()->id,
             'category_id' => $request->category_id,
             'title' => $request->title,
             'label' => $request->label,
