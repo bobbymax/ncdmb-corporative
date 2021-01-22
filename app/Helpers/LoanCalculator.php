@@ -5,7 +5,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Str;
 use App\Models\Category;
-use App\Models\Expenditure;
+use App\Models\Loan;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -14,105 +14,66 @@ class LoanCalculator
 	/**
 	 *	Significant variables 
 	 */
-	protected $category, $member, $value, $message, $proposed;
+	protected $loan;
 
-	protected $sum = 0;
+	protected $requests = [];
+	protected $payables = [];
+	protected $dues = [];
 
-	protected $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-	protected $fee = [];
-
-	public function __construct($category, $user, $value)
+	public function __construct(Loan $loan, array $requests)
 	{
-		$this->category = $category;
-		$this->member = $user;
-		$this->value = $value;
-	}
-
-	/**
-	 * Check for existing user loan
-	 * return bool
-	 */
-	public function existingLoan(): bool
-	{
-		return is_object($this->member->loans->first()) && $this->member->loans->first()->closed != 1;
-	}
-
-	public function balanceChecker(): bool
-	{
-		return $this->member->wallet->current * 2 >= $this->value;
-	}
-
-	public function expenditureChecker(): bool
-	{
-		return $this->value < $this->category->expenditure->balance;
-	}
-
-	private function remainingDaysInYear()
-	{
-		return now()->daysInYear - now()->dayOfYear;
-	}
-
-	private function splitValueInDays()
-	{
-		return $this->interestRatePlusValue() / $this->category->restriction;
-	}
-
-	private function monthlyDue()
-	{
-		// Check Current Month
-		$current_month = $this->currentMonth();
-		// Compare Month Values
-		$months_section = $this->remainingMonths();
-		// Slice
-
-		// Check Restrictions
-		// Compare Slice & Restrictions
-		// If Slice < Restrictions (Restrictions - Slice)
-		// Start from beginning after months have finished
-
-		foreach (range(1, $this->category->restriction) as $month) {
-			// $this->proposed = new Carbon($month); 
-			// $due = $this->splitValueInDays() * $this->proposed->daysInMonth;
-
-			$this->fee[] = round($this->splitValueInDays(), 2);
-
-			$this->sum += $this->splitValueInDays();
-		}
-
-		return [$this->fee, round($this->sum, 2)];
-	}
-
-	private function currentMonth()
-	{
-		return now()->month;
-	}
-
-	private function remenderMonths($value)
-	{
-		return array_slice($this->months, 0, $value + 1);
-	}
-
-	private function remainingMonths()
-	{
-		return array_slice($this->months, $this->currentMonth() - 1);
-	}
-
-	private function interestRatePlusValue()
-	{
-		return $this->value * ($this->category->interest / 100) + $this->value;
+		$this->loan = $loan;
+		$this->requests = $requests;
 	}
 
 	public function init()
 	{
-		switch ($this->category->frequency) {
-			case "annually":
-				return $this->interestRatePlusValue();
-				break;
+		return $this->scheduler();
+	}
 
+	private function payable()
+	{
+		return $this->loan->amount + ($this->loan->amount * ($this->loan->category->interest / 100));
+	}
+
+	private function payment()
+	{
+		return round($this->payable() / $this->requests['restriction'], 2);
+	}
+
+	private function scheduler()
+	{
+		foreach ($this->normaliser() as $setter) {
+			$this->dues[] = $setter . " : " . $this->payment();
+		}
+
+		return response()->json($this->dues);
+	}
+
+	private function paySetter($frequency)
+	{
+		for ($i = 0; $i < $this->requests['restriction']; $i++) {
+			$this->payables[] = date('d F, Y', strtotime($this->starter() . '+' . $i . ' ' . $frequency));
+		}
+
+		return $this->payables;
+	}
+
+	private function normaliser()
+	{
+		switch ($this->loan->category->frequency) {
+			case "annually":
+				return $this->paySetter('years');
+				break;
+			
 			default:
-				return $this->monthlyDue();
+				return $this->paySetter('months');
 				break;
 		}
+	}
+
+	private function starter()
+	{
+		return Carbon::parse($this->requests['date']);
 	}
 }
