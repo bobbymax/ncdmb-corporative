@@ -29,6 +29,21 @@ class BudgetChecker
 		return compact('availability', 'limit', 'eligibility');
 	}
 
+	public function calculate()
+	{
+		// Return array
+		// Category, Interest, Amount Payable, Frequency, Committment (if any), Restrictions
+
+		
+
+		// Calculate frequency
+	}
+
+	private function computeInterest()
+	{
+		$this->amount * ($this->category->interest / 100) + $this->amount;
+	}
+
 	private function availableFunds()
 	{
 		$funds = $this->getCategoryExpenditureDiff() >= $this->category->limit;

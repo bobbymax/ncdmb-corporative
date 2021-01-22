@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expenditure;
 use App\Models\Budget;
 use App\Models\Category;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 use App\Helpers\LoanCalculator;
 use App\Helpers\BudgetChecker;
@@ -70,6 +71,27 @@ class ExpenditureController extends Controller
             'data' => $results,
             'status' => 'success',
             'message' => 'Data collection!'
+        ], 200);
+    }
+
+    public function loanCalculator(Request $request, $loan)
+    {
+        $loan = Loan::where('code', $loan)->first();
+
+        if (! $loan) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This input was invalid'
+            ], 404);
+        }
+
+        $values = (new LoanCalculator($loan, $request->all()))->init();
+
+        return response()->json([
+            'data' => $values,
+            'status' => 'success',
+            'message' => 'Schedule done successfully!'
         ], 200);
     }
 

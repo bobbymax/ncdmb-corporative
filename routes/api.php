@@ -2,14 +2,30 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Helpers\LoanCalculator;
+
+use App\Helpers\MonthSpliter;
 use App\Models\Category;
-use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('tests', function() {
+	// $category = Category::where('label', 'regular-loan')->first();
+
+	// $months = (new LoanCalculator($category))->monthsy();
+
+	// dd($months);
+
+	// dd(date('Y', strtotime('+1 year')));
+	// dd(Carbon::parse(18));
+
+	dd((new MonthSpliter)->splitMonths());
+});
+
+Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
 
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');

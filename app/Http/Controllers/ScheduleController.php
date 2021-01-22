@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Http\Resources\LoanResource;
 
 class ScheduleController extends Controller
 {
@@ -56,9 +58,8 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'loan_id' => 'required|integer',
-            'amount' => 'required|integer',
-            'due_date' => 'required|date'
+            'loan' => 'required|string|max:255',
+            'schedules' => 'required',
         ]);
 
         if ($validation->fails()) {
@@ -69,14 +70,32 @@ class ScheduleController extends Controller
             ], 500);
         }
 
-        $schedule = Schedule::create([
-            'loan_id' => $request->loan_id,
-            'amount' => $request->amount,
-            'due_date' => Carbon::parse($request->due_date),
-        ]);
+
+        $loan = Loan::where('code', $request->loan)->first();
+
+        if (! $loan) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This loan detail was not found'
+            ], 404);
+        }
+
+        foreach ($request->schedules as $detail) {
+            $due = explode(" : ", $detail);
+
+            $schedule = new Schedule;
+            $schedule->due_date = Carbon::parse($due[0]);
+            $schedule->amount = $due[1];
+
+            $loan->schedules()->save($schedule);
+        }
+
+        $loan->status = "disbursed";
+        $loan->save();
 
         return response()->json([
-            'data' => $schedule,
+            'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Schedule created successfully!'
         ], 201);
