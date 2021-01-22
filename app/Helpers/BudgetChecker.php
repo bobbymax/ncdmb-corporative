@@ -31,7 +31,7 @@ class BudgetChecker
 
 	private function availableFunds()
 	{
-		return '$this->getCategoryExpenditureDiff()';
+		// return $this->getCategoryExpenditureDiff();
 		$funds = $this->getCategoryExpenditureDiff() >= $this->category->limit;
 
 		if (! $funds) {
