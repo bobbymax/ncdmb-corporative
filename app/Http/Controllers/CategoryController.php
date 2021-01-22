@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             return response()->json([
                 'data' => $validation->errors(),
                 'status' => 'danger',
-                'message' => 'Please fix the following errors' 
+                'message' => 'Please fix the following errors'
             ], 500);
         }
 
@@ -83,7 +83,7 @@ class CategoryController extends Controller
             'committment' => isset($request->committment) ? $request->committment : 0
         ]);
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -108,7 +108,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -133,7 +133,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -159,14 +159,14 @@ class CategoryController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:categories',
+            'label' => 'required|string|max:255',
         ]);
 
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
                 'status' => 'danger',
-                'message' => 'Please fix the following errors' 
+                'message' => 'Please fix the following errors'
             ], 500);
         }
 
@@ -202,7 +202,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',

@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Schedule::factory(3)->create();
         // \App\Models\Service::factory(3)->create();
         // \App\Models\Specification::factory(3)->create();
+        // \App\Models\Wallet::factory(3)->create();
     }
 }

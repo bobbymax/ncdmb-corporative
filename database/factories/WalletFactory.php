@@ -23,14 +23,12 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
             'identifier' => Str::random(8),
-            'deposit' => $this->faker->numerify('######'),
-            'current' => $this->faker->numerify('######'),
-            'available' => $this->faker->numerify('######'),
-            'ledger' => $this->faker->numerify('######'),
             'bank_name' => 'Stanbic IBTC',
-            'account_number' => '0056075457',
+            'account_number' => rand(1111111111, 9999999999),
+            'deposit' => 10000,
+            'current' => 10000,
+            'available' => 100000,
         ];
     }
 }
