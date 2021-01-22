@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Models\Guarantor;
 use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Transactee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;

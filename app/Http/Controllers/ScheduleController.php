@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\Loan;
+use App\Models\Transaction;
+use App\Models\Transactee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -12,6 +14,9 @@ use App\Http\Resources\LoanResource;
 
 class ScheduleController extends Controller
 {
+
+    protected $types = ['credit', 'debit'];
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -92,13 +97,44 @@ class ScheduleController extends Controller
         }
 
         $loan->status = "disbursed";
-        $loan->save();
+
+        if ($loan->save()) {
+            $transaction = new Transaction;
+            $transaction->code = "LN" . time() . strtoupper(Str::random(5));
+            $transaction->type = "loan";
+            $transaction->amount = $loan->amount;
+
+            if ($loan->transactions()->save($transaction)) {
+
+                foreach ($this->types as $type) {
+                    $transactee = new Transactee;
+                    $transactee->user_id = $this->setType($type, $loan)[0];
+                    $transactee->type = $type;
+                    $transactee->status = $this->setType($type, $loan)[1];
+
+                    $transaction->transactees()->save($transactee);
+                }
+            }
+        }
 
         return response()->json([
             'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Schedule created successfully!'
         ], 201);
+    }
+
+    protected function setType($type, Loan $loan)
+    {
+        switch ($type) {
+            case "credit":
+                return [$loan->member->id, "receiver"];
+                break;
+            
+            default:
+                return [auth()->user()->id, "sender"];
+                break;
+        }
     }
 
     /**

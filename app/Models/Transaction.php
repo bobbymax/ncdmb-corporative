@@ -10,6 +10,7 @@ class Transaction extends Model
     use HasFactory;
 
     protected $guarded = [''];
+    protected $dates = ['due_date'];
 
     public function transactionable()
     {
