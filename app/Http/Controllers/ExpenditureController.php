@@ -61,7 +61,7 @@ class ExpenditureController extends Controller
                 'data' => null,
                 'status' => 'error',
                 'message' => 'This input was invalid'
-            ], 404);
+            ], 422);
         }
 
         $results = (new BudgetChecker($category, $request->amount))->init();
