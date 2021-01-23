@@ -162,9 +162,9 @@ class BudgetController extends Controller
     public function update(Request $request, $budget)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|string|max:255|unique:budgets',
+            'code' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:budgets',
+            'label' => 'required|string|max:255',
             'amount' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',

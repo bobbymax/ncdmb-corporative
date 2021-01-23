@@ -14,7 +14,7 @@ class BudgetChecker
 
 	protected $category, $amount;
 
-	public function __construct(Category $category, $amount = 0)
+	public function __construct(Category $category, $amount)
 	{
 		$this->category = $category;
 		$this->amount = $amount;
@@ -27,16 +27,6 @@ class BudgetChecker
 		$eligibility = $this->eligibility();
 
 		return compact('availability', 'limit', 'eligibility');
-	}
-
-	public function calculate()
-	{
-		// Return array
-		// Category, Interest, Amount Payable, Frequency, Committment (if any), Restrictions
-
-		
-
-		// Calculate frequency
 	}
 
 	private function computeInterest()

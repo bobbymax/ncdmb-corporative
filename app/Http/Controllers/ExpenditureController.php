@@ -55,6 +55,20 @@ class ExpenditureController extends Controller
 
     public function budgetChecker(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'category' => 'required|string|max:255',
+            'amount' => 'required|integer'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix these errors:'
+            ], 505);
+        }
+
         $category = Category::where('label', $request->category)->first();
 
         if (! $category) {
@@ -62,7 +76,7 @@ class ExpenditureController extends Controller
                 'data' => null,
                 'status' => 'error',
                 'message' => 'This input was invalid'
-            ], 404);
+            ], 422);
         }
 
         $results = (new BudgetChecker($category, $request->amount))->init();
