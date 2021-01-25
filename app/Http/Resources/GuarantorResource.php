@@ -30,7 +30,7 @@ class GuarantorResource extends JsonResource
         }
 
         return [
-            $arr,
+            count($arr) < 1 ? null : $arr,
             // 'firstname' => $this->firstname,
             // 'lastname' => $this->lastname,
             // 'middlename' => $this->middlename
