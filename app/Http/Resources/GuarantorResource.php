@@ -19,7 +19,7 @@ class GuarantorResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        if (strlen($this->code) > 1) {
+        if (strlen($this->code) > 0) {
             $loan_code = Loan::where('code', $this->code)->get('id');
             $guarantors = Guarantor::where('loan_id', $loan_code[0]->id)->get('user_id');
             $users = "";
@@ -35,9 +35,7 @@ class GuarantorResource extends JsonResource
                 count($arr) < 1 ? null : $arr,
             ];
         } else {
-            return [
-                count($arr) < 1 ? null : $arr,
-            ];
+            return [];
         }
     }
 }
