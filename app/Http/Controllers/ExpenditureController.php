@@ -57,7 +57,7 @@ class ExpenditureController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'category' => 'required|string|max:255',
+            'category' => 'required|integer',
             'amount' => 'required|integer'
         ]);
 
@@ -69,7 +69,7 @@ class ExpenditureController extends Controller
             ], 505);
         }
 
-        $category = Category::where('label', $request->category)->first();
+        $category = Category::find($request->category);
 
         if (! $category) {
             return response()->json([
