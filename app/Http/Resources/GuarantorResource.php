@@ -18,24 +18,22 @@ class GuarantorResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
+        $loan_code = Loan::where('code', $this->code)->get('id');
+        $guarantors = Guarantor::where('loan_id', $loan_code[0]->id)->get('user_id');
+        $users = "";
+        $arr = collect([]);
 
-        if (strlen($this->code) > 0) {
-            $loan_code = Loan::where('code', $this->code)->get('id');
-            $guarantors = Guarantor::where('loan_id', $loan_code[0]->id)->get('user_id');
-            $users = "";
-            $arr = collect([]);
-
-            for ($i = 0; $i < count($guarantors); $i++) {
-                $users = User::find($guarantors[$i])[0];
-                // array_push($arr, $users);
-                $arr->push($users);
-            }
-
-            return [
-                count($arr) < 1 ? null : $arr,
-            ];
-        } else {
-            return [];
+        for ($i = 0; $i < count($guarantors); $i++) {
+            $users = User::find($guarantors[$i])[0];
+            // array_push($arr, $users);
+            $arr->push($users);
         }
+
+        return [
+            count($arr) < 1 ? null : $arr,
+            // 'firstname' => $this->firstname,
+            // 'lastname' => $this->lastname,
+            // 'middlename' => $this->middlename
+        ];
     }
 }
