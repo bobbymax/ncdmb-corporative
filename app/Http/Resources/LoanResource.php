@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Guarantor;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LoanResource extends JsonResource
@@ -28,7 +29,8 @@ class LoanResource extends JsonResource
             'category' => $this->category,
             'created_at' => $this->created_at->format('d M, Y'),
             'closed' => $this->closed == 1 ? true : false,
-            'schedules' => ScheduleResource::collection($this->schedules)
+            'schedules' => ScheduleResource::collection($this->schedules),
+            'guarantors' => new GuarantorResource($this)
         ];
     }
 }
