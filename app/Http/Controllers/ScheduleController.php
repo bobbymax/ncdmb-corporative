@@ -126,7 +126,6 @@ class ScheduleController extends Controller
 
     protected function setType($type, Loan $loan)
     {
-        return $type;
         switch ($type) {
             case "credit":
                 return [$loan->member->id, "receiver"];
