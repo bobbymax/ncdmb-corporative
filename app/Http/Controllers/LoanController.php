@@ -38,7 +38,7 @@ class LoanController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $loans,//LoanResource::collection($loans),
+            'data' => LoanResource::collection($loans),
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
