@@ -25,7 +25,7 @@ class LoanResource extends JsonResource
             'description' => $this->description,
             'frequency' => $this->frequency,
             'status' => $this->status,
-            'member' => new UserResource($this->member),
+            'member' => $this->member,
             'category' => $this->category,
             'created_at' => $this->created_at->format('d M, Y'),
             'closed' => $this->closed == 1 ? true : false,
