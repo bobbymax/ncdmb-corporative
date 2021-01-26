@@ -98,6 +98,18 @@ class TransactionController extends Controller
 
     public function transactionType($type)
     {
-        return $type;
+        $transactions = Transaction::where('type', $type)->get(['id', 'code', 'type', 'amount', 'status', 'completed', 'created_at']);
+        if (count($transactions) < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'danger',
+                'message' => 'This transaction type does not exists'
+            ], 404);
+        }
+        return response()->json([
+            'data' => $transactions, //new TransactionResource($transactions),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
     }
 }
