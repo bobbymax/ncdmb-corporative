@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::all()->sortByDesc("created_at");
 
         if ($categories->count() < 1) {
             return response()->json([

@@ -95,4 +95,9 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function transactionType($type)
+    {
+        return $type;
+    }
 }

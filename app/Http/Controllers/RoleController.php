@@ -23,7 +23,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::all()->sortByDesc("created_at");
         if ($roles->count() < 1) {
             return response()->json(['data' => null, 'status' => 'success', 'message' => 'No data found!'], 200);
         }
@@ -67,7 +67,7 @@ class RoleController extends Controller
 
         $role = Role::create([
             'name' => $request->name,
-            'label' => $request->label,
+            'label' => LoanUtilController::slugify($request->name),
             'slots' => $request->slots
         ]);
 

@@ -26,7 +26,7 @@ class ExpenditureController extends Controller
      */
     public function index()
     {
-        $expenditures = Expenditure::all();
+        $expenditures = Expenditure::all()->sortByDesc("created_at");
 
         if ($counter = $expenditures->count() < 1) {
             return response()->json([

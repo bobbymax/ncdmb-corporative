@@ -34,3 +34,5 @@ Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 
 
 Route::post('login', 'LoginController@login');
+
+Route::post('transactions/{type}', 'TransactionController@transactionType');
