@@ -153,7 +153,7 @@ class ExpenditureController extends Controller
         }
 
         $expenditure = Expenditure::create([
-            'code' => $request->code,
+            'code' => LoanUtilController::generateLoanCode(),
             'budget_id' => $budget->id,
             'category_id' => $request->category_id,
             'title' => $request->title,
