@@ -23,7 +23,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all()->sortByDesc("created_at")->get();
+        $roles = Role::all();
         if ($roles->count() < 1) {
             return response()->json(['data' => null, 'status' => 'success', 'message' => 'No data found!'], 200);
         }
