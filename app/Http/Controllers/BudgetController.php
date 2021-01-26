@@ -22,7 +22,7 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        $budgets = Budget::all()->sortByDesc("created_at");
+        $budgets = Budget::all();
         if ($budgets->count() < 1) {
             return response()->json([
                 'data' => null,
