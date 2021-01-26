@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,19 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        
+        $transactions = Transaction::all();
+        if ($transactions->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => TransactionResource::collection($transactions),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
     }
 
     /**
