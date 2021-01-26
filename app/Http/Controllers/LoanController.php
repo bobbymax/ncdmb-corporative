@@ -83,11 +83,10 @@ class LoanController extends Controller
         $loan = Loan::create([
             'user_id' => $request->user()->id,
             'category_id' => $request->category_id,
-            'code' => $this->generateLoanCode(), //$request->code,
+            'code' => LoanUtilController::generateLoanCode(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),
-            'end_date' => Carbon::parse($request->end_date),
             'description' => $request->description
         ]);
 

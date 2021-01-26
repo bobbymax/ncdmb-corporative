@@ -121,7 +121,7 @@ class ExpenditureController extends Controller
             'budget_id' => 'required|integer',
             'category_id' => 'required|integer',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:expenditures',
+            'label' => 'unique:expenditures',
             'code' => 'required|string|max:255|unique:expenditures',
             'amount' => 'required|integer'
         ]);
@@ -157,7 +157,7 @@ class ExpenditureController extends Controller
             'budget_id' => $budget->id,
             'category_id' => $request->category_id,
             'title' => $request->title,
-            'label' => $request->label,
+            'label' => LoanUtilController::slugify($request->label),
             'amount' => $request->amount,
             'balance' => $request->amount
         ]);
