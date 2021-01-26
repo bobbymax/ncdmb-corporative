@@ -29,7 +29,7 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = Loan::all();
+        $loans = Loan::all()->sortByDesc("created_at");
         if ($loans->count() < 1) {
             return response()->json([
                 'data' => null,
