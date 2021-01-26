@@ -21,7 +21,7 @@ class LoanController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -64,7 +64,7 @@ class LoanController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'category_id' => 'required|integer',
-            'code' => 'required|string|max:255|unique:loans',
+            'code' => 'unique:loans',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -83,7 +83,7 @@ class LoanController extends Controller
         $loan = Loan::create([
             'user_id' => $request->user()->id,
             'category_id' => $request->category_id,
-            'code' => $request->code,
+            'code' => $this->generateLoanCode(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),
@@ -95,7 +95,7 @@ class LoanController extends Controller
             foreach ($request->guarantors as $guarantor) {
                 $member = User::where('staff_no', $guarantor)->first();
 
-                if (! $member) {
+                if (!$member) {
                     return response()->json([
                         'data' => null,
                         'status' => 'error',
@@ -113,7 +113,7 @@ class LoanController extends Controller
         }
 
         return response()->json([
-            'data' => $loan,//new LoanResource($loans),
+            'data' => $loan, //new LoanResource($loans),
             'status' => 'success',
             'message' => 'Loan has been registered successfully!'
         ], 201);
@@ -128,7 +128,7 @@ class LoanController extends Controller
     public function show($loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -151,7 +151,7 @@ class LoanController extends Controller
     public function edit(Loan $loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -191,7 +191,7 @@ class LoanController extends Controller
         }
 
         $loan = Loan::where('code', $loan)->first();
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -224,7 +224,7 @@ class LoanController extends Controller
     public function destroy($loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -244,5 +244,16 @@ class LoanController extends Controller
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
+    }
+
+    public function generateLoanCode($length = 8)
+    {
+        $characters = '0123456789abcdefghijklmnopqrs092u3tuvwxyzaskdhfhf9882323ABCDEFGHIJKLMNksadf9044OPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return 'ln' . $randomString;
     }
 }
