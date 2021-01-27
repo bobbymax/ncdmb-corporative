@@ -287,7 +287,7 @@ class MemberController extends Controller
     public function assignNumber(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'number' => 'required|min:6',
+            'number' => 'required|min:6|unique:users',
         ]);
 
         if ($validation->fails()) {
