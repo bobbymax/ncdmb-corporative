@@ -28,6 +28,7 @@ Route::apiResource('wallets', 'WalletController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
+Route::post('grant/member/loan', 'LoanController@grantStat');
 
 // Loan Checker
 Route::post('category/budget/check', 'ExpenditureController@budgetChecker');

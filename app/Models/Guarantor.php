@@ -16,8 +16,8 @@ class Guarantor extends Model
     	return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function loan()
+    public function loans()
     {
-    	return $this->belongsTo(Loan::class, 'loan_id');
+    	return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
     }
 }
