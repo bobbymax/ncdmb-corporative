@@ -38,5 +38,6 @@ Route::post('login', 'LoginController@login');
 Route::post('transactions/{type}', 'TransactionController@transactionType');
 
 // Approval endpoint
+Route::apiResource('approvals', 'ApprovalController');
 Route::post('approvals/accept', 'ApprovalController@acceptApproval');
 Route::post('approvals/reject', 'ApprovalController@rejectApproval');
