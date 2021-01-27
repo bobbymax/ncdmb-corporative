@@ -8,6 +8,7 @@ use App\Models\Approval;
 use App\Models\Guarantor;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApprovalController extends Controller
 {
@@ -24,7 +25,10 @@ class ApprovalController extends Controller
      */
     public function index(Request $request)
     {
-        $loan_id = Guarantor::where('user_id', $request->user()->id)->get('loan_id');
+        $loan_id = Guarantor::where([
+            ['user_id', $request->user()->id],
+            ['status', 'pending']
+        ])->get('loan_id');
         return response()->json(
             ApprovalResource::collection(Loan::find($loan_id->pluck('loan_id')))
         );
@@ -98,18 +102,103 @@ class ApprovalController extends Controller
 
     public function acceptApproval(Request $request)
     {
+        $validation = Validator::make($request->all(), [
+            'loan' => 'required|string',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'danger',
+                'message' => 'Please fix the errors!'
+            ], 422);
+        }
+
         $user_id = $request->user()->id;
-        $loan_has_guarantor = Loan::where(
-            ['user_id', $user_id],
-            ['code', $request->loan],
-            ['status', 'pending'],
-        );
+        $approval = Loan::where(
+            [
+                ['user_id', $user_id],
+                ['code', $request->loan],
+                ['status', 'pending']
+            ]
+        )->orWhere('status', 'denied');
+
+        if ($approval->get()->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 422);
+        }
+
+        // update loan status
+        $approval->update([
+            'status' => 'approved'
+        ]);
+
+        // update guarantor status
+        $this->updateGuarantor($user_id, 'approved');
+
+        return response()->json([
+            'data' => $approval,
+            'status' => 'success',
+            'message' => 'You have approved this loan'
+        ], 200);
     }
 
     public function rejectApproval(Request $request)
     {
-        return response()->json([
-            'resp' => $request->loan
+        $validation = Validator::make($request->all(), [
+            'loan' => 'required|string',
         ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'danger',
+                'message' => 'Please fix the errors!'
+            ], 422);
+        }
+
+        $user_id = $request->user()->id;
+        $approval = Loan::where(
+            [
+                ['user_id', $user_id],
+                ['code', $request->loan],
+                ['status', 'pending']
+            ]
+        );
+
+        if ($approval->get()->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 422);
+        }
+
+        // update loan status
+        $approval->update([
+            'status' => 'denied'
+        ]);
+
+        // update guarantor status
+        $this->updateGuarantor($user_id, 'denied');
+
+        return response()->json([
+            'data' => $approval,
+            'status' => 'success',
+            'message' => 'You have rejected this loan'
+        ], 200);
+    }
+
+    public function updateGuarantor($user_id, $status)
+    {
+        Guarantor::where(
+            [
+                ['user_id', $user_id],
+                ['status', 'pending']
+            ]
+        )->update(['status' => $status]);
     }
 }
