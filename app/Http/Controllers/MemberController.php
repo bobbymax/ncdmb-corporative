@@ -287,7 +287,7 @@ class MemberController extends Controller
     public function assignNumber(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'number' => 'required|min:6|unique:users',
+            'membership_no' => 'required|min:6|unique:users',
         ]);
 
         if ($validation->fails()) {
@@ -303,7 +303,7 @@ class MemberController extends Controller
 
         if ($member->get()->count() > 0) {
             $member->update(
-                ['membership_no' => $request->number]
+                ['membership_no' => $request->membership_no]
             );
 
             return response()->json([
