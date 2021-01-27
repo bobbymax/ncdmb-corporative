@@ -28,6 +28,7 @@ Route::apiResource('wallets', 'WalletController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
+Route::post('grant/member/loan', 'LoanController@grantStat');
 
 // Loan Checker
 Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
@@ -39,5 +40,5 @@ Route::get('transactions/filter/{type}', 'TransactionController@transactionType'
 
 // Approval endpoint
 Route::apiResource('approvals', 'ApprovalController');
-Route::post('approvals/accept', 'ApprovalController@acceptApproval');
-Route::post('approvals/reject', 'ApprovalController@rejectApproval');
+// Route::post('approvals/accept', 'ApprovalController@acceptApproval');
+// Route::post('approvals/reject', 'ApprovalController@rejectApproval');

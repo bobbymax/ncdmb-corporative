@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Role;
 use App\Models\Guarantor;
 use App\Models\User;
 use App\Models\Transaction;
@@ -111,13 +112,6 @@ class LoanController extends Controller
                 }
 
                 $loan->guarantors()->save($member);
-
-                // $guarantor = Guarantor::create([
-                //     'loan_id' => $loan->id,
-                //     'user_id' => $member->id,
-                // ]);
-
-                // $this->guarantors[] = $member->name;
             }
         }
 
@@ -221,6 +215,64 @@ class LoanController extends Controller
             'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Loan has been updated successfully!'
+        ], 200);
+    }
+
+    public function grantStat(Request $request)
+    {
+        $validator = Validate::make($request->all(), [
+            'loan' => 'required|string|max:255',
+            'remarks' => 'required|text|min:3',
+            'status' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        $loan = Loan::where('code', $request->loan)->first();
+
+        if (! $loan) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This input value is invalid'
+            ], 422);
+        }
+
+        $loan->guarantors()->save($request->user(), [
+            'remarks' => $request->remarks,
+            'status' => $request->status
+        ]);
+
+        $guaranteed = $loan->guarantors->wherePivot('status', 'approved')->get();
+
+        if ($guaranteed->count() == 3) {
+
+            $role = Role::where('label', config('corporative.approvals.first'))->first();
+
+            if (! $role) {
+                return response()->json([
+                    'data' => null,
+                    'status' => 'error',
+                    'message' => 'Invalid input'
+                ], 422);
+            }
+
+            if ($loan->approvals()->save($role->members->first())) {
+                $loan->status = "registered";
+                $loan->save();
+            }
+        }
+
+        return response()->json([
+            'data' => new LoanResource($loan),
+            'status' => 'success',
+            'message' => 'Loan status has been updated successfully.'
         ], 200);
     }
 
