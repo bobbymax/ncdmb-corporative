@@ -20,8 +20,8 @@ class ApprovalController extends Controller
      */
     public function index()
     {
-        $approvals = Approval::all();
-        if ($approvals->count() < 1) {
+        $approval_list = Approval::all();
+        if ($approval_list->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -29,7 +29,7 @@ class ApprovalController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $approvals,
+            'data' => $approval_list,
             'status' => 'success',
             'message' => 'Data was found'
         ], 200);
