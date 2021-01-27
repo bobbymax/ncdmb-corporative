@@ -167,7 +167,7 @@ class ApprovalController extends Controller
                 ['code', $request->loan],
                 ['status', 'pending']
             ]
-        )->orWhere('status', 'approved');;
+        )->orWhere('status', 'approved');
 
         if ($approval->get()->count() < 1) {
             return response()->json([

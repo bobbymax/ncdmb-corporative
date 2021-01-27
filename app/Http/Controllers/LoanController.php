@@ -91,7 +91,7 @@ class LoanController extends Controller
         $loan = Loan::create([
             'user_id' => $request->user()->id,
             'category_id' => $request->category_id,
-            'code' => LoanUtilController::generateLoanCode(), //$request->code,
+            'code' => 'ln' . LoanUtilController::generateCode(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),
@@ -253,7 +253,7 @@ class LoanController extends Controller
         ], 200);
     }
 
-    public function generateLoanCode($length = 8)
+    public function generateCode($length = 8)
     {
         $characters = '0123456789abcdefghijklmnopqrs092u3tuvwxyzaskdhfhf9882323ABCDEFGHIJKLMNksadf9044OPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

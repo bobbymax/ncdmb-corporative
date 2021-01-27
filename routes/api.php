@@ -41,3 +41,7 @@ Route::get('transactions/filter/{type}', 'TransactionController@transactionType'
 Route::apiResource('approvals', 'ApprovalController');
 Route::post('approvals/accept', 'ApprovalController@acceptApproval');
 Route::post('approvals/reject', 'ApprovalController@rejectApproval');
+
+// update membership number
+Route::get('members/membership/generate','MemberController@generateNumber');
+Route::patch('members/membership/assign','MemberController@assignNumber');

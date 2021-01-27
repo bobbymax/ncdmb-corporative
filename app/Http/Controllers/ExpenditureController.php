@@ -18,7 +18,7 @@ class ExpenditureController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +61,7 @@ class ExpenditureController extends Controller
             'amount' => 'required|integer'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
                 'status' => 'error',
@@ -71,7 +71,7 @@ class ExpenditureController extends Controller
 
         $category = Category::find($request->category);
 
-        if (! $category) {
+        if (!$category) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -92,7 +92,7 @@ class ExpenditureController extends Controller
     {
         $loan = Loan::where('code', $loan)->first();
 
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -136,7 +136,7 @@ class ExpenditureController extends Controller
 
         $budget = Budget::find($request->budget_id);
 
-        if (! $budget) {
+        if (!$budget) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -144,7 +144,7 @@ class ExpenditureController extends Controller
             ], 500);
         }
 
-        if (! ($budget->expenditures->sum('amount') < $budget->amount)) {
+        if (!($budget->expenditures->sum('amount') < $budget->amount)) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -153,7 +153,7 @@ class ExpenditureController extends Controller
         }
 
         $expenditure = Expenditure::create([
-            'code' => LoanUtilController::generateLoanCode(),
+            'code' => 'exp' . LoanUtilController::generateCode(),
             'budget_id' => $budget->id,
             'category_id' => $request->category_id,
             'title' => $request->title,
@@ -179,7 +179,7 @@ class ExpenditureController extends Controller
     {
         $expenditure = Expenditure::where('code', $expenditure)->first();
 
-        if (! $expenditure) {
+        if (!$expenditure) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -204,7 +204,7 @@ class ExpenditureController extends Controller
     {
         $expenditure = Expenditure::where('code', $expenditure)->first();
 
-        if (! $expenditure) {
+        if (!$expenditure) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -243,7 +243,7 @@ class ExpenditureController extends Controller
 
         $expenditure = Expenditure::where('code', $expenditure)->first();
 
-        if (! $expenditure) {
+        if (!$expenditure) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -273,7 +273,7 @@ class ExpenditureController extends Controller
     {
         $expenditure = Expenditure::where('code', $expenditure)->first();
 
-        if (! $expenditure) {
+        if (!$expenditure) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',

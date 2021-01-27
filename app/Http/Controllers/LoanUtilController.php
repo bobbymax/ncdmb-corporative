@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class LoanUtilController extends Controller
 {
-    public static function generateLoanCode($length = 8)
+    public static function generateCode($length = 8)
     {
         $characters = '0123456789abcdefghijklmnopqrs092u3tuvwxyzaskdhfhf9882323ABCDEFGHIJKLMNksadf9044OPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -14,7 +14,7 @@ class LoanUtilController extends Controller
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        return 'ln' . $randomString;
+        return $randomString;
     }
 
     public static function slugify($string)

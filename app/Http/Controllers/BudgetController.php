@@ -85,7 +85,7 @@ class BudgetController extends Controller
         }
 
         $budget = Budget::create([
-            'code' => LoanUtilController::generateLoanCode(),
+            'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
             'label' => LoanUtilController::slugify($request->title),
             'amount' => $request->amount,
