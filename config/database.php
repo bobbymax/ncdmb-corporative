@@ -54,8 +54,8 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            // 'charset' => 'utf8mb4', // local url
-            'charset' => 'utf8', //heroku
+            'charset' => 'utf8mb4', // local url
+            // 'charset' => 'utf8', //heroku
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
