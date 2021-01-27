@@ -72,6 +72,14 @@ class LoanController extends Controller
             'guarantors' => 'required',
         ]);
 
+        if (count($request->guarantors) < 3 || count($request->guarantors) > 3) {
+            return response()->json([
+                'data' => [],
+                'status' => 'danger',
+                'message' => 'You can only select 3 guarantors'
+            ], 422);
+        }
+
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),

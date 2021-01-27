@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Expenditure;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -20,6 +21,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'label' => $this->label,
+            'description' => $this->description,
             'module' => $this->module,
             'fundable' => $this->fundable == 1 ? true : false,
             'isLoan' => $this->isLoan == 1 ? true : false,
@@ -29,7 +31,8 @@ class CategoryResource extends JsonResource
             'payable' => $this->payable,
             'limit' => $this->limit,
             'committment' => $this->committment,
-            'created_at' => $this->created_at->format('d M, Y')
+            'created_at' => $this->created_at->format('d M, Y'),
+            'hasExpenditure' => boolval(Expenditure::find($this->id))
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,7 @@ class CategoryController extends Controller
         }
 
         return response()->json([
-            'data' => $categories,
+            'data' => CategoryResource::collection($categories),
             'status' => 'success',
             'message' => 'List of categories'
         ], 200);
