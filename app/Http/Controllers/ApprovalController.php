@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ApprovalResource;
+use App\Http\Resources\LoanResource;
 use App\Models\Approval;
+use App\Models\Guarantor;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 
 class ApprovalController extends Controller
@@ -18,21 +22,12 @@ class ApprovalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $approval_list = Approval::all();
-        if ($approval_list->count() < 1) {
-            return response()->json([
-                'data' => null,
-                'status' => 'info',
-                'message' => 'No data was found'
-            ], 404);
-        }
-        return response()->json([
-            'data' => $approval_list,
-            'status' => 'success',
-            'message' => 'Data was found'
-        ], 200);
+        $loan_id = Guarantor::where('user_id', $request->user()->id)->get('loan_id');
+        return response()->json(
+            ApprovalResource::collection(Loan::find($loan_id->pluck('loan_id')))
+        );
     }
 
     /**
@@ -104,9 +99,11 @@ class ApprovalController extends Controller
     public function acceptApproval(Request $request)
     {
         $user_id = $request->user()->id;
-        return response()->json([
-            'resp' => $request->user()->id
-        ]);
+        $loan_has_guarantor = Loan::where(
+            ['user_id', $user_id],
+            ['code', $request->loan],
+            ['status', 'pending'],
+        );
     }
 
     public function rejectApproval(Request $request)
