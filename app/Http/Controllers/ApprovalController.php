@@ -14,7 +14,7 @@ class ApprovalController extends Controller
      */
     public function index()
     {
-        //
+       return [];
     }
 
     /**
