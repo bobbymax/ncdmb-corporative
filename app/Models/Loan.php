@@ -32,8 +32,18 @@ class Loan extends Model
         return $this->hasMany(Schedule::class);
     }
 
+    public function guarantors()
+    {
+        return $this->morphToMany(User::class, 'guarantorable')->withPivot('remarks', 'status');
+    }
+
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    public function approvals()
+    {
+        return $this->morphyToMany(User::class, 'approveable')->withPivot('remark', 'status');
     }
 }

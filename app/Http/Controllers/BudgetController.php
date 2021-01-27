@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\BudgetResource;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -63,7 +64,7 @@ class BudgetController extends Controller
             'amount' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',
-            'period' => 'required|string',
+            'period' => 'required|integer',
         ]);
 
         if ($validation->fails()) {
@@ -96,7 +97,7 @@ class BudgetController extends Controller
         ]);
 
         return response()->json([
-            'data' => $budget,
+            'data' => new BudgetResource($budget),
             'status' => 'success',
             'message' => 'Budget has been created successfully.'
         ], 201);

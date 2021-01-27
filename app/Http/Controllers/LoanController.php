@@ -110,17 +110,19 @@ class LoanController extends Controller
                     ], 500);
                 }
 
-                $guarantor = Guarantor::create([
-                    'loan_id' => $loan->id,
-                    'user_id' => $member->id,
-                ]);
+                $loan->guarantors()->save($member);
 
-                $this->guarantors[] = $guarantor->member->name;
+                // $guarantor = Guarantor::create([
+                //     'loan_id' => $loan->id,
+                //     'user_id' => $member->id,
+                // ]);
+
+                // $this->guarantors[] = $member->name;
             }
         }
 
         return response()->json([
-            'data' => $loan, //new LoanResource($loans),
+            'data' => new LoanResource($loan), // $loan
             'status' => 'success',
             'message' => 'Loan has been registered successfully!'
         ], 201);
