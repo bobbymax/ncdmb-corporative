@@ -27,7 +27,7 @@ class ApprovalController extends Controller
     {
         $loan_id = Guarantor::where([
             ['user_id', $request->user()->id],
-            // ['status', 'pending']
+            ['status', 'pending']
         ])->get('loan_id');
         return response()->json(
             ApprovalResource::collection(Loan::find($loan_id->pluck('loan_id')))
@@ -167,7 +167,7 @@ class ApprovalController extends Controller
                 ['code', $request->loan],
                 ['status', 'pending']
             ]
-        );
+        )->orWhere('status', 'approved');;
 
         if ($approval->get()->count() < 1) {
             return response()->json([
