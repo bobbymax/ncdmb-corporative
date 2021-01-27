@@ -31,7 +31,7 @@ class UserResource extends JsonResource
             'location' => $this->location,
             'address' => $this->address,
             'contribution' => isset($this->contribution) ? $this->contribution->only('fee') : null,
-            'next of kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
+            'next_of_kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
             'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'deposit', 'available', 'ledger', 'account_number']) : null,
             'roles' => RoleResource::collection($this->roles),
         ];
