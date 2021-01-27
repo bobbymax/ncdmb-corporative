@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ApprovalController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,19 @@ class ApprovalController extends Controller
      */
     public function index()
     {
-       return [];
+        $approvals = Approval::all();
+        if ($approvals->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found'
+            ], 404);
+        }
+        return response()->json([
+            'data' => $approvals,
+            'status' => 'success',
+            'message' => 'Data was found'
+        ], 200);
     }
 
     /**
@@ -81,5 +99,20 @@ class ApprovalController extends Controller
     public function destroy(Approval $approval)
     {
         //
+    }
+
+    public function acceptApproval(Request $request)
+    {
+        $user_id = $request->user()->id;
+        return response()->json([
+            'resp' => $request->user()->id
+        ]);
+    }
+
+    public function rejectApproval(Request $request)
+    {
+        return response()->json([
+            'resp' => $request->loan
+        ]);
     }
 }
