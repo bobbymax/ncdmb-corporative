@@ -7,17 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guarantor extends Model
 {
+    protected $table = 'guarantorables';
+    
     use HasFactory;
 
     protected $guarded = [''];
 
     public function member()
     {
-    	return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function loans()
     {
-    	return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
+        return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
     }
 }
