@@ -307,7 +307,7 @@ class MemberController extends Controller
                 'data' => null,
                 'status' => 'error',
                 'message' => 'Invalid request'
-            ], 200);
+            ], 422);
         } else {
             return response()->json([
                 'data' => null,
