@@ -246,10 +246,12 @@ class LoanController extends Controller
             ], 422);
         }
 
-        $loan->guarantors()->save($request->user(), [
-            'remarks' => $request->remarks,
-            'status' => $request->status
-        ]);
+        if ($loan->guarantors()->detach($request->user())) {
+            $loan->guarantors()->attach($request->user(), [
+                'remarks' => $request->remarks,
+                'status' => $request->status
+            ]);
+        }
 
         foreach ($loan->guarantors as $guarantor) {
             if ($guarantor->pivot->status === "approved") {
@@ -258,7 +260,9 @@ class LoanController extends Controller
         }
 
         if ($this->counter == 3) {
+
             $role = Role::where('label', config('corporative.approvals.first'))->first();
+
             if (! $role) {
                 return response()->json([
                     'data' => null,
@@ -266,10 +270,12 @@ class LoanController extends Controller
                     'message' => 'Invalid input'
                 ], 422);
             }
+
             if ($loan->approvals()->save($role->members->first())) {
                 $loan->status = "registered";
                 $loan->save();
             }
+            
         }
 
         return response()->json([
