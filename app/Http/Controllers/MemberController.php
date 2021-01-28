@@ -287,6 +287,7 @@ class MemberController extends Controller
     public function assignNumber(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            "staff_no" => 'required',
             'membership_no' => 'required|min:6|unique:users',
         ]);
 
@@ -298,27 +299,21 @@ class MemberController extends Controller
             ], 500);
         }
 
-        $member_id = $request->user()->id;
-        $member = User::where('id', $member_id)->where('membership_no', null)->orWhere('membership_no', "");
+        // check if staff number exists
+        $member = User::where('staff_no', $request->staff_no)->where('membership_no', null)->orWhere('membership_no', "")->update(['membership_no' => $request->membership_no]);
 
-        if ($member->get()->count() > 0) {
-            $member->update(
-                ['membership_no' => $request->membership_no]
-            );
-
+        if ($member < 1) {
             return response()->json([
-                'data' => $member,
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid request'
+            ], 200);
+        } else {
+            return response()->json([
+                'data' => null,
                 'status' => 'success',
                 'message' => 'Membership number assigned successfully'
             ], 200);
-        } else {
-            return response()->json(
-                [
-                    'data' => [],
-                    'status' => 'danger',
-                    'message' => 'This member already has a membership number'
-                ]
-            );
         }
 
         // LoanUtilController::generateCode();
