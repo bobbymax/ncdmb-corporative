@@ -288,7 +288,7 @@ class MemberController extends Controller
     {
         $validation = Validator::make($request->all(), [
             "staff_no" => 'required',
-            'membership_no' => 'required|min:6|unique:users',
+            'membership_no' => 'required|min:6',
         ]);
 
         if ($validation->fails()) {
@@ -296,7 +296,7 @@ class MemberController extends Controller
                 'data' => $validation->errors(),
                 'status' => 'danger',
                 'message' => 'Please fix the errors!'
-            ], 500);
+            ], 422);
         }
 
         // check if staff number exists
