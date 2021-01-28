@@ -9,10 +9,10 @@ use App\Models\User;
 use App\Models\Transaction;
 use App\Models\Transactee;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Http\Resources\LoanResource;
+use Illuminate\Support\Facades\Validator;
 
 class LoanController extends Controller
 {
@@ -108,7 +108,7 @@ class LoanController extends Controller
                         'data' => null,
                         'status' => 'error',
                         'message' => 'You have entered an invalid member entry!'
-                    ], 500);
+                    ], 422);
                 }
 
                 $loan->guarantors()->save($member);
@@ -116,7 +116,7 @@ class LoanController extends Controller
         }
 
         return response()->json([
-            'data' => new LoanResource($loan), // $loan
+            'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Loan has been registered successfully!'
         ], 201);
@@ -220,23 +220,23 @@ class LoanController extends Controller
 
     public function grantStat(Request $request)
     {
-        $validator = Validate::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'loan' => 'required|string|max:255',
-            'remarks' => 'required|text|min:3',
+            'remarks' => 'required|string|min:3',
             'status' => 'required|string|max:255'
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors:'
-            ], 500);
+            ], 422);
         }
 
         $loan = Loan::where('code', $request->loan)->first();
 
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -255,7 +255,7 @@ class LoanController extends Controller
 
             $role = Role::where('label', config('corporative.approvals.first'))->first();
 
-            if (! $role) {
+            if (!$role) {
                 return response()->json([
                     'data' => null,
                     'status' => 'error',
