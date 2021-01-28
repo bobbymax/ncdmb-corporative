@@ -98,7 +98,8 @@ class LoanController extends Controller
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),
-            'description' => $request->description
+            'description' => $request->description,
+            'status' => 'pending'
         ]);
 
         if ($loan) {
@@ -227,7 +228,7 @@ class LoanController extends Controller
             'remarks' => 'required|string|min:3',
             'status' => 'required|string|max:255'
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
@@ -258,7 +259,7 @@ class LoanController extends Controller
                 $this->counter++;
             }
         }
-
+        
         if ($this->counter == 3) {
 
             $role = Role::where('label', config('corporative.approvals.first'))->first();
@@ -275,7 +276,6 @@ class LoanController extends Controller
                 $loan->status = "registered";
                 $loan->save();
             }
-            
         }
 
         return response()->json([
