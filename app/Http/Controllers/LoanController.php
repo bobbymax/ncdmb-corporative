@@ -18,6 +18,8 @@ class LoanController extends Controller
 {
     protected $guarantors = [];
 
+    protected $counter = 0;
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -111,7 +113,7 @@ class LoanController extends Controller
                     ], 422);
                 }
 
-                $loan->guarantors()->save($member);
+                $loan->guarantors()->attach($member);
             }
         }
 
@@ -244,14 +246,20 @@ class LoanController extends Controller
             ], 422);
         }
 
-        $loan->guarantors()->save($request->user(), [
-            'remarks' => $request->remarks,
-            'status' => $request->status
-        ]);
+        if ($loan->guarantors()->detach($request->user())) {
+            $loan->guarantors()->attach($request->user(), [
+                'remarks' => $request->remarks,
+                'status' => $request->status
+            ]);
+        }
 
-        $guaranteed = $loan->guarantors->wherePivot('status', 'approved')->get();
+        foreach ($loan->guarantors as $guarantor) {
+            if ($guarantor->pivot->status === "approved") {
+                $this->counter++;
+            }
+        }
 
-        if ($guaranteed->count() == 3) {
+        if ($this->counter == 3) {
 
             $role = Role::where('label', config('corporative.approvals.first'))->first();
 
@@ -267,6 +275,7 @@ class LoanController extends Controller
                 $loan->status = "registered";
                 $loan->save();
             }
+            
         }
 
         return response()->json([
