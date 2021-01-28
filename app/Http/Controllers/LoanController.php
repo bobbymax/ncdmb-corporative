@@ -18,6 +18,8 @@ class LoanController extends Controller
 {
     protected $guarantors = [];
 
+    protected $counter = 0;
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -111,7 +113,7 @@ class LoanController extends Controller
                     ], 500);
                 }
 
-                $loan->guarantors()->save($member);
+                $loan->guarantors()->attach($member);
             }
         }
 
@@ -220,9 +222,9 @@ class LoanController extends Controller
 
     public function grantStat(Request $request)
     {
-        $validator = Validate::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'loan' => 'required|string|max:255',
-            'remarks' => 'required|text|min:3',
+            'remarks' => 'required|string|min:3',
             'status' => 'required|string|max:255'
         ]);
 
@@ -249,12 +251,14 @@ class LoanController extends Controller
             'status' => $request->status
         ]);
 
-        $guaranteed = $loan->guarantors->wherePivot('status', 'approved')->get();
+        foreach ($loan->guarantors as $guarantor) {
+            if ($guarantor->pivot->status === "approved") {
+                $this->counter++;
+            }
+        }
 
-        if ($guaranteed->count() == 3) {
-
+        if ($this->counter == 3) {
             $role = Role::where('label', config('corporative.approvals.first'))->first();
-
             if (! $role) {
                 return response()->json([
                     'data' => null,
@@ -262,7 +266,6 @@ class LoanController extends Controller
                     'message' => 'Invalid input'
                 ], 422);
             }
-
             if ($loan->approvals()->save($role->members->first())) {
                 $loan->status = "registered";
                 $loan->save();

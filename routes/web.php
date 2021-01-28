@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\Loan;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,19 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return Hash::make(123456);
-
-    // $car = range(1, 100000);
-
-    // for ($i = 1; in_array($i, $car); $i++);
-    // 	return $i;
-    $S = "0 - 22 1985--324";
-    $strip = preg_replace("/[^\d]/","",$S);
-
-    if(strlen($strip) >= 2) {
-       return preg_replace("/^a?(\d{3})(\d{3})(\d{3})(\d{3})(\d{2})$/", "$1-$2-$3-$4-$5", $strip);
+    $loan = Loan::with('guarantors')->where('code', 'lnawIfdV1c')->first();	
+    $counter = 0;
+    foreach ($loan->guarantors as $guarantor) {
+        if ($guarantor->pivot->status === "approved") {
+            $counter++;
+        }
     }
-	
+
+    dd($counter);
 });
 
 Auth::routes();
