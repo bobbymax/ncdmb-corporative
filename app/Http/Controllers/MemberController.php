@@ -77,7 +77,7 @@ class MemberController extends Controller
             'password' => 'required|string|min:8',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
-            'fee'=>'required|numeric',
+            'fee' => 'required|numeric',
             'account_number' => 'required|string|max:15|unique:wallets',
         ]);
 
@@ -131,7 +131,7 @@ class MemberController extends Controller
 
         $role = Role::where('label', 'member')->first();
 
-        if (! $role) {
+        if (!$role) {
             $role = Role::create([
                 'name' => 'Member',
                 'label' => 'member',
@@ -157,7 +157,7 @@ class MemberController extends Controller
     public function show($user)
     {
         $member = User::with(['roles', 'kin', 'contribution', 'wallet'])->where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -180,7 +180,7 @@ class MemberController extends Controller
     public function edit($user)
     {
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -222,7 +222,7 @@ class MemberController extends Controller
         }
 
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -258,7 +258,7 @@ class MemberController extends Controller
     public function destroy($user)
     {
         $member = User::where('staff_no', $user)->first();
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'danger',
@@ -271,6 +271,51 @@ class MemberController extends Controller
             'status' => 'success',
             'message' => 'Member has been deleted successfully!'
         ], 200);
+    }
 
+    public function generateNumber()
+    {
+        return response()->json(
+            [
+                'data' => [],
+                'number' => LoanUtilController::generateCode(6),
+                'status' => 'success'
+            ]
+        );
+    }
+
+    public function assignNumber(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            "staff_no" => 'required',
+            'membership_no' => 'required|min:6',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'danger',
+                'message' => 'Please fix the errors!'
+            ], 422);
+        }
+
+        // check if staff number exists
+        $member = User::where('staff_no', $request->staff_no)->where('membership_no', null)->orWhere('membership_no', "")->update(['membership_no' => $request->membership_no]);
+
+        if ($member < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid request'
+            ], 422);
+        } else {
+            return response()->json([
+                'data' => null,
+                'status' => 'success',
+                'message' => 'Membership number assigned successfully'
+            ], 200);
+        }
+
+        // LoanUtilController::generateCode();
     }
 }

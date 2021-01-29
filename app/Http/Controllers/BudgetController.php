@@ -86,7 +86,7 @@ class BudgetController extends Controller
         }
 
         $budget = Budget::create([
-            'code' => LoanUtilController::generateLoanCode(),
+            'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
             'label' => LoanUtilController::slugify($request->title),
             'amount' => $request->amount,
@@ -163,9 +163,9 @@ class BudgetController extends Controller
     public function update(Request $request, $budget)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|string|max:255',
+            // 'code' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255',
+            // 'label' => 'required|string|max:255',
             'amount' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -191,9 +191,9 @@ class BudgetController extends Controller
         }
 
         $budget->update([
-            'code' => $request->code,
+            // 'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
-            'label' => $request->label,
+            'label' => LoanUtilController::slugify($request->title),
             'amount' => $request->amount,
             'description' => $request->description,
             'start' => Carbon::parse($request->start),

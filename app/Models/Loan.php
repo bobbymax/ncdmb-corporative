@@ -44,6 +44,6 @@ class Loan extends Model
 
     public function approvals()
     {
-        return $this->morphyToMany(User::class, 'approveable')->withPivot('remark', 'status');
+        return $this->morphToMany(User::class, 'approveable')->withPivot('remark', 'status');
     }
 }

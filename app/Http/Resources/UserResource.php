@@ -28,11 +28,12 @@ class UserResource extends JsonResource
             'type' => $this->type,
             'date_joined' => $this->date_joined->format('d M, Y'),
             'mobile' => $this->mobile,
+            'isActivated' => $this->membership_no !== null ? true : false,
             'location' => $this->location,
             'address' => $this->address,
             'contribution' => isset($this->contribution) ? $this->contribution->only('fee') : null,
             'next_of_kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
-            'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'deposit', 'available', 'ledger', 'account_number','wallet']) : null,
+            'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'deposit', 'available', 'ledger', 'account_number', 'bank_name']) : null,
             'roles' => RoleResource::collection($this->roles),
         ];
     }
