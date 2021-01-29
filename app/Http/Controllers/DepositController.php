@@ -28,7 +28,7 @@ class DepositController extends Controller
 
     public function show($id)
     {
-        $trans_amt = Transactee::where('user_id', $id)->first()->transaction->amount;
+        $trans_amt = Transactee::where('user_id', $id)->first() !== null ? Transactee::where('user_id', $id)->first()->transaction->amount : 0;
 
         return response()->json(
             [
