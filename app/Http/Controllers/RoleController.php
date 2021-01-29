@@ -67,7 +67,7 @@ class RoleController extends Controller
 
         $role = Role::create([
             'name' => $request->name,
-            'label' => LoanUtilController::slugify($request->name),
+            'label' => Str::slug($request->name),
             'slots' => $request->slots
         ]);
 
@@ -83,7 +83,7 @@ class RoleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'staff_no' => 'required|string',
-            'role' => 'required|string'
+            'roles' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -95,9 +95,9 @@ class RoleController extends Controller
         }
 
         $member = User::where('staff_no', $request->staff_no)->first();
-        $role = Role::where('label', $request->role)->first();
 
-        if (! ($member && $role)) {
+
+        if (! $member) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -105,7 +105,22 @@ class RoleController extends Controller
             ], 500);
         }
 
-        $member->actAs($role);
+
+        foreach ($request->roles as $value) {
+            $role = Role::where('label', $value)->first();
+
+            if (! $role) {
+                return response()->json([
+                    'data' => null,
+                    'status' => 'error',
+                    'message' => 'Role input is invalid!'
+                ], 500);
+            }
+
+            if (! in_array($role->id, $member->currentRoles())) {
+                $member->actAs($role);
+            }
+        }
 
         return response()->json([
             'data' => new UserResource($member),

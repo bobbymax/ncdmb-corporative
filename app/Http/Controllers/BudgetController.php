@@ -59,7 +59,7 @@ class BudgetController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'code' => 'unique:budgets',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:budgets',
             'label' => 'unique:budgets',
             'amount' => 'required|integer',
             'start' => 'required|date',

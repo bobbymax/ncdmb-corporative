@@ -96,8 +96,28 @@ class User extends Authenticatable
         return $this->hasMany(Transactee::class);
     }
 
+    public function currentRoles()
+    {
+        return $this->roles->pluck('id')->toArray();
+    }
+
     public function actAs(Role $role)
     {
         return $this->roles()->save($role);
+    }
+
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles->contains('label', $role);
+        }
+
+        foreach ($role as $r) {
+            if ($this->hasRole($r->label)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

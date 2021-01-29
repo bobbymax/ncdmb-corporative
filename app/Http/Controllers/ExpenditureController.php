@@ -120,7 +120,7 @@ class ExpenditureController extends Controller
         $validation = Validator::make($request->all(), [
             'budget_id' => 'required|integer',
             'category_id' => 'required|integer',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:budgets',
             'label' => 'unique:expenditures',
             'code' => 'unique:expenditures',
             'amount' => 'required|integer'
@@ -159,7 +159,7 @@ class ExpenditureController extends Controller
             'title' => $request->title,
             'label' => LoanUtilController::slugify($request->title),
             'amount' => $request->amount,
-            'balance' => $request->amount
+            'balance' => isset($request->balance)?$request->balance:0
         ]);
 
         return response()->json([

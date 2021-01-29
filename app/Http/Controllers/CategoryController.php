@@ -57,8 +57,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:categories',
+            'name' => 'required|string|max:255|unique:categories',
+            // 'label' => 'required|string|max:255|unique:categories',
         ]);
 
         if ($validation->fails()) {
@@ -71,7 +71,7 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->name,
-            'label' => $request->label,
+            'label' => LoanUtilController::slugify($request->name),
             'module' => $request->module,
             'description' => $request->description,
             'interest' => isset($request->interest) ? $request->interest : 0,

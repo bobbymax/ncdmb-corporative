@@ -17,15 +17,19 @@ use App\Models\Loan;
 */
 
 Route::get('/', function () {
-    $loan = Loan::with('guarantors')->where('code', 'lnawIfdV1c')->first();	
-    $counter = 0;
-    foreach ($loan->guarantors as $guarantor) {
-        if ($guarantor->pivot->status === "approved") {
-            $counter++;
-        }
-    }
+    $loan = Loan::with('guarantors')->where('code', 'lnawIfdV1c')->first();
 
-    dd($counter);
+    $counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
+
+
+    // $counter = 0;
+    // foreach ($loan->guarantors as $guarantor) {
+    //     if ($guarantor->pivot->status === "approved") {
+    //         $counter++;
+    //     }
+    // }
+
+    dd($counter->count());
 });
 
 Auth::routes();
