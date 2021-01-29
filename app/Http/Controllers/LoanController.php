@@ -253,13 +253,10 @@ class LoanController extends Controller
             ]);
         }
 
-        foreach ($loan->guarantors as $guarantor) {
-            if ($guarantor->pivot->status === "approved") {
-                $this->counter++;
-            }
-        }
+        $this->counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
 
-        if ($this->counter == 3) {
+
+        if ($this->counter->count() == 3) {
 
             $role = Role::where('label', config('corporative.approvals.first'))->first();
 
@@ -275,7 +272,7 @@ class LoanController extends Controller
                 $loan->status = "registered";
                 $loan->save();
             }
-            
+
         }
 
         return response()->json([
@@ -294,6 +291,7 @@ class LoanController extends Controller
     public function destroy($loan)
     {
         $loan = Loan::where('code', $loan)->first();
+        
         if (!$loan) {
             return response()->json([
                 'data' => null,
@@ -309,6 +307,7 @@ class LoanController extends Controller
             ], 403);
         }
         $loan->delete();
+
         return response()->json([
             'data' => null,
             'status' => 'success',
