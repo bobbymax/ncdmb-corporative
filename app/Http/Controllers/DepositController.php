@@ -17,14 +17,10 @@ class DepositController extends Controller
     {
         // $roles = $request->user()->roles;
         $deposits = Transaction::where('type', 'deposits')->get();
-        $arr = [];
-        foreach ($deposits as $key => $value) {
-            array_push($arr, $deposits->pluck('amount'));
-        }
-        $arr = collect($arr)->flatten();
+        
         return response()->json(
             [
-                'totalDeposits' => $arr->sum()
+                'totalDeposits' => $deposits->pluck('amount')->sum()
             ]
         );
     }
