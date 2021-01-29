@@ -17,7 +17,7 @@ class DepositController extends Controller
     {
         // $roles = $request->user()->roles;
         $deposits = Transaction::where('type', 'deposits')->get();
-        
+
         return response()->json(
             [
                 'totalDeposits' => $deposits->pluck('amount')->sum()
