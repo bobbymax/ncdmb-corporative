@@ -231,6 +231,13 @@ class RoleController extends Controller
                 'message' => 'This role does not exist'
             ], 500);
         }
+
+        if ($role->members !== null) {
+            foreach ($role->members as $member) {
+                $member->roles()->detach($role);
+            }
+        }
+
         $role->delete();
         return response()->json(['data' => null, 'status' => 'success', 'message' => 'Role deleted successfully'], 200);
     }

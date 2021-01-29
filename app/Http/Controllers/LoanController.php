@@ -251,6 +251,13 @@ class LoanController extends Controller
                 'remarks' => $request->remarks,
                 'status' => $request->status
             ]);
+
+            $current = $request->user()->guaranteed()->wherePivot('status', 'approved')->get();
+
+            if ($current->count() == 2) {
+                $request->user()->can_guarantee = false;
+                $request->user()->save();
+            }
         }
 
         $this->counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
@@ -291,7 +298,7 @@ class LoanController extends Controller
     public function destroy($loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        
+
         if (!$loan) {
             return response()->json([
                 'data' => null,
