@@ -15,7 +15,7 @@ class RoleController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -28,8 +28,8 @@ class RoleController extends Controller
             return response()->json(['data' => null, 'status' => 'success', 'message' => 'No data found!'], 200);
         }
         return response()->json([
-            'data' => $roles, 
-            'status' => 'success', 
+            'data' => $roles,
+            'status' => 'success',
             'message' => 'List of roles'
         ], 200);
     }
@@ -72,11 +72,10 @@ class RoleController extends Controller
         ]);
 
         return response()->json([
-            'data' => $role, 
-            'status' => 'success', 
+            'data' => $role,
+            'status' => 'success',
             'message' => 'Role created successfully!'
         ], 201);
-
     }
 
     public function addMember(Request $request)
@@ -97,7 +96,7 @@ class RoleController extends Controller
         $member = User::where('staff_no', $request->staff_no)->first();
 
 
-        if (! $member) {
+        if (!$member) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -105,11 +104,21 @@ class RoleController extends Controller
             ], 500);
         }
 
+        if (!is_array($request->roles)) {
+            return response()->json(
+                [
+                    'data' => [],
+                    'status' => 'error',
+                    'message' => 'Send roles in array format'
+                ]
+            );
+        }
+
 
         foreach ($request->roles as $value) {
             $role = Role::where('label', $value)->first();
 
-            if (! $role) {
+            if (!$role) {
                 return response()->json([
                     'data' => null,
                     'status' => 'error',
@@ -117,7 +126,7 @@ class RoleController extends Controller
                 ], 500);
             }
 
-            if (! in_array($role->id, $member->currentRoles())) {
+            if (!in_array($role->id, $member->currentRoles())) {
                 $member->actAs($role);
             }
         }
@@ -138,7 +147,7 @@ class RoleController extends Controller
     public function show($role)
     {
         $role = Role::where('label', $role)->first();
-        if (! $role) {
+        if (!$role) {
             return response()->json([
                 'data' => null,
                 'status' => 'invalid',
@@ -146,10 +155,10 @@ class RoleController extends Controller
             ], 500);
         }
         return response()->json([
-                'data' => $role,
-                'status' => 'success',
-                'message' => 'Data found successfully!'
-            ], 200);
+            'data' => $role,
+            'status' => 'success',
+            'message' => 'Data found successfully!'
+        ], 200);
     }
 
     /**
@@ -161,7 +170,7 @@ class RoleController extends Controller
     public function edit($role)
     {
         $role = Role::where('label', $role)->first();
-        if (! $role) {
+        if (!$role) {
             return response()->json([
                 'data' => null,
                 'status' => 'invalid',
@@ -169,10 +178,10 @@ class RoleController extends Controller
             ], 500);
         }
         return response()->json([
-                'data' => $role,
-                'status' => 'success',
-                'message' => 'Data found successfully!'
-            ], 200);
+            'data' => $role,
+            'status' => 'success',
+            'message' => 'Data found successfully!'
+        ], 200);
     }
 
     /**
@@ -194,7 +203,7 @@ class RoleController extends Controller
         }
 
         $role = Role::where('label', $role)->first();
-        if (! $role) {
+        if (!$role) {
             return response()->json([
                 'data' => null,
                 'status' => 'invalid',
@@ -209,8 +218,8 @@ class RoleController extends Controller
         ]);
 
         return response()->json([
-            'data' => $role, 
-            'status' => 'success', 
+            'data' => $role,
+            'status' => 'success',
             'message' => 'Role has been updated successfully!'
         ], 200);
     }
@@ -224,7 +233,7 @@ class RoleController extends Controller
     public function destroy($role)
     {
         $role = Role::where('label', $role)->first();
-        if (! $role) {
+        if (!$role) {
             return response()->json([
                 'data' => null,
                 'status' => 'invalid',

@@ -120,4 +120,12 @@ class User extends Authenticatable
 
         return false;
     }
+
+    public function isAdmin(User $user)
+    {
+        $roles = $user->roles;
+        foreach ($roles as $role) {
+            echo $role->admin;
+        }
+    }
 }

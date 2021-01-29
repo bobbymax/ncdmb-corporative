@@ -48,4 +48,5 @@ Route::prefix('members/membership')->group(function () {
 });
 
 // Deposit endpoint
-Route::apiResource('deposits', 'DepositController');
+Route::get('deposits/all', 'DepositController@index');
+Route::get('deposits/{id}', 'DepositController@show');

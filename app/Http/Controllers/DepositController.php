@@ -13,32 +13,23 @@ class DepositController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $deposits = Transaction::where('type', 'deposits');
-        return response()->json([
+        // $roles = $request->user()->roles;
+        $deposits = Transaction::where('type', 'deposits')->get();
+        $arr = [];
+        foreach ($deposits as $key => $value) {
+            array_push($arr, $deposits->pluck('amount'));
+        }
+        $arr = collect($arr)->flatten();
+        return response()->json(
             [
-                'deposits' => $deposits
+                'totalDeposits' => $arr->sum()
             ]
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        //
+        );
     }
 
     public function show($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
     {
         //
     }
