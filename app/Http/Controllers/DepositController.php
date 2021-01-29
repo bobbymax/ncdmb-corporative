@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transactee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,12 @@ class DepositController extends Controller
 
     public function show($id)
     {
-        //
+        $trans_amt = Transactee::where('user_id', $id)->first()->transaction->amount;
+
+        return response()->json(
+            [
+                'deposit' => $trans_amt
+            ]
+        );
     }
 }
