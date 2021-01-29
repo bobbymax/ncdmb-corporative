@@ -35,6 +35,7 @@ class UserResource extends JsonResource
             'next_of_kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
             'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'deposit', 'available', 'ledger', 'account_number', 'bank_name']) : null,
             'roles' => RoleResource::collection($this->roles),
+            'can_guarantee' => $request->user()->guaranteed()->wherePivot('status', 'approved')->get()->count() >= 2 ? false : true
         ];
     }
 }
