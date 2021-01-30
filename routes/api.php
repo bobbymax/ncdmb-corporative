@@ -49,4 +49,4 @@ Route::prefix('members/membership')->group(function () {
 
 // Deposit endpoint
 Route::get('deposits/all', 'DepositController@index');
-Route::get('deposits/{id}', 'DepositController@show');
+Route::get('deposits', 'DepositController@show');

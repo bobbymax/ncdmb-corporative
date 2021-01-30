@@ -14,7 +14,7 @@ class DepositController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function index(Request $request)
+    public function index()
     {
         // $roles = $request->user()->roles;
         $deposits = Transaction::where('type', 'deposits')->get();
@@ -26,13 +26,20 @@ class DepositController extends Controller
         );
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
-        $trans_amt = Transactee::where('user_id', $id)->first() !== null ? Transactee::where('user_id', $id)->first()->transaction->amount : 0;
+        $transation_query = Transactee::where('user_id', $request->user()->id)
+            ->where('status', 'receiver');
+
+        $deposit_amt =
+            $transation_query->first() !== null
+            ? $transation_query
+            ->first()->transaction->amount
+            : 0;
 
         return response()->json(
             [
-                'deposit' => $trans_amt
+                'deposit' => $deposit_amt
             ]
         );
     }
