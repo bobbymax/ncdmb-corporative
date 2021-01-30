@@ -17,7 +17,7 @@ class DepositController extends Controller
     public function index()
     {
         // $roles = $request->user()->roles;
-        $deposits = Transaction::where('type', 'deposits')->get();
+        $deposits = Transaction::where('type', 'deposit')->get();
 
         return response()->json(
             [
@@ -28,13 +28,15 @@ class DepositController extends Controller
 
     public function show(Request $request)
     {
-        $transation_query = Transactee::where('user_id', $request->user()->id)
-            ->where('status', 'receiver');
+        $transactee_id = Transactee::where('user_id', $request->user()->id)
+            ->where('status', 'receiver')->get('transaction_id')->first()->transaction_id;
+
+        $transaction_query = Transaction::where('id', $transactee_id)->where('type', 'deposit');
 
         $deposit_amt =
-            $transation_query->first() !== null
-            ? $transation_query
-            ->first()->transaction->amount
+            $transaction_query->first() !== null
+            ? $transaction_query
+            ->first()->amount
             : 0;
 
         return response()->json(
