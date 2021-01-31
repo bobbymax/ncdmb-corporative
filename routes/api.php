@@ -36,7 +36,8 @@ Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 
 Route::post('login', 'LoginController@login');
 
-Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
+// Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
+// Route::get('transactions', 'TransactionController@transactions');
 
 // Approval endpoint
 Route::apiResource('approvals', 'ApprovalController');
@@ -47,6 +48,6 @@ Route::prefix('members/membership')->group(function () {
     Route::patch('/assign', 'MemberController@assignNumber');
 });
 
-// Deposit endpoint
-Route::get('deposits/all', 'DepositController@index');
-Route::get('deposits', 'DepositController@show');
+// Dashboard endpoint
+Route::get('dashboard/all', 'DashboardController@index');
+Route::get('dashboard', 'DashboardController@show');

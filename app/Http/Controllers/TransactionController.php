@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TransacteeResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transactee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::where('id', '>=', 1)->with('transactees')->get();
         if ($transactions->count() < 1) {
             return response()->json([
                 'data' => null,
@@ -29,85 +32,19 @@ class TransactionController extends Controller
             'message' => 'Data found!'
         ], 200);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
-    }
-
-    public function transactionType($type)
-    {
-        $transactions = Transaction::where('type', $type)->get(['id', 'code', 'type', 'amount', 'status', 'completed', 'created_at']);
-        if (count($transactions) < 1) {
+        $transactees = Transactee::where('user_id', $id)->with('transaction')->get();
+        if ($transactees->count() < 1) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
-                'message' => 'This transaction type does not exists'
+                'status' => 'info',
+                'message' => 'No data was found!'
             ], 404);
         }
         return response()->json([
-            'data' => $transactions, //new TransactionResource($transactions),
+            'data' =>TransacteeResource::collection($transactees),
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);

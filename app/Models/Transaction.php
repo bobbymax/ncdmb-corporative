@@ -14,11 +14,16 @@ class Transaction extends Model
 
     public function transactionable()
     {
-    	return $this->morphTo();
+        return $this->morphTo();
     }
 
     public function transactees()
     {
-    	return $this->hasMany(Transactee::class);
+        return $this->hasMany(Transactee::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'id');
     }
 }

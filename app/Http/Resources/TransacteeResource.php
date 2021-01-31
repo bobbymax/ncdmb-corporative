@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransactionResource extends JsonResource
+class TransacteeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,16 +15,14 @@ class TransactionResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
-
         return [
             'id' => $this->id,
-            'code' => $this->code,
+            'user_id' => $this->user_id,
+            'transaction_id' => $this->transaction_id,
             'type' => $this->type,
-            'amount' => $this->amount,
             'status' => $this->status,
             'completed' => $this->completed,
-            'date_created' => $this->created_at,
-            'members'=>$this->transactees
+            'transaction'=>new TransactionResource($this->transaction)
         ];
     }
 }
