@@ -15,4 +15,9 @@ class Deposit extends Model
     {
     	return $this->morphOne(Transaction::class, 'transactionable');
     }
+
+    public function member()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

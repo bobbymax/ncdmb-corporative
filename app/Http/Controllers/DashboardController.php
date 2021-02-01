@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $contributions = Transaction::where('type', 'contribution')->get();
         $loans = Transaction::where('type', 'loan')->get();
         $withdrawals = Transaction::where('type', 'withdrawal')->get();
-        $availBalance = Transaction::all()->pluck('amount')->sum();
+        $availBalance = Transaction::all()->pluck('amount')->sum(); 
 
         return response()->json(
             [
@@ -31,7 +31,8 @@ class DashboardController extends Controller
                 'totalContributions' => $contributions->pluck('amount')->sum(),
                 'totalLoans' => $loans->pluck('amount')->sum(),
                 'totalWithdrawals' => $withdrawals->pluck('amount')->sum(),
-                'availableBalance' => $availBalance
+                'availableBalance' => $availBalance,
+                'currentLoan' => 0,
             ]
         );
     }
