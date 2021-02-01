@@ -81,7 +81,7 @@ class PaymentController extends Controller
     public function bankDeposit(Request $request)
     {
     	$validator = Validator::make($request->all(), [
-    		'trxref' => 'required|unique:deposits',
+    		'trxRef' => 'required|unique:deposits',
     		'amount' => 'required|integer',
     		'payment_type' => 'required|string|max:255',
     		'payment_method' => 'required|string|max:255',
