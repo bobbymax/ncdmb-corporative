@@ -64,10 +64,10 @@ class DashboardController extends Controller
 
         return response()->json(
             [
-                'deposit' => $deposit_amt,
-                'contribution' => $contribution_amt,
-                'loan' => $loan_amt,
-                'withdrawals' => 0,//$withdrawal_amt,
+                'totalDeposits' => $deposit_amt,
+                'totalContributions' => $contribution_amt,
+                'totalLoans' => $loan_amt,
+                'totalWithdrawals' => 0,//$withdrawal_amt,
                 'currentLoan' => 0//$withdrawal_amt,
                 // 'member'=>new UserResource($request->user())
             ]
