@@ -54,7 +54,7 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::where('type', $type)->get(['id', 'code', 'type', 'amount', 'status', 'completed', 'created_at']);
         if ($type == 'deposit') {
-            $transactions = Transaction::where('type', 'online')->where('type', 'bank')->get(['id', 'code', 'type', 'amount', 'status', 'completed', 'created_at']);
+            $transactions = Transaction::where('type', 'online')->orWhere('type', 'bank')->get(['id', 'code', 'type', 'amount', 'status', 'completed', 'created_at']);
         }
         if (count($transactions) < 1) {
             return response()->json([
