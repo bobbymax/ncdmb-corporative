@@ -21,12 +21,14 @@ class DashboardController extends Controller
         $deposits = Transaction::where('type', 'deposit')->get();
         $contributions = Transaction::where('type', 'contribution')->get();
         $loans = Transaction::where('type', 'loan')->get();
+        $withdrawals = Transaction::where('type', 'withdrawal')->get();
 
         return response()->json(
             [
                 'totalDeposits' => $deposits->pluck('amount')->sum(),
                 'totalContributions' => $contributions->pluck('amount')->sum(),
                 'totalLoans' => $loans->pluck('amount')->sum(),
+                'totalWithdrawals' => 0//$withdrawals,
             ]
         );
     }
@@ -65,6 +67,7 @@ class DashboardController extends Controller
                 'deposit' => $deposit_amt,
                 'contribution' => $contribution_amt,
                 'loan' => $loan_amt,
+                'withdrawals' => 0//$withdrawals,
                 // 'member'=>new UserResource($request->user())
             ]
         );
