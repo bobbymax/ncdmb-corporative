@@ -33,7 +33,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -43,7 +43,7 @@ class PaymentController extends Controller
     	if (! $deposit) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Oops we think something went wrong!'
     		], 500);
     	}
@@ -56,7 +56,7 @@ class PaymentController extends Controller
 
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Oops we think something went wrong with your transaction!'
     		], 500);
     	}
@@ -91,7 +91,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -101,7 +101,7 @@ class PaymentController extends Controller
     	if (! $deposit) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Oops we think something went wrong!'
     		], 500);
     	}
@@ -114,7 +114,7 @@ class PaymentController extends Controller
 
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Oops we think something went wrong with your transaction!'
     		], 500);
     	}
@@ -142,7 +142,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -153,9 +153,17 @@ class PaymentController extends Controller
     	if (! ($member && $transaction)) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'Either the member or transaction record is invalid!'
     		], 422);
+    	}
+
+    	if ($transaction->status === "paid") {
+    		return response()->json([
+    			'data' => new TransactionResource($transaction),
+    			'status' => 'warning',
+    			'message' => 'This payment transaction has been verified already!',
+    		], 409);
     	}
 
     	$transaction->status = "paid";
@@ -164,7 +172,7 @@ class PaymentController extends Controller
     	if (! $transaction->save()) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'error',
+    			'status' => 'danger',
     			'message' => 'The transaction was not saved for some reason!'
     		], 500);
     	}
