@@ -196,8 +196,8 @@ class PaymentController extends Controller
     	$transaction->code = $data['trxref'];
     	$transaction->type = $data['payment_method'];
     	$transaction->amount = $data['amount'];
-    	$transaction->status = $data['status'];
-    	$transaction->completed = $data['status'] === "paid" ? true : false;
+    	$transaction->status = $data['status'] === "success" ? "paid" : "pending";
+    	$transaction->completed = $data['payment_method'] === "online" ? true : false;
 
     	$deposit->transactions()->save($transaction);
 

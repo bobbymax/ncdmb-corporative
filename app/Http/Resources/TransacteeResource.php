@@ -20,7 +20,7 @@ class TransacteeResource extends JsonResource
             'member' => new UserResource($this->member),
             'type' => $this->type,
             'status' => $this->status,
-            'transaction'=> new TransactionResource($this->transaction)
+            // 'transaction'=> new TransactionResource($this->transaction)
         ];
     }
 }
