@@ -22,7 +22,7 @@ class PaymentController extends Controller
     	// Payment coming from online payment
 
     	$validator = Validator::make($request->all(), [
-    		'trxref' => 'required',
+    		'trxRef' => 'required',
     		'status' => 'required|string|max:255',
     		'message' => 'required|string|max:255',
     		'amount' => 'required|integer',
@@ -192,7 +192,7 @@ class PaymentController extends Controller
     {
     	return Deposit::create([
     		'user_id' => auth()->user()->id,
-    		'trxRef' => $data['trxref'],
+    		'trxRef' => $data['trxRef'],
     		'amount' => $data['amount'],
     		'paid' => $data['status'] === "success" ? true : false
     	]);
@@ -201,7 +201,7 @@ class PaymentController extends Controller
     private function createTransaction(Deposit $deposit, array $data)
     {
     	$transaction = new Transaction;
-    	$transaction->code = $data['trxref'];
+    	$transaction->code = $data['trxRef'];
     	$transaction->type = $data['payment_method'];
     	$transaction->amount = $data['amount'];
     	$transaction->status = $data['status'] === "success" ? "paid" : "pending";
