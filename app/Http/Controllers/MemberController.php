@@ -84,7 +84,7 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following errors before proceeding'
             ], 500);
         }
@@ -160,7 +160,7 @@ class MemberController extends Controller
         if (!$member) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This member does not exist'
             ], 404);
         }
@@ -183,7 +183,7 @@ class MemberController extends Controller
         if (!$member) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This member does not exist'
             ], 404);
         }
@@ -216,7 +216,7 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following errors before proceeding'
             ], 500);
         }
@@ -225,7 +225,7 @@ class MemberController extends Controller
         if (!$member) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This member does not exist'
             ], 404);
         }
@@ -261,7 +261,7 @@ class MemberController extends Controller
         if (!$member) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This member does not exist'
             ], 404);
         }
@@ -294,7 +294,7 @@ class MemberController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the errors!'
             ], 422);
         }

@@ -66,7 +66,7 @@ class InvestmentController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the follwoing errors!'
             ], 500);
         }
@@ -101,7 +101,7 @@ class InvestmentController extends Controller
         if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
@@ -124,7 +124,7 @@ class InvestmentController extends Controller
         if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
@@ -155,7 +155,7 @@ class InvestmentController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the follwoing errors!'
             ], 500);
         }
@@ -164,7 +164,7 @@ class InvestmentController extends Controller
         if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
@@ -199,7 +199,7 @@ class InvestmentController extends Controller
         if (! $investment) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }

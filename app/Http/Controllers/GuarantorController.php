@@ -70,7 +70,7 @@ class GuarantorController extends Controller
         if (! $guarantor) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found'
             ], 404);
         }
@@ -93,7 +93,7 @@ class GuarantorController extends Controller
         if (! $guarantor) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found'
             ], 404);
         }
@@ -120,7 +120,7 @@ class GuarantorController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Fix the following errors'
             ], 500);
         }
@@ -128,7 +128,7 @@ class GuarantorController extends Controller
         if (! $guarantor) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found'
             ], 404);
         }
@@ -155,7 +155,7 @@ class GuarantorController extends Controller
         if (! $guarantor) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found'
             ], 404);
         }

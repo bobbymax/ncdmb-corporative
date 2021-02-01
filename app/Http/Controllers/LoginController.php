@@ -26,7 +26,7 @@ class LoginController extends Controller
                     'errors' => $validator->errors()
                 ],
                 'message' => 'An error occured',
-                'status' => 'danger',
+                'status' => 'error',
             ], 422);
         }
 
@@ -36,7 +36,7 @@ class LoginController extends Controller
             return response()->json([
                 'data' => null,
                 'message' => 'Invalid login details',
-                'status' => 'danger',
+                'status' => 'error',
             ], 422);
         }
 

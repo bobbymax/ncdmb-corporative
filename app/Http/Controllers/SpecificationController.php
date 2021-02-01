@@ -67,7 +67,7 @@ class SpecificationController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following errors!'
             ], 500);
         }
@@ -100,7 +100,7 @@ class SpecificationController extends Controller
         if (! $specification) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }
@@ -123,7 +123,7 @@ class SpecificationController extends Controller
         if (! $specification) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }
@@ -155,7 +155,7 @@ class SpecificationController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following errors!'
             ], 500);
         }
@@ -164,7 +164,7 @@ class SpecificationController extends Controller
         if (! $specification) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }
@@ -197,7 +197,7 @@ class SpecificationController extends Controller
         if (! $specification) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }

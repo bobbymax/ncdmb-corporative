@@ -72,7 +72,7 @@ class KinController extends Controller
         if (! $kin) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found',
             ], 404);
         }
@@ -97,7 +97,7 @@ class KinController extends Controller
         if (! $kin) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found',
             ], 404);
         }
@@ -137,7 +137,7 @@ class KinController extends Controller
         if (! $kin) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found',
             ], 404);
         }
@@ -169,7 +169,7 @@ class KinController extends Controller
         if (! $kin) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data not found',
             ], 404);
         }

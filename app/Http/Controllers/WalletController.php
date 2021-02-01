@@ -70,7 +70,7 @@ class WalletController extends Controller
         if (! $wallet) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }
@@ -93,7 +93,7 @@ class WalletController extends Controller
         if (! $wallet) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }
@@ -121,7 +121,7 @@ class WalletController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following errors:'
             ], 500);
         }
@@ -130,7 +130,7 @@ class WalletController extends Controller
         if (! $wallet) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data was found!'
             ], 404);
         }

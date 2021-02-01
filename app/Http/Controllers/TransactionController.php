@@ -59,7 +59,7 @@ class TransactionController extends Controller
         if (count($transactions) < 1) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This transaction type does not exists'
             ], 404);
         }

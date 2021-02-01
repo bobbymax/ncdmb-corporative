@@ -88,7 +88,7 @@ class RoleController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the following error(s)!'
             ], 500);
         }
