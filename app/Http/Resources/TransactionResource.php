@@ -23,8 +23,8 @@ class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'status' => $this->status,
             'completed' => $this->completed,
-            'date_created' => $this->created_at,
-            'members'=>$this->transactees
+            'date_created' => $this->created_at->format('d F, Y'),
+            'members'=> TransacteeResource::collection($this->transactees)
         ];
     }
 }

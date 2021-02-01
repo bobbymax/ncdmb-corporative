@@ -9,6 +9,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
 
+// Payment Endpoints
+Route::post('online/deposit', 'PaymentController@onlineDeposit');
+Route::post('bank/deposit', 'PaymentController@bankDeposit');
+Route::post('verify/member/payment', 'PaymentController@verifyPayment');
+
+
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('expenditures', 'ExpenditureController');
