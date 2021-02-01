@@ -17,7 +17,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // $roles = $request->user()->roles;
         $deposits_online = Transaction::where('type', 'online')->get()->pluck('amount')->sum();
         $deposits_bank = Transaction::where('type', 'bank')->get()->pluck('amount')->sum();
         $deposits = $deposits_online + $deposits_bank;
