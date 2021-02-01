@@ -10,7 +10,6 @@ class Transaction extends Model
     use HasFactory;
 
     protected $guarded = [''];
-    protected $dates = ['due_date'];
 
     public function transactionable()
     {
@@ -22,8 +21,8 @@ class Transaction extends Model
         return $this->hasMany(Transactee::class);
     }
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'id');
-    }
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class, 'id');
+    // }
 }
