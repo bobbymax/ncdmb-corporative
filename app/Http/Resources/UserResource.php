@@ -41,7 +41,7 @@ class UserResource extends JsonResource
                 (Loan::where('id', auth()->user()->user_id)->where('status', 'disbursed')->get()->last()->count() > 0
                     ? true
                     : false)
-                : 0
+                : true
         ];
     }
 }
