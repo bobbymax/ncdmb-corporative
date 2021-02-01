@@ -67,7 +67,8 @@ class DashboardController extends Controller
                 'deposit' => $deposit_amt,
                 'contribution' => $contribution_amt,
                 'loan' => $loan_amt,
-                'withdrawals' => 0//$withdrawals,
+                'withdrawals' => 0,//$withdrawal_amt,
+                'currentLoan' => 0//$withdrawal_amt,
                 // 'member'=>new UserResource($request->user())
             ]
         );
