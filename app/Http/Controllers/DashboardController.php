@@ -44,7 +44,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
-    private function userDashboard()
+    public function userDashboard()
     {
         $contributions = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);

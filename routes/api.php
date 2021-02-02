@@ -60,4 +60,4 @@ Route::prefix('members/membership')->group(function () {
 
 // Dashboard endpoint
 Route::get('dashboard/all', 'DashboardController@index');
-Route::get('dashboard', 'DashboardController@show');
+Route::get('dashboard', 'DashboardController@userDashboard');
