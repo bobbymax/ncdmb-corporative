@@ -46,8 +46,8 @@ Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 
 Route::post('login', 'LoginController@login');
 
-Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
-// Route::get('transactions', 'TransactionController@transactions');
+// Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
+Route::get('transactions/filter/{type}', 'DashboardController@display');
 
 // Approval endpoint
 Route::apiResource('approvals', 'ApprovalController');

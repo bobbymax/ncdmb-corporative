@@ -123,23 +123,23 @@ class DashboardController extends Controller
     private function normalise($data)
     {
         switch ($data) {
-            case "available":
+            case "available_balance":
                 return TransacteeResource::collection(auth()->user()->transactions);
                 break;
 
-            case "deposits":
+            case "deposit":
                 return DepositResource::collection(auth()->user()->deposits);
                 break;
 
-            case "withdrawals":
+            case "withdrawal":
                 return auth()->user()->withdrawals;
                 break;
 
-            case "loans":
+            case "loan":
                 return LoanResource::collection(auth()->user()->loans);
                 break;
 
-            case "contributions":
+            case "contribution":
                 return Transaction::whereHas('transactees', function ($query) {
                     $query->where('user_id', auth()->user()->id);
                 })->where('type', 'contribution')->get();
