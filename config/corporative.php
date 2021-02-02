@@ -6,4 +6,6 @@ return [
 		'second' => 'general-secretary',
 		'third' => 'president'
 	],
+
+	'superAdmin' => 'administrator',
 ];

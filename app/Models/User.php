@@ -81,6 +81,16 @@ class User extends Authenticatable
         return $this->morphedByMany(Loan::class, 'approveable')->withPivot('remark', 'status');
     }
 
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
     public function guaranteed()
     {
         return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');

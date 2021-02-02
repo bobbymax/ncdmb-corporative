@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Deposit extends Model
+class Withdrawal extends Model
 {
     use HasFactory;
 
-    public $guarded = [''];
-
-    public function transactions()
-    {
-    	return $this->morphOne(Transaction::class, 'transactionable');
-    }
+    protected $guarded = [''];
 
     public function member()
     {

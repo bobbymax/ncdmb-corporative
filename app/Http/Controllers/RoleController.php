@@ -104,21 +104,19 @@ class RoleController extends Controller
             ], 500);
         }
 
-        if (!is_array($request->roles)) {
-            return response()->json(
-                [
-                    'data' => [],
-                    'status' => 'error',
-                    'message' => 'Send roles in array format'
-                ]
-            );
+        if (! is_array($request->roles)) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Send roles in array format'
+            ]);
         }
 
 
         foreach ($request->roles as $value) {
             $role = Role::where('label', $value)->first();
 
-            if (!$role) {
+            if (! $role) {
                 return response()->json([
                     'data' => null,
                     'status' => 'error',
@@ -126,7 +124,7 @@ class RoleController extends Controller
                 ], 500);
             }
 
-            if (!in_array($role->id, $member->currentRoles())) {
+            if (! in_array($role->id, $member->currentRoles())) {
                 $member->actAs($role);
             }
         }

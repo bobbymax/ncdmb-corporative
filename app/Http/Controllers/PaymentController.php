@@ -166,6 +166,9 @@ class PaymentController extends Controller
     		], 409);
     	}
 
+    	$transaction->transactionable->paid = true;
+    	$transaction->transactionable->save();
+
     	$transaction->status = "paid";
     	$transaction->completed = true;
 
