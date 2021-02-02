@@ -31,6 +31,7 @@ Route::apiResource('specifications', 'SpecificationController');
 Route::apiResource('contributions', 'ContributionController');
 Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
+Route::apiResource('deposits', 'DepositController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');

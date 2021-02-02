@@ -2,19 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DepositResource;
 use App\Models\Deposit;
 use Illuminate\Http\Request;
 
 class DepositController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
-        //
+        $deposits = Deposit::where('paid', 0)->get();
+        if ($deposits->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => DepositResource::collection($deposits),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
     }
 
     /**
