@@ -18,9 +18,11 @@ class DepositResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'transaction' => $this->trxRef,
-            'paid' => $this->paid === 1 ? true : false,
+            'member' => new UserResource($this->member),
+            'trxRef' => $this->trxRef,
+            'amount' => $this->amount,
+            'status' => $this->paid == 1 ? true : false,
+            'created' => $this->created_at->format('d F, Y') 
         ];
     }
 }
