@@ -15,7 +15,7 @@ class DepositController extends Controller
 
     public function index()
     {
-        $deposits = Deposit::where('paid', 0)->get();
+        $deposits = Deposit::where('paid', 0)->orderBy('created_at', 'desc')->get();
         if ($deposits->count() < 1) {
             return response()->json([
                 'data' => null,

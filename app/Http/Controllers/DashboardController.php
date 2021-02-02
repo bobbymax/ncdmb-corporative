@@ -84,22 +84,22 @@ class DashboardController extends Controller
         return compact('contributions', 'deposits', 'available', 'withdrawals', 'loans', 'currentLoan');
     }
 
-    public function display(Request $request)
+    public function display($filter)
     {
 
-        $validator = Validator::make($request->all(), [
-            'filter' => 'required|string',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'filter' => 'required|string',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'data' => $validator->errors(),
-                'status' => 'error',
-                'message' => 'Please fix this errors'
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'data' => $validator->errors(),
+        //         'status' => 'error',
+        //         'message' => 'Please fix this errors'
+        //     ], 422);
+        // }
 
-        return $this->normalise($request->filter);
+        return $this->normalise($filter);
         
     }
 
