@@ -32,7 +32,7 @@ class CategoryResource extends JsonResource
             'limit' => $this->limit,
             'committment' => $this->committment,
             'created_at' => $this->created_at->format('d M, Y'),
-            'hasExpenditure' => boolval(Expenditure::find($this->id))
+            'hasExpenditure' => true//boolval(Expenditure::find($this->id))
         ];
     }
 }
