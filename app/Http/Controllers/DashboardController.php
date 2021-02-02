@@ -74,14 +74,14 @@ class DashboardController extends Controller
 
     private function adminDashboard()
     {
-        $contributions = Transaction::where('type', 'contribution')->sum('amount');
-        $deposits = Deposit::where('paid', true)->sum('amount');
-        $available = Transaction::where('completed', true)->sum('amount');
-        $withdrawals = Transaction::where('type', 'withdrawal')->sum('amount');
-        $loans = Transaction::where('type', 'loan')->sum('amount');
+        $totalContributions = Transaction::where('type', 'contribution')->sum('amount');
+        $totalDeposits = Deposit::where('paid', true)->sum('amount');
+        $availableBalance = Transaction::where('completed', true)->sum('amount');
+        $totalWithdrawals = Transaction::where('type', 'withdrawal')->sum('amount');
+        $totalLoans = Transaction::where('type', 'loan')->sum('amount');
         $currentLoan = Transaction::where('type', 'loan')->where('completed', false)->sum('amount');
 
-        return compact('contributions', 'deposits', 'available', 'withdrawals', 'loans', 'currentLoan');
+        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoan');
     }
 
     public function display($filter)
@@ -100,7 +100,6 @@ class DashboardController extends Controller
         // }
 
         return $this->normalise($filter);
-        
     }
 
     public function adminDisplay(Request $request)
@@ -144,7 +143,7 @@ class DashboardController extends Controller
                     $query->where('user_id', auth()->user()->id);
                 })->where('type', 'contribution')->get();
                 break;
-            
+
             default:
                 return Transaction::whereHas('transactees', function ($query) {
                     $query->where('user_id', auth()->user()->id);
@@ -175,7 +174,7 @@ class DashboardController extends Controller
             case "contributions":
                 return TransactionResource::collection(Transaction::where('type', 'contribution')->latest()->get());
                 break;
-            
+
             default:
                 return TransactionResource::collection(Transaction::where('type', 'loan')->where('completed', false)->latest()->get());
                 break;
