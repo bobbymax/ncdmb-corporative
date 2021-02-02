@@ -75,7 +75,7 @@ class LoanController extends Controller
             'guarantors' => 'required',
         ]);
 
-        if (count($request->guarantors) < 3 || count($request->guarantors) > 3) {
+        if (count($request->guarantors) != 3) {
             return response()->json([
                 'data' => [],
                 'status' => 'error',
@@ -116,6 +116,8 @@ class LoanController extends Controller
 
                 $loan->guarantors()->attach($member);
             }
+            $loan->status = "registered";
+            $loan->save();
         }
 
         return response()->json([
