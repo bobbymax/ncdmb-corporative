@@ -32,7 +32,14 @@ class DashboardController extends Controller
 
         if (auth()->user()->hasRole(config('corporative.superAdmin'))) {
             return response()->json([
-                'data' => compact('user', 'admin'),
+                // 'data' => compact('user', 'admin'),
+                'totalContributions' => collect([$admin])->pluck('totalContributions')[0],
+                'totalDeposits' => collect([$admin])->pluck('totalDeposits')[0],
+                'availableBalance' => collect([$admin])->pluck('availableBalance')[0],
+                'totalContributions' => collect([$admin])->pluck('totalContributions')[0],
+                'totalWithdrawals' => collect([$admin])->pluck('totalWithdrawals')[0],
+                'totalLoans' => collect([$admin])->pluck('totalLoans')[0],
+                'currentLoan' => collect([$admin])->pluck('currentLoan')[0],
                 'status' => 'success',
                 'message' => 'Fetched successfully!!'
             ], 200);
