@@ -46,21 +46,21 @@ class DashboardController extends Controller
 
     public function userDashboard()
     {
-        $contributions = Transaction::whereHas('transactees', function ($query) {
+        $totalContributions = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'contribution')->sum('amount');
 
-        $deposits = auth()->user()->deposits()->sum('amount');
+        $totalDeposits = auth()->user()->deposits()->sum('amount');
 
-        $available = Transaction::whereHas('transactees', function ($query) {
+        $availableBalance = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->sum('amount');
 
-        $withdrawals = Transaction::whereHas('transactees', function ($query) {
+        $totalWithdrawals = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'withdrawal')->sum('amount');
 
-        $loans = Transaction::whereHas('transactees', function ($query) {
+        $totalLoans = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'loan')->sum('amount');
 
@@ -69,7 +69,7 @@ class DashboardController extends Controller
         })->where('type', 'loan')->where('completed', false)->sum('amount');
 
 
-        return compact('contributions', 'deposits', 'available', 'withdrawals', 'loans', 'currentLoans');
+        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoans');
     }
 
     private function adminDashboard()
