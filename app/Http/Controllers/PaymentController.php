@@ -20,7 +20,6 @@ class PaymentController extends Controller
     public function onlineDeposit(Request $request)
     {
     	// Payment coming from online payment
-
     	$validator = Validator::make($request->all(), [
     		'trxref' => 'required',
     		'status' => 'required|string|max:255',
