@@ -21,7 +21,7 @@ class DepositResource extends JsonResource
             'member' => new UserResource($this->member),
             'transaction' => $this->trxRef,
             'amount' => $this->amount,
-            'status' => $this->paid == 1 ? true : false,
+            'status' => $this->paid == 1 ? "paid" : "not paid",
             'type' => $this->transactions !== null ? $this->transactions->type : null,
             'created' => $this->created_at->format('d F, Y')
         ];
