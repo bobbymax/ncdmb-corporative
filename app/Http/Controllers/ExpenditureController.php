@@ -144,7 +144,7 @@ class ExpenditureController extends Controller
             ], 500);
         }
 
-        if (!($budget->expenditures->sum('amount') < $budget->amount)) {
+        if (!(($budget->expenditures->sum('amount') + $request->amount) < $budget->amount)) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
