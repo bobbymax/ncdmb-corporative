@@ -28,7 +28,6 @@ class DashboardController extends Controller
     {
         $user = $this->userDashboard();
         $admin = $this->adminDashboard();
-        // return collect([$admin])->pluck('totalContributions')[0];
 
 
         if (auth()->user()->hasRole(config('corporative.superAdmin'))) {
