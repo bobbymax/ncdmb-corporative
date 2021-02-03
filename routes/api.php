@@ -62,6 +62,8 @@ Route::prefix('members/membership')->group(function () {
 Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
 
+Route::post('notification', );
+
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Page Not Found. If error persists, contact info@ncdmb.com'], 404);
