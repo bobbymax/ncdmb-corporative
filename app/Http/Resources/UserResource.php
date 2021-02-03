@@ -38,7 +38,7 @@ class UserResource extends JsonResource
             'roles' => RoleResource::collection($this->roles),
             'can_guarantee' => $request->user()->guaranteed()->wherePivot('status', 'approved')->get()->count() >= 2 ? false : true,
             'can_loan' => auth()->user()->loans->last() !== null
-                ? (auth()->user()->loans->last()->status == null || auth()->user()->loans->last()->status === "disbursed"
+                ? (auth()->user()->loans->last()->status === "disbursed"
                     ? true
                     : false)
                 : true
