@@ -116,8 +116,8 @@ class LoanController extends Controller
 
                 $loan->guarantors()->attach($member);
             }
-            $loan->status = "registered";
-            $loan->save();
+            // $loan->status = "registered";
+            // $loan->save();
         }
 
         return response()->json([
