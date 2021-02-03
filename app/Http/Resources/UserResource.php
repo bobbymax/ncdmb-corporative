@@ -37,8 +37,8 @@ class UserResource extends JsonResource
             'wallet' => isset($this->wallet) ? $this->wallet->only(['identifier', 'current', 'deposit', 'available', 'ledger', 'account_number', 'bank_name']) : null,
             'roles' => RoleResource::collection($this->roles),
             'can_guarantee' => $request->user()->guaranteed()->wherePivot('status', 'approved')->get()->count() >= 2 ? false : true,
-            'can_loan' => auth()->user()->loans->last() !== null
-                ? (auth()->user()->loans->last()->status === "disbursed"
+            'can_loan' => $this->member->loans->last() !== null
+                ? ($this->member->loans->last()->status === "disbursed"
                     ? true
                     : false)
                 : true
