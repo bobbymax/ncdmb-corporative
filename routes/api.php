@@ -62,7 +62,7 @@ Route::prefix('members/membership')->group(function () {
 Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
 
-Route::post('notification', );
+Route::post('notification/message', 'NotificationController@message');
 
 // Route::fallback(function(){
 //     return response()->json([
