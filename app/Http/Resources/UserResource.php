@@ -40,7 +40,7 @@ class UserResource extends JsonResource
             'can_loan' => auth()->user()->loans->last() !== null
                 ? (auth()->user()->loans->last()->status === "disbursed"
                     ? true
-                    : false)
+                    : "falses")
                 : true
         ];
     }
