@@ -278,19 +278,9 @@ class LoanController extends Controller
                 ], 422);
             }
 
-            // 
-            if ($loan->level >= 3) {
-                return response()->json([
-                    'data' => null,
-                    'status' => 'error',
-                    'message' => 'This operation cannot be performed'
-                ], 403);
-            }
-            // 
-
             if ($loan->approvals()->save($role->members->first())) {
                 $loan->level += 1;
-                $loan->status = $request->status; //"registered";
+                $loan->status = "registered";
                 $loan->save();
             }
         }

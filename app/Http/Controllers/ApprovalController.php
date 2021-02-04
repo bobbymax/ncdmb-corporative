@@ -103,7 +103,7 @@ class ApprovalController extends Controller
         $loan = Loan::where('code', $request->loan)->first();
 
         if (!$loan) {
-            return response()->json([
+            return response()->json([@
                 'data' => null,
                 'status' => 'error',
                 'message' => 'The loan code is invalid!!'
