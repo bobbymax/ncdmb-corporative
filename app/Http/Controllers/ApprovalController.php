@@ -99,7 +99,7 @@ class ApprovalController extends Controller
 
         $loan = Loan::where('code', $request->loan)->first();
 
-        if (! $loan) {
+        if (!$loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -112,7 +112,7 @@ class ApprovalController extends Controller
         $trail->description = $request->description;
         $trail->action = $request->status;
 
-        if (! $loan->trails()->save($trail)) {
+        if (!$loan->trails()->save($trail)) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -134,42 +134,43 @@ class ApprovalController extends Controller
         $roles = config('corporative.approvals');
 
         switch ($roles) {
-            case $exco->hasRole($roles['second']) :
+            case $exco->hasRole($roles['second']):
 
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->level += 1;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                }
 
-                    $loan->save();
+                $loan->save();
 
-                    return $loan;
+                return $loan;
                 break;
 
-            case $exco->hasRole($roles['third']) :
+            case $exco->hasRole($roles['third']):
 
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->status = $status;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                    $loan->status = $status;
+                }
 
-                    $loan->save();
-                    
-                    return $loan;
+                $loan->save();
+
+                return $loan;
                 break;
-            
+
             default:
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->level += 1;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                }
 
-                    $loan->save();
-                    
-                    return $loan;
+                $loan->save();
+
+                return $loan;
                 break;
         }
     }
