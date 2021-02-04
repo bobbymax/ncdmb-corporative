@@ -335,4 +335,30 @@ class LoanController extends Controller
         }
         return 'ln' . $randomString;
     }
+
+    public function loanApprovalList()
+    {
+        $roles = config('corporative.approvals');
+        if (auth()->user()->hasRole($roles['first'])) {
+            $loans = Loan::where('status', 'registered')->sortByDesc("created_at");
+        }
+        if (auth()->user()->hasRole($roles['second'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 1)->sortByDesc("created_at");
+        }
+        if (auth()->user()->hasRole($roles['second'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 2)->sortByDesc("created_at");
+        }
+        if ($loans->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => LoanResource::collection($loans),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
+    }
 }

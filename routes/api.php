@@ -64,7 +64,7 @@ Route::prefix('members/membership')->group(function () {
 Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
 
-Route::get('loan/approval','LoanController@loanApprovalList');
+Route::get('loan/approvals','LoanController@loanApprovalList');
 
 // Route::post('notification/message', 'NotificationController@message');
 Route::post('notification/message', function () {
