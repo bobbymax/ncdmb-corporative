@@ -34,6 +34,7 @@ Route::apiResource('specifications', 'SpecificationController');
 Route::apiResource('contributions', 'ContributionController');
 Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
+Route::apiResource('deposits', 'DepositController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
@@ -46,7 +47,7 @@ Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 Route::post('login', 'LoginController@login');
 
 // Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
-// Route::get('transactions', 'TransactionController@transactions');
+Route::get('transactions/filter/{type}', 'DashboardController@display');
 
 // Approval endpoint
 Route::apiResource('approvals', 'ApprovalController');
@@ -60,4 +61,9 @@ Route::prefix('members/membership')->group(function () {
 
 // Dashboard endpoint
 Route::get('dashboard/all', 'DashboardController@index');
-Route::get('dashboard', 'DashboardController@show');
+Route::get('dashboard', 'DashboardController@userDashboard');
+
+// Route::fallback(function(){
+//     return response()->json([
+//         'message' => 'Page Not Found. If error persists, contact info@ncdmb.com'], 404);
+// });

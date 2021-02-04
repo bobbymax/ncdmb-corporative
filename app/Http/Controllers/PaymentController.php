@@ -21,7 +21,7 @@ class PaymentController extends Controller
     {
     	// Payment coming from online payment
     	$validator = Validator::make($request->all(), [
-    		'trxref' => 'required',
+    		'trxRef' => 'required',
     		'status' => 'required|string|max:255',
     		'message' => 'required|string|max:255',
     		'amount' => 'required|integer',
@@ -32,7 +32,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -42,7 +42,7 @@ class PaymentController extends Controller
     	if (! $deposit) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Oops we think something went wrong!'
     		], 500);
     	}
@@ -55,7 +55,7 @@ class PaymentController extends Controller
 
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Oops we think something went wrong with your transaction!'
     		], 500);
     	}
@@ -80,7 +80,7 @@ class PaymentController extends Controller
     public function bankDeposit(Request $request)
     {
     	$validator = Validator::make($request->all(), [
-    		'trxref' => 'required',
+    		'trxRef' => 'required|unique:deposits',
     		'amount' => 'required|integer',
     		'payment_type' => 'required|string|max:255',
     		'payment_method' => 'required|string|max:255',
@@ -90,7 +90,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -100,7 +100,7 @@ class PaymentController extends Controller
     	if (! $deposit) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Oops we think something went wrong!'
     		], 500);
     	}
@@ -113,7 +113,7 @@ class PaymentController extends Controller
 
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Oops we think something went wrong with your transaction!'
     		], 500);
     	}
@@ -141,7 +141,7 @@ class PaymentController extends Controller
     	if ($validator->fails()) {
     		return response()->json([
     			'data' => $validator->errors(),
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Please fix the following errors'
     		], 422);
     	}
@@ -152,7 +152,7 @@ class PaymentController extends Controller
     	if (! ($member && $transaction)) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'Either the member or transaction record is invalid!'
     		], 422);
     	}
@@ -174,7 +174,7 @@ class PaymentController extends Controller
     	if (! $transaction->save()) {
     		return response()->json([
     			'data' => null,
-    			'status' => 'danger',
+    			'status' => 'error',
     			'message' => 'The transaction was not saved for some reason!'
     		], 500);
     	}
@@ -194,7 +194,7 @@ class PaymentController extends Controller
     {
     	return Deposit::create([
     		'user_id' => auth()->user()->id,
-    		'trxRef' => $data['trxref'],
+    		'trxRef' => $data['trxRef'],
     		'amount' => $data['amount'],
     		'paid' => $data['status'] === "success" ? true : false
     	]);
@@ -203,7 +203,7 @@ class PaymentController extends Controller
     private function createTransaction(Deposit $deposit, array $data)
     {
     	$transaction = new Transaction;
-    	$transaction->code = $data['trxref'];
+    	$transaction->code = $data['trxRef'];
     	$transaction->type = $data['payment_method'];
     	$transaction->amount = $data['amount'];
     	$transaction->status = $data['status'] === "success" ? "paid" : "pending";

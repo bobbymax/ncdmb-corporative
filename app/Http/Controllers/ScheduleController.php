@@ -70,7 +70,7 @@ class ScheduleController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => $validation->errors(),
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix the errors:'
             ], 500);
         }
@@ -173,7 +173,7 @@ class ScheduleController extends Controller
         if (! $schedule) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Invalid data input!'
             ], 404);
         }

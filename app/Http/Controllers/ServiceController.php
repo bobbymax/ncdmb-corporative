@@ -99,7 +99,7 @@ class ServiceController extends Controller
         if (! $service) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data entry is invalid!'
             ], 404);
         }
@@ -123,7 +123,7 @@ class ServiceController extends Controller
         if (! $service) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data entry is invalid!'
             ], 404);
         }
@@ -164,7 +164,7 @@ class ServiceController extends Controller
         if (! $service) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data entry is invalid!'
             ], 404);
         }
@@ -196,7 +196,7 @@ class ServiceController extends Controller
         if (! $service) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Data entry is invalid!'
             ], 404);
         }

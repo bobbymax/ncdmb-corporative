@@ -70,7 +70,7 @@ class ContributionController extends Controller
         if (! $contribution) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This contribution does not exist'
             ], 404);
         }
@@ -94,7 +94,7 @@ class ContributionController extends Controller
         if (! $contribution) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This contribution does not exist'
             ], 404);
         }
@@ -122,7 +122,7 @@ class ContributionController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Please fix this errors before proceeding!'
             ], 500);
         }
@@ -131,7 +131,7 @@ class ContributionController extends Controller
         if (! $contribution) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'This contribution does not exist'
             ], 404);
         }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\TransacteeResource;
 use App\Http\Resources\DepositResource;
 use App\Http\Resources\LoanResource;
+use App\Http\Resources\TransactionResource;
 
 class DashboardController extends Controller
 {
@@ -27,6 +28,7 @@ class DashboardController extends Controller
     {
         $user = $this->userDashboard();
         $admin = $this->adminDashboard();
+
 
         if (auth()->user()->hasRole(config('corporative.superAdmin'))) {
             return response()->json([
@@ -43,63 +45,63 @@ class DashboardController extends Controller
         ], 200);
     }
 
-    private function userDashboard()
+    public function userDashboard()
     {
-        $contributions = Transaction::whereHas('transactees', function ($query) {
+        $totalContributions = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'contribution')->sum('amount');
 
-        $deposits = auth()->user()->deposits()->sum('amount');
+        // $totalDeposits = auth()->user()->deposits()->sum('amount');
+        $totalDeposits = Deposit::where('user_id', auth()->user()->id)->where('paid', 1)->sum('amount');
 
-        $available = Transaction::whereHas('transactees', function ($query) {
+        $availableBalance = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->sum('amount');
 
-        $withdrawals = Transaction::whereHas('transactees', function ($query) {
+        $totalWithdrawals = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'withdrawal')->sum('amount');
 
-        $loans = Transaction::whereHas('transactees', function ($query) {
+        $totalLoans = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'loan')->sum('amount');
 
-        $currentLoans = Transaction::whereHas('transactees', function ($query) {
+        $currentLoan = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);
         })->where('type', 'loan')->where('completed', false)->sum('amount');
 
 
-        return compact('contributions', 'deposits', 'available', 'withdrawals', 'loans', 'currentLoans');
+        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoan');
     }
 
     private function adminDashboard()
     {
-        $contributions = Transaction::where('type', 'contribution')->sum('amount');
-        $deposits = Deposit::where('paid', true)->sum('amount');
-        $available = Transaction::where('completed', true)->sum('amount');
-        $withdrawals = Transaction::where('type', 'withdrawal')->sum('amount');
-        $loans = Transaction::where('type', 'loan')->sum('amount');
-        $currentLoans = Transaction::where('type', 'loan')->where('completed', false)->sum('amount');
+        $totalContributions = Transaction::where('type', 'contribution')->sum('amount');
+        $totalDeposits = Deposit::where('paid', true)->sum('amount');
+        $availableBalance = Transaction::where('completed', true)->sum('amount');
+        $totalWithdrawals = Transaction::where('type', 'withdrawal')->sum('amount');
+        $totalLoans = Transaction::where('type', 'loan')->sum('amount');
+        $currentLoan = Transaction::where('type', 'loan')->where('completed', false)->sum('amount');
 
-        return compact('contributions', 'deposits', 'available', 'withdrawals', 'loans', 'currentLoans');
+        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoan');
     }
 
-    public function display(Request $request)
+    public function display($filter)
     {
 
-        $validator = Validator::make($request->all(), [
-            'filter' => 'required|string',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'filter' => 'required|string',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'data' => $validator->errors(),
-                'status' => 'error',
-                'message' => 'Please fix this errors'
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'data' => $validator->errors(),
+        //         'status' => 'error',
+        //         'message' => 'Please fix this errors'
+        //     ], 422);
+        // }
 
-        return $this->normalise($request->filter);
-        
+        return $this->normalise($filter);
     }
 
     public function adminDisplay(Request $request)
@@ -122,28 +124,28 @@ class DashboardController extends Controller
     private function normalise($data)
     {
         switch ($data) {
-            case "available":
+            case "available_balance":
                 return TransacteeResource::collection(auth()->user()->transactions);
                 break;
 
-            case "deposits":
+            case "deposit":
                 return DepositResource::collection(auth()->user()->deposits);
                 break;
 
-            case "withdrawals":
+            case "withdrawal":
                 return auth()->user()->withdrawals;
                 break;
 
-            case "loans":
+            case "loan":
                 return LoanResource::collection(auth()->user()->loans);
                 break;
 
-            case "contributions":
+            case "contribution":
                 return Transaction::whereHas('transactees', function ($query) {
                     $query->where('user_id', auth()->user()->id);
                 })->where('type', 'contribution')->get();
                 break;
-            
+
             default:
                 return Transaction::whereHas('transactees', function ($query) {
                     $query->where('user_id', auth()->user()->id);
@@ -174,7 +176,7 @@ class DashboardController extends Controller
             case "contributions":
                 return TransactionResource::collection(Transaction::where('type', 'contribution')->latest()->get());
                 break;
-            
+
             default:
                 return TransactionResource::collection(Transaction::where('type', 'loan')->where('completed', false)->latest()->get());
                 break;

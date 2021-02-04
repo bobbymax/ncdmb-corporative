@@ -116,7 +116,7 @@ class BudgetController extends Controller
         if (!$budget) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data found'
             ], 404);
         }
@@ -141,7 +141,7 @@ class BudgetController extends Controller
         if (!$budget) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data found'
             ], 404);
         }
@@ -185,7 +185,7 @@ class BudgetController extends Controller
         if (!$budget) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data found'
             ], 404);
         }
@@ -221,7 +221,7 @@ class BudgetController extends Controller
         if (!$budget) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'No data found'
             ], 404);
         }

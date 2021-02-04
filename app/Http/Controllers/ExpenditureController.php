@@ -139,7 +139,7 @@ class ExpenditureController extends Controller
         if (!$budget) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'The budget code is invalid'
             ], 500);
         }
@@ -147,7 +147,7 @@ class ExpenditureController extends Controller
         if (!($budget->expenditures->sum('amount') < $budget->amount)) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'You cannot exceed the approved budget amount allocated!'
             ], 403);
         }
@@ -246,7 +246,7 @@ class ExpenditureController extends Controller
         if (!$expenditure) {
             return response()->json([
                 'data' => null,
-                'status' => 'danger',
+                'status' => 'error',
                 'message' => 'Expenditure data not found'
             ], 500);
         }
