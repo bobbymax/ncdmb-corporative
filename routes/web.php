@@ -17,19 +17,7 @@ use App\Models\Loan;
 */
 
 Route::get('/', function () {
-    $loan = Loan::with('guarantors')->where('code', 'lnawIfdV1c')->first();
-
-    $counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
-
-
-    // $counter = 0;
-    // foreach ($loan->guarantors as $guarantor) {
-    //     if ($guarantor->pivot->status === "approved") {
-    //         $counter++;
-    //     }
-    // }
-
-    dd(config('corporative.approvals'));
+    //
 });
 
 Auth::routes();
