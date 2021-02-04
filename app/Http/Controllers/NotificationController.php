@@ -16,7 +16,7 @@ class NotificationController extends Controller
     public function message(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user' => 'required|array',
+            'users' => 'required|array',
             'message' => 'required|string|max:255'
         ]);
 
@@ -28,11 +28,13 @@ class NotificationController extends Controller
             ], 500);
         }
 
-        $response = Http::post(env('NOTIFICATION_URL') . 'message', [
-            'users' => $request->user,
-            'role' => 'Network Administrator',
-        ]);
+        $url = env('NOTIFICATION_URL') . 'message';
 
-        return json_decode($response);
+        $response = Http::retry(3, 100)->post($url, [
+            'users' => $request->users,
+            'body' => $request->message,
+        ])->json();
+
+        return $response;
     }
 }
