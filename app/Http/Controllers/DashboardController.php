@@ -31,7 +31,7 @@ class DashboardController extends Controller
 
 
         // if (auth()->user()->hasRole(config('corporative.superAdmin'))) {
-        if (auth()->user()->roles > 1) {
+        if (auth()->user()->roles->count() > 1) {
             return response()->json([
                 'data' => compact('user', 'admin'),
                 'status' => 'success',
