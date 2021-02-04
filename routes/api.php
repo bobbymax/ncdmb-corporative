@@ -51,6 +51,7 @@ Route::get('transactions/filter/{type}', 'DashboardController@display');
 
 // Approval endpoint
 Route::apiResource('approvals', 'ApprovalController');
+Route::post('approval/levels', 'ApprovalController@approveLoan');
 
 // update membership number
 Route::prefix('members/membership')->group(function () {

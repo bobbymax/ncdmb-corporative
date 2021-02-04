@@ -29,7 +29,7 @@ Route::get('/', function () {
     //     }
     // }
 
-    dd($counter->count());
+    dd(config('corporative.approvals'));
 });
 
 Auth::routes();
