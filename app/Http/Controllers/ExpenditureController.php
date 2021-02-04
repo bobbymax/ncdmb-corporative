@@ -11,6 +11,7 @@ use App\Helpers\LoanCalculator;
 use App\Helpers\BudgetChecker;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ExpenditureResource;
+use Illuminate\Support\Str;
 
 class ExpenditureController extends Controller
 {
@@ -157,7 +158,7 @@ class ExpenditureController extends Controller
             'budget_id' => $budget->id,
             'category_id' => $request->category_id,
             'title' => $request->title,
-            'label' => LoanUtilController::slugify($request->title),
+            'label' => Str::slug($request->title),
             'amount' => $request->amount,
             'balance' => isset($request->balance)?$request->balance:0
         ]);

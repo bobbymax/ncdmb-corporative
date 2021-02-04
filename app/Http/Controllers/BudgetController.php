@@ -193,7 +193,7 @@ class BudgetController extends Controller
         $budget->update([
             // 'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
-            'label' => LoanUtilController::slugify($request->title),
+            'label' => Str::slug($request->title),
             'amount' => $request->amount,
             'description' => $request->description,
             'start' => Carbon::parse($request->start),

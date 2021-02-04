@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -71,7 +72,7 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->name,
-            'label' => LoanUtilController::slugify($request->name),
+            'label' => Str::slug($request->name),
             'module' => $request->module,
             'description' => $request->description,
             'interest' => isset($request->interest) ? $request->interest : 0,
