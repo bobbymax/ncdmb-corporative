@@ -46,4 +46,9 @@ class Loan extends Model
     {
         return $this->morphToMany(User::class, 'approveable')->withPivot('remark', 'status');
     }
+
+    public function trails()
+    {
+        return $this->morphMany(Trail::class, 'trailable');
+    }
 }

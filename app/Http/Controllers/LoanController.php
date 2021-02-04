@@ -277,6 +277,7 @@ class LoanController extends Controller
             }
 
             if ($loan->approvals()->save($role->members->first())) {
+                $loan->level += 1;
                 $loan->status = "registered";
                 $loan->save();
             }

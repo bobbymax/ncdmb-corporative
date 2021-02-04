@@ -20,9 +20,4 @@ class Transaction extends Model
     {
         return $this->hasMany(Transactee::class);
     }
-
-    // public function users()
-    // {
-    //     return $this->hasMany(User::class, 'id');
-    // }
 }
