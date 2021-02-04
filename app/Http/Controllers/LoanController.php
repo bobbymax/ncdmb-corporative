@@ -117,8 +117,8 @@ class LoanController extends Controller
         }
 
         setlocale(LC_MONETARY, 'en_US');
-        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " You've requested a loan of " . number_format($request->amount) . " from the NCDMB";
-        NotificationController::message([auth()->user()->mobile], $message);
+        // $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " You've requested a loan of " . number_format($request->amount) . " from the NCDMB";
+        // NotificationController::message([auth()->user()->mobile], $message);
 
         return response()->json([
             'data' => new LoanResource($loan),

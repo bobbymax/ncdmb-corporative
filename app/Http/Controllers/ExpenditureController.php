@@ -166,7 +166,7 @@ class ExpenditureController extends Controller
         return response()->json([
             'data' => new ExpenditureResource($expenditure),
             'status' => 'success',
-            'message' => 'This expenditure has been created successfully!'
+            'message' => 'This expenditexpenditureure has been created successfully!'
         ], 200);
     }
 
