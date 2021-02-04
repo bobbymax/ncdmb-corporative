@@ -345,10 +345,10 @@ class LoanController extends Controller
             $loans = Loan::where('status', 'registered')->where('level', 0)->get();
         }
         if (auth()->user()->hasRole($roles['second'])) {
-            $loans = Loan::where('status', 'approved')->where('level', 1)->get();
+            $loans = Loan::where('status', 'registered')->where('level', 1)->get();
         }
         if (auth()->user()->hasRole($roles['third'])) {
-            $loans = Loan::where('status', 'approved')->where('level', 2)->get();
+            $loans = Loan::where('status', 'registered')->where('level', 2)->get();
         }
         if ($loans->count() < 1) {
             return response()->json([
