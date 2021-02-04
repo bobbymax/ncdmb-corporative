@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use App\Models\Expenditure;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,7 +33,7 @@ class CategoryResource extends JsonResource
             'limit' => $this->limit,
             'committment' => $this->committment,
             'created_at' => $this->created_at->format('d M, Y'),
-            'hasExpenditure' => true//boolval(Expenditure::find($this->id))
+            'hasExpenditure' => boolval(Category::find($this->id)->expenditure)
         ];
     }
 }
