@@ -13,26 +13,28 @@ class NotificationController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function message(Request $request)
+    public static function message($phone, $message)
     {
-        $validator = Validator::make($request->all(), [
-            'users' => 'required|array',
-            'message' => 'required|string|max:255'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'users' => 'required|array',
+        //     'message' => 'required|string|max:255'
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'data' => $validator->errors(),
-                'status' => 'error',
-                'message' => 'Please fix the errors!'
-            ], 500);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'data' => $validator->errors(),
+        //         'status' => 'error',
+        //         'message' => 'Please fix the errors!'
+        //     ], 500);
+        // }
 
         $url = env('NOTIFICATION_URL') . 'message';
 
         $response = Http::retry(3, 100)->post($url, [
-            'users' => $request->users,
-            'body' => $request->message,
+            'users' => $phone,
+            'body' => $message,
+            // 'users' => $request->users,
+            // 'body' => $request->message,
         ])->json();
 
         return $response;
