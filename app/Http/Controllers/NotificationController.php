@@ -36,7 +36,5 @@ class NotificationController extends Controller
         ];
 
         $response = Http::retry(3, 100)->post($url, $data)->json();
-
-        // return $response;
     }
 }
