@@ -68,7 +68,7 @@ Route::get('loan/approvals','LoanController@loanApprovalList');
 
 // Route::post('notification/message', 'NotificationController@message');
 Route::post('notification/message', function () {
-    NotificationController::message(['+2349031892712'], 'test');
+    return NotificationController::message(['+2349031892712'], 'hello');
 });
 
 // Route::fallback(function(){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -29,14 +30,16 @@ class NotificationController extends Controller
         // }
 
         $url = env('NOTIFICATION_URL') . 'message';
-
-        $response = Http::retry(3, 100)->post($url, [
+        $data = [
             'users' => $phone,
             'body' => $message,
-            // 'users' => $request->users,
-            // 'body' => $request->message,
-        ])->json();
+        ];
 
-        return $response;
+        $response = Http::retry(3, 100)->post($url, $data)->json();
+
+        // $client = new Client();
+        // $response = $client->request('POST', $url, $data);
+
+        // return $response;
     }
 }
