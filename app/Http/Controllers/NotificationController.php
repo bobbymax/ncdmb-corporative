@@ -35,10 +35,7 @@ class NotificationController extends Controller
             'body' => $message,
         ];
 
-        // $response = Http::retry(3, 100)->post($url, $data)->json();
-
-        $client = new Client(['verify' => false]);
-        $response = $client->request('POST', $url, ['json' => $data]);
+        $response = Http::retry(3, 100)->post($url, $data)->json();
 
         // return $response;
     }
