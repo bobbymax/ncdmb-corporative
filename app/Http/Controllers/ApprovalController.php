@@ -134,6 +134,7 @@ class ApprovalController extends Controller
         $roles = config('corporative.approvals');
 
         switch ($roles) {
+
             case $exco->hasRole($roles['second']) :
 
                     if ($status !== "approved") {
@@ -171,6 +172,7 @@ class ApprovalController extends Controller
                     
                     return $loan;
                 break;
+                
         }
     }
 

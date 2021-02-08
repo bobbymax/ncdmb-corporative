@@ -75,11 +75,11 @@ class BudgetController extends Controller
             ], 500);
         }
 
-        $existing = Budget::where('status', 'approved')->where('active', 1)->first();
+        $existing = Budget::where('active', 1)->first();
 
         if ($existing) {
             return response()->json([
-                'data' => null,
+                'data' => $existing,
                 'status' => 'warning',
                 'message' => 'You are not permitted to create another budget until the previous budget has been marked as closed!'
             ], 403);
