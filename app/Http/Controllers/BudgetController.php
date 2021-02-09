@@ -74,7 +74,7 @@ class BudgetController extends Controller
             ], 500);
         }
 
-        $existing = Budget::where('active', 1)->first();
+        $existing = Budget::where('active', 1);
 
         if ($existing->count() == 1) {
             return response()->json([
