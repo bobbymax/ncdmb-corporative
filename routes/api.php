@@ -36,6 +36,8 @@ Route::apiResource('contributions', 'ContributionController');
 Route::apiResource('transactions', 'TransactionController');
 Route::apiResource('wallets', 'WalletController');
 Route::apiResource('deposits', 'DepositController');
+Route::apiResource('agents', 'AgentController');
+Route::apiResource('projects', 'ProjectController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');

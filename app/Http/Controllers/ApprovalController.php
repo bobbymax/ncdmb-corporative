@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ApprovalController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -137,7 +136,8 @@ class ApprovalController extends Controller
         $roles = config('corporative.approvals');
 
         switch ($roles) {
-            case $exco->hasRole($roles['second']):
+
+            case $exco->hasRole($roles['second']) :
 
                 if ($status !== "approved") {
                     $loan->status = "denied";
@@ -175,6 +175,7 @@ class ApprovalController extends Controller
 
                 return $loan;
                 break;
+                
         }
     }
 
