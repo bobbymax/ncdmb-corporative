@@ -33,7 +33,7 @@ class AgentController extends Controller
         }
 
         return response()->json([
-            'data' => $agencies,
+            'data' => $agents,
             'status' => 'success',
             'message' => 'Vendor list'
         ], 200);
@@ -60,7 +60,6 @@ class AgentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'short_name' => 'required|string',
-            'short_name' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -75,10 +74,10 @@ class AgentController extends Controller
             'name' => $request->name,
             'label' => Str::slug($request->name),
             'short_name' => $request->short_name,
-            'code' => Str::random(8),
+            'code' => "AGT" . time(),
         ]);
 
-        if (! $agent) {
+        if (!$agent) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -103,7 +102,7 @@ class AgentController extends Controller
     {
         $agent = Agent::where('label', $agent)->first();
 
-        if (! $agent) {
+        if (!$agent) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -128,7 +127,7 @@ class AgentController extends Controller
     {
         $agent = Agent::where('label', $agent)->first();
 
-        if (! $agent) {
+        if (!$agent) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -167,7 +166,7 @@ class AgentController extends Controller
 
         $agent = Agent::where('label', $agent)->first();
 
-        if (! $agent) {
+        if (!$agent) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -178,7 +177,8 @@ class AgentController extends Controller
         $agent->update([
             'name' => $request->name,
             'label' => Str::slug($request->name),
-            'short_name' => $request->short_name
+            'short_name' => $request->short_name,
+            'code' => Str::random(8),
         ]);
 
         return response()->json([
@@ -198,7 +198,7 @@ class AgentController extends Controller
     {
         $agent = Agent::where('label', $agent)->first();
 
-        if (! $agent) {
+        if (!$agent) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
