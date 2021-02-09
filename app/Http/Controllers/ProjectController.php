@@ -22,7 +22,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::latest()->get();
+        $projects = Project::all();
 
         if ($projects->count() < 1) {
             return response()->json([
