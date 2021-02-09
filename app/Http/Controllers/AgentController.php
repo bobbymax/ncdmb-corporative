@@ -59,7 +59,8 @@ class AgentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'short_name' => 'required|string'
+            'short_name' => 'required|string',
+            'short_name' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -73,7 +74,8 @@ class AgentController extends Controller
         $agent = Agent::create([
             'name' => $request->name,
             'label' => Str::slug($request->name),
-            'short_name' => $request->short_name
+            'short_name' => $request->short_name,
+            'code' => Str::random(8),
         ]);
 
         if (! $agent) {
