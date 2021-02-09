@@ -11,7 +11,6 @@ use Carbon\Carbon;
 
 class BudgetController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -77,7 +76,7 @@ class BudgetController extends Controller
 
         $existing = Budget::where('active', 1)->first();
 
-        if ($existing) {
+        if ($existing->count() == 1) {
             return response()->json([
                 'data' => $existing,
                 'status' => 'warning',

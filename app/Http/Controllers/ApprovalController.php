@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ApprovalController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api');
