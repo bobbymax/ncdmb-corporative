@@ -53,10 +53,10 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:roles|max:255',
+            'name' => 'required|string',
         ]);
 
-        $label_exists = Role::where('label', Str::slug($request->label))->get();
+        $label_exists = Role::where('label', Str::slug($request->name))->get();
         if ($label_exists->count() >= 1) {
             return response()->json([
                 'data' => [],
