@@ -252,7 +252,8 @@ class LoanController extends Controller
         if ($loan->guarantors()->detach($request->user())) {
             $loan->guarantors()->attach($request->user(), [
                 'remarks' => $request->remarks,
-                'status' => $request->status
+                'status' => $request->status,
+                'level' => $loan->level += 1
             ]);
 
             $current = $request->user()->guaranteed()->wherePivot('status', 'approved')->get();
@@ -263,30 +264,30 @@ class LoanController extends Controller
             }
         }
 
-        $this->counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
+        // $this->counter = $loan->guarantors()->wherePivot('status', 'approved')->get();
 
 
-        if ($this->counter->count() == 3) {
+        // if ($this->counter->count() == 3) {
 
-            // $role = Role::where('label', config('corporative.approvals.first'))->first();
+        //     $role = Role::where('label', config('corporative.approvals.first'))->first();
 
-            // if (!$role) {
-            //     return response()->json([
-            //         'data' => null,
-            //         'status' => 'error',
-            //         'message' => 'Invalid input'
-            //     ], 422);
-            // }
+        //     if (!$role) {
+        //         return response()->json([
+        //             'data' => null,
+        //             'status' => 'error',
+        //             'message' => 'Invalid input'
+        //         ], 422);
+        //     }
 
-            if ($loan->approvals()->save($role->members->first())) {
-                // $loan->level += 1;
-                $loan->status = "registered";
-                $loan->save();
+        //     if ($loan->approvals()->save($role->members->first())) {
+        //         // $loan->level += 1;
+        //         $loan->status = "registered";
+        //         $loan->save();
 
-                $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
-                NotificationController::message(["+234" . $loan->member->mobile], $message);
-            }
-        }
+        //         $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
+        //         NotificationController::message(["+234" . $loan->member->mobile], $message);
+        //     }
+        // }
 
         return response()->json([
             'data' => new LoanResource($loan),
