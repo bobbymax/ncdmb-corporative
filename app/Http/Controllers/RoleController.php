@@ -54,8 +54,16 @@ class RoleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:roles|max:255',
-            'label'=>'unique:roles'
         ]);
+
+        $label_exists = Role::where('label', $request->label)->get();
+        if ($label_exists->count() >= 1) {
+            return response()->json([
+                'data' => [],
+                'status' => 'error',
+                'message' => 'This role already exists'
+            ], 422);
+        }
 
         if ($validator->fails()) {
             return response()->json([
@@ -104,7 +112,7 @@ class RoleController extends Controller
             ], 500);
         }
 
-        if (! is_array($request->roles)) {
+        if (!is_array($request->roles)) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -116,7 +124,7 @@ class RoleController extends Controller
         foreach ($request->roles as $value) {
             $role = Role::where('label', $value)->first();
 
-            if (! $role) {
+            if (!$role) {
                 return response()->json([
                     'data' => null,
                     'status' => 'error',
@@ -124,7 +132,7 @@ class RoleController extends Controller
                 ], 500);
             }
 
-            if (! in_array($role->id, $member->currentRoles())) {
+            if (!in_array($role->id, $member->currentRoles())) {
                 $member->actAs($role);
             }
         }
