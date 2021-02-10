@@ -117,7 +117,7 @@ class LoanController extends Controller
         }
 
         setlocale(LC_MONETARY, 'en_US');
-        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
+        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of " . number_format($request->amount) . " from the NCDMB";
         NotificationController::message(["+234" . auth()->user()->mobile], $message);
 
         return response()->json([
