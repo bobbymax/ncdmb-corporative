@@ -56,7 +56,7 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles|max:255',
         ]);
 
-        $label_exists = Role::where('label', $request->label)->get();
+        $label_exists = Role::where('label', Str::slug($request->label))->get();
         if ($label_exists->count() >= 1) {
             return response()->json([
                 'data' => [],
