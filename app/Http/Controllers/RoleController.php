@@ -54,7 +54,6 @@ class RoleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:roles|max:255',
-            'label' => 'unique:roles'
         ]);
 
         if ($validator->fails()) {
