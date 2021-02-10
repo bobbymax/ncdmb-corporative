@@ -76,7 +76,7 @@ class BudgetController extends Controller
 
         $existing = Budget::where('active', 1);
 
-        if ($existing->count() == 1) {
+        if ($existing->count() >= 1) {
             return response()->json([
                 'data' => $existing,
                 'status' => 'warning',
@@ -93,6 +93,7 @@ class BudgetController extends Controller
             'start' => Carbon::parse($request->start),
             'end' => Carbon::parse($request->end),
             'period' => $request->period,
+            'status' => 'pending',
         ]);
 
         return response()->json([
