@@ -268,7 +268,7 @@ class LoanController extends Controller
 
         if ($this->counter->count() == 3) {
 
-            $loan->level += 1;
+            // $loan->level += 1;
             $loan->status = "registered";
             $loan->save();
             // $role = Role::where('label', config('corporative.approvals.first'))->first();
