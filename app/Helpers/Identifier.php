@@ -45,7 +45,7 @@ class Identifier
 		}
 	}
 
-	protected function normaise()
+	protected function normalise()
 	{
 		switch ($this->type) {
 			case "third-party":
