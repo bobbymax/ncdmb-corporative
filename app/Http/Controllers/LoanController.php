@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use App\Models\Role;
-use App\Models\Guarantor;
 use App\Models\User;
-use App\Models\Transaction;
-use App\Models\Transactee;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Http\Resources\LoanResource;
 use Illuminate\Support\Facades\Validator;
@@ -75,7 +71,7 @@ class LoanController extends Controller
             'guarantors' => 'required',
         ]);
 
-        if (count($request->guarantors) < 3 || count($request->guarantors) > 3) {
+        if (count($request->guarantors) != 3) {
             return response()->json([
                 'data' => [],
                 'status' => 'error',
@@ -116,7 +112,13 @@ class LoanController extends Controller
 
                 $loan->guarantors()->attach($member);
             }
+            // $loan->status = "registered";
+            // $loan->save();
         }
+
+        setlocale(LC_MONETARY, 'en_US');
+        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
+        NotificationController::message(["+234" . auth()->user()->mobile], $message);
 
         return response()->json([
             'data' => new LoanResource($loan),
@@ -277,9 +279,12 @@ class LoanController extends Controller
             }
 
             if ($loan->approvals()->save($role->members->first())) {
-                $loan->level += 1;
+                // $loan->level += 1;
                 $loan->status = "registered";
                 $loan->save();
+
+                $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
+                NotificationController::message(["+234" . $loan->member->mobile], $message);
             }
         }
 
@@ -332,5 +337,33 @@ class LoanController extends Controller
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return 'ln' . $randomString;
+    }
+
+    public function loanApprovalList()
+    {
+        $roles = config('corporative.approvals');
+        $loans = collect();
+
+        if (auth()->user()->hasRole($roles['first'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 0)->get();
+        }
+        if (auth()->user()->hasRole($roles['second'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 1)->get();
+        }
+        if (auth()->user()->hasRole($roles['third'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 2)->get();
+        }
+        if ($loans->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found!'
+            ], 404);
+        }
+        return response()->json([
+            'data' => LoanResource::collection($loans),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
     }
 }

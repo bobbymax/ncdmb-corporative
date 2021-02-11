@@ -22,9 +22,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::latest()->get();
+        $projects = Project::all();
 
-        if ($projects->count < 1) {
+        if ($projects->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -58,9 +58,9 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|string|max:255|unique:projects',
             'agent_id' => 'required|integer',
             'title' => 'required|string|max:255',
+            'timeline' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {

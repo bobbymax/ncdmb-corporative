@@ -26,7 +26,6 @@ class ApprovalController extends Controller
      */
     public function index(Request $request)
     {
-        // return Guarantor::all();
         $loan_id = Guarantor::where([
             ['user_id', $request->user()->id],
             ['status', 'pending']
@@ -35,6 +34,10 @@ class ApprovalController extends Controller
         return response()->json(
             ApprovalResource::collection(Loan::find($loan_id->pluck('guarantorable_id')))
         );
+
+        // return response()->json([
+
+        // ]);
     }
 
     /**
@@ -98,8 +101,8 @@ class ApprovalController extends Controller
 
         $loan = Loan::where('code', $request->loan)->first();
 
-        if (! $loan) {
-            return response()->json([
+        if (!$loan) {
+            return response()->json([@
                 'data' => null,
                 'status' => 'error',
                 'message' => 'The loan code is invalid!!'
@@ -111,7 +114,7 @@ class ApprovalController extends Controller
         $trail->description = $request->description;
         $trail->action = $request->status;
 
-        if (! $loan->trails()->save($trail)) {
+        if (!$loan->trails()->save($trail)) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -136,40 +139,41 @@ class ApprovalController extends Controller
 
             case $exco->hasRole($roles['second']) :
 
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->level += 1;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                }
 
-                    $loan->save();
+                $loan->save();
 
-                    return $loan;
+                return $loan;
                 break;
 
-            case $exco->hasRole($roles['third']) :
+            case $exco->hasRole($roles['third']):
 
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->status = $status;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                    $loan->status = $status;
+                }
 
-                    $loan->save();
-                    
-                    return $loan;
+                $loan->save();
+
+                return $loan;
                 break;
-            
+
             default:
-                    if ($status !== "approved") {
-                        $loan->status = "denied";
-                    } else {
-                        $loan->level += 1;
-                    }
+                if ($status !== "approved") {
+                    $loan->status = "denied";
+                } else {
+                    $loan->level += 1;
+                }
 
-                    $loan->save();
-                    
-                    return $loan;
+                $loan->save();
+
+                return $loan;
                 break;
                 
         }

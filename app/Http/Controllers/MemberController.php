@@ -89,6 +89,15 @@ class MemberController extends Controller
             ], 500);
         }
 
+        $kin_mobile_exists = Kin::where('mobile', $request->mobile)->get();
+        if ($kin_mobile_exists->count() >= 1) {
+            return response()->json([
+                'data' => [],
+                'status' => 'error',
+                'message' => 'This mobile already exists'
+            ], 422);
+        }
+
         $member = User::create([
             'staff_no' => $request->staff_no,
             'firstname' => $request->firstname,
@@ -98,7 +107,7 @@ class MemberController extends Controller
             'password' => Hash::make($request->password),
             'location' => $request->location,
             'designation' => $request->designation,
-            'mobile' => $request->mobile,
+            'mobile' => "+234" . $request->mobile,
             'type' => $request->type,
             'date_joined' => Carbon::parse($request->date_joined),
         ]);
@@ -115,7 +124,7 @@ class MemberController extends Controller
                 'user_id' => $member->id,
                 'name' => $request->name,
                 'relationship' => $request->relationship,
-                'mobile' => $request->phone,
+                'mobile' => "+234" . $request->phone,
                 'address' => $request->address,
             ]);
         }

@@ -74,9 +74,9 @@ class BudgetController extends Controller
             ], 500);
         }
 
-        $existing = Budget::where('active', 1)->first();
+        $existing = Budget::where('active', 1);
 
-        if ($existing->count() == 1) {
+        if ($existing->count() >= 1) {
             return response()->json([
                 'data' => $existing,
                 'status' => 'warning',
@@ -93,6 +93,7 @@ class BudgetController extends Controller
             'start' => Carbon::parse($request->start),
             'end' => Carbon::parse($request->end),
             'period' => $request->period,
+            'status' => 'pending',
         ]);
 
         return response()->json([
@@ -192,7 +193,7 @@ class BudgetController extends Controller
         $budget->update([
             // 'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
-            'label' => LoanUtilController::slugify($request->title),
+            'label' => Str::slug($request->title),
             'amount' => $request->amount,
             'description' => $request->description,
             'start' => Carbon::parse($request->start),

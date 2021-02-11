@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +66,13 @@ Route::prefix('members/membership')->group(function () {
 // Dashboard endpoint
 Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
+
+Route::get('loan/approvals','LoanController@loanApprovalList');
+
+// Route::post('notification/message', 'NotificationController@message');
+Route::post('notification/message', function () {
+    return NotificationController::message(['+2349031892712'], 'hello');
+});
 
 // Route::fallback(function(){
 //     return response()->json([
