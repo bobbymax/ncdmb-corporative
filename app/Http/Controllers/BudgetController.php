@@ -233,4 +233,55 @@ class BudgetController extends Controller
             'message' => 'This budget has been deleted successfully.'
         ], 200);
     }
+
+    public function changeBudgetStatus(Request $request, $budget)
+    {
+        $validation = Validator::make($request->all(), [
+            'status' => 'required|integer',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        $budget = Budget::where('code', $budget)->first();
+        
+        if (!$budget) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'No data found'
+            ], 404);
+        }
+        
+        $status = $request->status;
+
+        if ($status === 1) {
+            $budget->update([
+                'active' => $status,
+            ]);
+    
+            return response()->json([
+                'data' => $budget,
+                'status' => 'success',
+                'message' => 'Budget has been approved'
+            ], 201);
+        }
+
+        if ($status === 0) {
+            $budget->update([
+                'active' => $status,
+            ]);
+    
+            return response()->json([
+                'data' => $budget,
+                'status' => 'success',
+                'message' => 'Budget has been disapproved'
+            ], 201);
+        }
+    }
 }
