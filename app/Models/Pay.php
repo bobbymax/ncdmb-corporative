@@ -9,6 +9,11 @@ class Pay extends Model
 {
     use HasFactory;
 
+    public function getRouteKeyName()
+    {
+    	return 'trxRef';
+    }
+
     public function payable()
     {
     	return $this->morphTo();

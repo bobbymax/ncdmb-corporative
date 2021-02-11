@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pay;
 use App\Models\Beneficiary;
 use App\Helpers\Identifier;
+use App\Http\Resources\PayResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -109,7 +110,7 @@ class PayController extends Controller
         $this->sector->payments()->save($payment);
 
         return response()->json([
-            'data' => $payment,
+            'data' => new PayResource($payment),
             'status' => 'success',
             'message' => 'Payment has been created successfully!'
         ], 201);
@@ -121,9 +122,23 @@ class PayController extends Controller
      * @param  \App\Models\Pay  $payment
      * @return \Illuminate\Http\Response
      */
-    public function show(Pay $payment)
+    public function show($payment)
     {
-        //
+        $payment = Pay::where('trxRef', $payment)->first();
+
+        if (! $payment) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'The transaction code is invalid'
+            ], 422);
+        }
+
+        return response()->json([
+            'data' => new PayResource($payment),
+            'status' => 'success',
+            'message' => 'Payment details'
+        ], 200);
     }
 
     /**
