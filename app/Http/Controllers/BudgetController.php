@@ -32,7 +32,7 @@ class BudgetController extends Controller
         }
 
         return response()->json([
-            'data' => $budgets,
+            'data' => BudgetResource::collection($budgets),
             'status' => 'success',
             'message' => 'Budget list'
         ], 200);
@@ -237,7 +237,7 @@ class BudgetController extends Controller
     public function changeBudgetStatus(Request $request, $budget)
     {
         $validation = Validator::make($request->all(), [
-            'status' => 'required|integer',
+            'status' => 'required|boolean',
         ]);
 
         if ($validation->fails()) {
@@ -249,7 +249,7 @@ class BudgetController extends Controller
         }
 
         $budget = Budget::where('code', $budget)->first();
-        
+
         if (!$budget) {
             return response()->json([
                 'data' => null,
@@ -257,30 +257,34 @@ class BudgetController extends Controller
                 'message' => 'No data found'
             ], 404);
         }
-        
+
         $status = $request->status;
 
-        if ($status === 1) {
+        if ($status === true) {
             $budget->update([
                 'active' => $status,
             ]);
-    
+
             return response()->json([
-                'data' => $budget,
+                'data' => new BudgetResource($budget),
                 'status' => 'success',
                 'message' => 'Budget has been approved'
             ], 201);
-        }
-
-        if ($status === 0) {
+        } elseif ($status === false) {
             $budget->update([
                 'active' => $status,
             ]);
-    
+
             return response()->json([
-                'data' => $budget,
+                'data' => new BudgetResource($budget),
                 'status' => 'success',
                 'message' => 'Budget has been disapproved'
+            ], 201);
+        }else{
+            return response()->json([
+                'data' => [],
+                'status' => 'error',
+                'message' => 'Invalid budget status'
             ], 201);
         }
     }

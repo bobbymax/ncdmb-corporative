@@ -22,6 +22,8 @@ class BudgetResource extends JsonResource
             'amount' => $this->amount,
             'period' => $this->period,
             'status' => $this->status,
+            'start' => $this->start,
+            'end' => $this->end,
             'active' => $this->active == 1 ? true : false
         ];
     }
