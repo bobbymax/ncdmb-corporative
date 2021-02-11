@@ -76,7 +76,8 @@ Route::post('notification/message', function () {
 
 Route::patch('budgets/status/{status}', 'BudgetController@changeBudgetStatus');
 
-// Route::fallback(function(){
-//     return response()->json([
-//         'message' => 'Page Not Found. If error persists, contact info@ncdmb.com'], 404);
-// });
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact info@ncdmb.com'
+    ], 404);
+});

@@ -71,7 +71,7 @@ class MemberController extends Controller
             'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
             'mobile' => 'required|unique:users',
-            'type' => 'required|string|max:255',
+            'type' => 'required|string|in:member',
             'name' => 'required|string|max:255',
             'relationship' => 'required|string|max:255',
             'password' => 'required|string|min:8',
