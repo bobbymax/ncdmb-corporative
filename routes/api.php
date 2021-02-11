@@ -73,6 +73,8 @@ Route::post('notification/message', function () {
     return NotificationController::message(['+2349031892712'], 'hello');
 });
 
+Route::post('budget/status', 'BudgetController@status');
+
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Page Not Found. If error persists, contact info@ncdmb.com'], 404);
