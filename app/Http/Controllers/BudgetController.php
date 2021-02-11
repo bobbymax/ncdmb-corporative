@@ -57,9 +57,7 @@ class BudgetController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'unique:budgets',
             'title' => 'required|string|max:255|unique:budgets',
-            'label' => 'unique:budgets',
             'amount' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -74,7 +72,7 @@ class BudgetController extends Controller
             ], 500);
         }
 
-        $existing = Budget::where('active', 1);
+        $existing = Budget::where('active', 1)->get();
 
         if ($existing->count() >= 1) {
             return response()->json([
@@ -85,7 +83,7 @@ class BudgetController extends Controller
         }
 
         $budget = Budget::create([
-            'code' => 'bg' . LoanUtilController::generateCode(),
+            'code' => 'BGT' . LoanUtilController::generateCode(),
             'title' => $request->title,
             'label' => Str::slug($request->title),
             'amount' => $request->amount,
@@ -163,9 +161,7 @@ class BudgetController extends Controller
     public function update(Request $request, $budget)
     {
         $validation = Validator::make($request->all(), [
-            // 'code' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            // 'label' => 'required|string|max:255',
             'amount' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -191,7 +187,6 @@ class BudgetController extends Controller
         }
 
         $budget->update([
-            // 'code' => 'bg' . LoanUtilController::generateCode(),
             'title' => $request->title,
             'label' => Str::slug($request->title),
             'amount' => $request->amount,

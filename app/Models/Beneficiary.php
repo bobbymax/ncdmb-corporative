@@ -9,6 +9,13 @@ class Beneficiary extends Model
 {
     use HasFactory;
 
+    protected $guarded = [''];
+
+    public function getRouteKeyName()
+    {
+        return 'payment_code';
+    }
+
     public function payments()
     {
     	return $this->hasMany(Pay::class);

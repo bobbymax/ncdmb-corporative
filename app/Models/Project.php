@@ -15,7 +15,7 @@ class Project extends Model
 
     public function getRouteKeyName()
     {
-        return 'label';
+        return 'code';
     }
 
     public function vendor()
@@ -26,5 +26,10 @@ class Project extends Model
     public function images()
     {
     	return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
     }
 }

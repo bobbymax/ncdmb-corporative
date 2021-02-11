@@ -18,4 +18,9 @@ class Pay extends Model
     {
     	return $this->belongsTo(Beneficiary::class, 'beneficiary_id');
     }
+
+    public function initiator()
+    {
+    	return $this->belongsTo(User::class, 'user_id');
+    }
 }

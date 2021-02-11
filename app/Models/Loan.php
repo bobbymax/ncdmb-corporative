@@ -52,8 +52,8 @@ class Loan extends Model
         return $this->morphMany(Trail::class, 'trailable');
     }
 
-    public function payment()
+    public function payments()
     {
-        return $this->morphMany(Payment::class, 'paymentable');
+        return $this->morphMany(Payment::class, 'payable');
     }
 }
