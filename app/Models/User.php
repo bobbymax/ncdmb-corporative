@@ -116,6 +116,16 @@ class User extends Authenticatable
         return $this->roles()->save($role);
     }
 
+    public function beneficiary()
+    {
+        return $this->morphOne(Beneficiary::class, 'beneficiaryable');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Pay::class);
+    }
+
     public function hasRole($role)
     {
         if (is_string($role)) {

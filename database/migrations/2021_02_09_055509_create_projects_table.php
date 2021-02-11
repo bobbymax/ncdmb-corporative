@@ -24,8 +24,9 @@ class CreateProjectsTable extends Migration
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
             $table->integer('timeline')->default(0);
-            $table->enum('status', ['pending', 'inProgress', 'inReview', 'verified', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'in-progress', 'in-review', 'verified', 'completed'])->default('pending');
             $table->timestamps();
         });
     }

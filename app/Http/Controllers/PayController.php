@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Models\Pay;
+use App\Models\Beneficiary;
+use App\Helpers\Identifier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PayController extends Controller
 {
+    protected $beneficiary, $identity, $sector;
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,21 @@ class PayController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Pay::all();
+
+        if ($payments->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $payments,
+            'status' => 'success',
+            'message' => 'Payment List'
+        ], 200);
     }
 
     /**
@@ -27,6 +51,11 @@ class PayController extends Controller
         //
     }
 
+    public function identifyBeneficiary($identifier)
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -35,16 +64,64 @@ class PayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'identifier' => 'required',
+            'code' => 'required',
+            'title' => 'required|string|max:255',
+            'amount' => 'required|integer',
+            'type' => 'required|string|in:member,staff,third-party',
+            'method' => 'required|string|in:loan,project'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        if ($request->payment_code !== null) {
+            $this->beneficiary = Beneficiary::where('payment_code', $request->payment_code)->first();   
+        }
+
+        if (! $this->beneficiary) {
+
+            $this->identity = (new Identifier($request->type, $request->identifier, $request->method, $request->code))->init();
+
+            $this->beneficiary = new Beneficiary;
+            $this->beneficiary->payment_code = "BEN" . time();
+
+            $this->identity->beneficiary()->save($this->beneficiary);
+        }
+
+        $this->sector = (new Identifier($request->type, $request->identifier, $request->method, $request->code))->meth();
+
+        $payment = new Pay;
+        $payment->user_id = $request->user()->id;
+        $payment->beneficiary_id = $this->beneficiary->id;
+        $payment->trxRef = "PYMT" . time();
+        $payment->title = $request->title;
+        $payment->label = Str::slug($request->title);
+        $payment->amount = $request->amount;
+        $payment->type = $request->type;
+
+        $this->sector->payments()->save($payment);
+
+        return response()->json([
+            'data' => $payment,
+            'status' => 'success',
+            'message' => 'Payment has been created successfully!'
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Pay  $payment
      * @return \Illuminate\Http\Response
      */
-    public function show(Payment $payment)
+    public function show(Pay $payment)
     {
         //
     }
@@ -52,10 +129,10 @@ class PayController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Pay  $payment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Payment $payment)
+    public function edit(Pay $payment)
     {
         //
     }
@@ -64,10 +141,10 @@ class PayController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Pay  $payment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Payment $payment)
+    public function update(Request $request, Pay $payment)
     {
         //
     }
@@ -75,10 +152,10 @@ class PayController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Pay  $payment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payment $payment)
+    public function destroy(Pay $payment)
     {
         //
     }

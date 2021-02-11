@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Agent extends Model
+class Beneficiary extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,16 @@ class Agent extends Model
 
     public function getRouteKeyName()
     {
-    	return 'label';
+        return 'payment_code';
     }
 
-    public function beneficiary()
+    public function payments()
     {
-        return $this->morphOne(Beneficiary::class, 'beneficiaryable');
+    	return $this->hasMany(Pay::class);
+    }
+
+    public function beneficiaryable()
+    {
+    	return $this->morphTo();
     }
 }
