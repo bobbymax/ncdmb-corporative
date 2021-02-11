@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Agent extends Model
+class Pay extends Model
 {
     use HasFactory;
 
-    protected $guarded = [''];
-
-    public function getRouteKeyName()
+    public function payable()
     {
-    	return 'label';
+    	return $this->morphTo();
     }
 
     public function beneficiary()
     {
-        return $this->morphOne(Beneficiary::class, 'beneficiaryable');
+    	return $this->belongsTo(Beneficiary::class, 'beneficiary_id');
     }
 }

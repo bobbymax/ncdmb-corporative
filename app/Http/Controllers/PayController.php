@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PayController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,21 @@ class PayController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::all();
+
+        if ($payments->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $payments,
+            'status' => 'success',
+            'message' => 'Payment List'
+        ], 200);
     }
 
     /**
@@ -35,7 +55,18 @@ class PayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $validator = Validator::make($request->all(), [
+        //     ''
+        // ]);
+
+        $payment = Payment::create([
+            'code' => "THDPTY" . time(),
+            'user_id' => $request->user()->id,
+
+        ]);
+
+        $payment = new Payment;
+        
     }
 
     /**
