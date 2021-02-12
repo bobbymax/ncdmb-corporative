@@ -59,7 +59,7 @@ class ProjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'agent_id' => 'required|integer',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:projects',
             'timeline' => 'required|int',
         ]);
 
