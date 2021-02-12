@@ -116,8 +116,7 @@ class LoanController extends Controller
             // $loan->save();
         }
 
-        // $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
-        NotificationController::message(["+234" . auth()->user()->mobile]);
+        NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
 
         return response()->json([
             'data' => new LoanResource($loan),
@@ -284,9 +283,8 @@ class LoanController extends Controller
             //     // $loan->level += 1;
             //     $loan->status = "registered";
             //     $loan->save();
-
-            $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
-            NotificationController::message(["+234" . $loan->member->mobile], $message);
+            
+            NotificationController::messageAfterLoanRegistered([$loan->member->mobile], $loan);
             // }
         }
 

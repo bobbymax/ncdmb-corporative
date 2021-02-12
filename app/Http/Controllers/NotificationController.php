@@ -14,24 +14,24 @@ class NotificationController extends Controller
         $this->middleware('auth:api');
     }
 
-    public static function message($phone)
+    public static function messageAfterLoanRequest($phone, $amount)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'users' => 'required|array',
-        //     'message' => 'required|string|max:255'
-        // ]);
 
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         'data' => $validator->errors(),
-        //         'status' => 'error',
-        //         'message' => 'Please fix the errors!'
-        //     ], 500);
-        // }
+        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->surname . " you've requested a loan of ₦" . number_format($amount) . " from the NCDMB";
 
-        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
-        NotificationController::message(["+234" . auth()->user()->mobile], $message);
+        self::message($phone, $message);
+    }
 
+    public static function messageAfterLoanRegistered($phone, $loan)
+    {
+
+        $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
+
+        self::message($phone, $message);
+    }
+
+    public static function message($phone, $message)
+    {
         $url = env('NOTIFICATION_URL') . 'message';
         $data = [
             'users' => $phone,
