@@ -36,7 +36,7 @@ class PayController extends Controller
         }
 
         return response()->json([
-            'data' => $payments,
+            'data' => PayResource::collection($payments),
             'status' => 'success',
             'message' => 'Payment List'
         ], 200);

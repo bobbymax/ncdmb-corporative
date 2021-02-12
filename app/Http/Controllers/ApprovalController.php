@@ -34,10 +34,6 @@ class ApprovalController extends Controller
         return response()->json(
             ApprovalResource::collection(Loan::find($loan_id->pluck('guarantorable_id')))
         );
-
-        // return response()->json([
-
-        // ]);
     }
 
     /**
