@@ -61,7 +61,7 @@ class PayController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response@
      */
     public function store(Request $request)
     {
@@ -79,7 +79,7 @@ class PayController extends Controller
                 'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors:'
-            ], 500);
+            ], 422);
         }
 
         if ($request->payment_code !== null) {

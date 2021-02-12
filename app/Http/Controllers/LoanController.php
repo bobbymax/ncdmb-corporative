@@ -114,9 +114,7 @@ class LoanController extends Controller
             }
         }
 
-        setlocale(LC_MONETARY, 'en_US');
-        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
-        NotificationController::message(["+234" . auth()->user()->mobile], $message);
+        NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
 
         return response()->json([
             'data' => new LoanResource($loan),
@@ -285,8 +283,7 @@ class LoanController extends Controller
                 $loan->save();
             }
 
-            $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
-            NotificationController::message(["+234" . $loan->member->mobile], $message);
+            NotificationController::messageAfterLoanRegistered([$loan->member->mobile], $loan);
         }
 
         return response()->json([
@@ -346,13 +343,13 @@ class LoanController extends Controller
         $loans = collect();
 
         if (auth()->user()->hasRole($roles['first'])) {
-            $loans = Loan::where('status', 'registered')->where('level', 0)->get();
-        }
-        if (auth()->user()->hasRole($roles['second'])) {
             $loans = Loan::where('status', 'registered')->where('level', 1)->get();
         }
-        if (auth()->user()->hasRole($roles['third'])) {
+        if (auth()->user()->hasRole($roles['second'])) {
             $loans = Loan::where('status', 'registered')->where('level', 2)->get();
+        }
+        if (auth()->user()->hasRole($roles['third'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 3)->get();
         }
         if ($loans->count() < 1) {
             return response()->json([

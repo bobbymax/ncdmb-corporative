@@ -107,7 +107,7 @@ class MemberController extends Controller
             'password' => Hash::make($request->password),
             'location' => $request->location,
             'designation' => $request->designation,
-            'mobile' => "+234" . $request->mobile,
+            'mobile' => $request->mobile,
             'type' => $request->type,
             'date_joined' => Carbon::parse($request->date_joined),
         ]);
@@ -124,7 +124,7 @@ class MemberController extends Controller
                 'user_id' => $member->id,
                 'name' => $request->name,
                 'relationship' => $request->relationship,
-                'mobile' => "+234" . $request->phone,
+                'mobile' => $request->phone,
                 'address' => $request->address,
             ]);
         }

@@ -59,8 +59,8 @@ class ProjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'agent_id' => 'required|integer',
-            'title' => 'required|string|max:255',
-            'timeline' => 'required|boolean',
+            'title' => 'required|string|max:255|unique:projects',
+            'timeline' => 'required|int',
         ]);
 
         if ($validator->fails()) {
@@ -159,6 +159,7 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'agent_id' => 'required|integer',
             'title' => 'required|string|max:255',
+            'timeline' => 'required|int|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -182,9 +183,6 @@ class ProjectController extends Controller
         $project->update([
             'agent_id' => $request->agent_id,
             'title' => $request->title,
-            'label' => Str::slug($request->title),
-            'start_date' => Carbon::parse($request->start_date),
-            'end_date' => Carbon::parse($request->end_date),
             'timeline' => $request->timeline,
         ]);
 
