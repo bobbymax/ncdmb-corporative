@@ -78,6 +78,7 @@ class ProjectController extends Controller
             'label' => Str::slug($request->title),
             'start_date' => Carbon::parse($request->start_date),
             'end_date' => Carbon::parse($request->end_date),
+            'amount' => $request->amount,
             'timeline' => $request->timeline,
         ]);
 
