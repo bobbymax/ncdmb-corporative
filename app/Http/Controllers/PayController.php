@@ -79,7 +79,7 @@ class PayController extends Controller
                 'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors:'
-            ], 500);
+            ], 422);
         }
 
         if ($request->payment_code !== null) {
