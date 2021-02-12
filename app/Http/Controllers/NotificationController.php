@@ -14,7 +14,7 @@ class NotificationController extends Controller
         $this->middleware('auth:api');
     }
 
-    public static function message($phone, $message)
+    public static function message($phone)
     {
         // $validator = Validator::make($request->all(), [
         //     'users' => 'required|array',
@@ -28,6 +28,9 @@ class NotificationController extends Controller
         //         'message' => 'Please fix the errors!'
         //     ], 500);
         // }
+
+        $message = "Hello, " . auth()->user()->firstname . " " . auth()->user()->lastname . " you've requested a loan of ₦" . number_format($request->amount) . " from the NCDMB";
+        NotificationController::message(["+234" . auth()->user()->mobile], $message);
 
         $url = env('NOTIFICATION_URL') . 'message';
         $data = [

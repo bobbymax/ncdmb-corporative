@@ -74,7 +74,7 @@ Route::post('notification/message', function () {
     return NotificationController::message(['+2349031892712'], 'hello');
 });
 
-Route::patch('budgets/status/{status}', 'BudgetController@changeBudgetStatus');
+Route::patch('budgets/status/{budget}', 'BudgetController@changeBudgetStatus');
 
 Route::fallback(function () {
     return response()->json([

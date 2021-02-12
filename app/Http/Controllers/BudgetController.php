@@ -69,7 +69,7 @@ class BudgetController extends Controller
                 'data' => $validation->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors:'
-            ], 500);
+            ], 422);
         }
 
         $existing = Budget::where('active', 1)->get();
