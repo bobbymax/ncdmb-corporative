@@ -19,7 +19,7 @@ class AddColumnsToUsersTable extends Migration
             $table->string('designation')->nullable()->after('staff_no');
             $table->string('middlename')->nullable()->after('firstname');
             $table->string('surname')->after('middlename');
-            $table->bigInteger('mobile')->unique()->nullable()->after('email');
+            $table->string('mobile')->unique()->nullable()->after('email');
             $table->enum('type', ['member', 'exco'])->default('member')->after('mobile');
             $table->date('date_joined')->nullable()->after('type');
             $table->enum('status', ['active', 'inactive'])->default('active')->after('date_joined');

@@ -25,7 +25,7 @@ class NotificationController extends Controller
     public static function messageAfterLoanRegistered($phone, $loan)
     {
 
-        $message = "Hello, " . $loan->member->firstname . " " . $loan->member->lastname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
+        $message = "Hello, " . $loan->member->firstname . " " . $loan->member->surname . " your loan of " . $loan->code . " for the purpose of " . $loan->reason . " has been registered";
 
         self::message($phone, $message);
     }

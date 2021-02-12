@@ -112,8 +112,6 @@ class LoanController extends Controller
 
                 $loan->guarantors()->attach($member);
             }
-            // $loan->status = "registered";
-            // $loan->save();
         }
 
         NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
@@ -267,25 +265,25 @@ class LoanController extends Controller
         if ($this->counter->count() == 3) {
 
             // $loan->level += 1;
-            $loan->status = "registered";
-            $loan->save();
-            // $role = Role::where('label', config('corporative.approvals.first'))->first();
+            // $loan->status = "registered";
+            // $loan->save();
+            $role = Role::where('label', config('corporative.approvals.first'))->first();
 
-            // if (!$role) {
-            //     return response()->json([
-            //         'data' => null,
-            //         'status' => 'error',
-            //         'message' => 'Invalid input'
-            //     ], 422);
-            // }
+            if (! $role) {
+                return response()->json([
+                    'data' => null,
+                    'status' => 'error',
+                    'message' => 'Invalid input'
+                ], 422);
+            }
 
-            // if ($loan->approvals()->save($role->members->first())) {
-            //     // $loan->level += 1;
-            //     $loan->status = "registered";
-            //     $loan->save();
-            
+            if ($loan->approvals()->save($role->members->first())) {
+                $loan->level += 1;
+                $loan->status = "registered";
+                $loan->save();
+            }
+
             NotificationController::messageAfterLoanRegistered([$loan->member->mobile], $loan);
-            // }
         }
 
         return response()->json([
@@ -345,13 +343,13 @@ class LoanController extends Controller
         $loans = collect();
 
         if (auth()->user()->hasRole($roles['first'])) {
-            $loans = Loan::where('status', 'registered')->where('level', 0)->get();
-        }
-        if (auth()->user()->hasRole($roles['second'])) {
             $loans = Loan::where('status', 'registered')->where('level', 1)->get();
         }
-        if (auth()->user()->hasRole($roles['third'])) {
+        if (auth()->user()->hasRole($roles['second'])) {
             $loans = Loan::where('status', 'registered')->where('level', 2)->get();
+        }
+        if (auth()->user()->hasRole($roles['third'])) {
+            $loans = Loan::where('status', 'registered')->where('level', 3)->get();
         }
         if ($loans->count() < 1) {
             return response()->json([

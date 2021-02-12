@@ -17,7 +17,7 @@ use App\Models\Loan;
 */
 
 Route::get('/', function () {
-    //
+    dd('working');
 });
 
 Auth::routes();
