@@ -16,6 +16,11 @@ class Agent extends Model
     	return 'label';
     }
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
     public function beneficiary()
     {
         return $this->morphOne(Beneficiary::class, 'beneficiaryable');

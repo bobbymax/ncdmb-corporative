@@ -7,5 +7,9 @@ return [
 		'third' => 'president'
 	],
 
+	'payment' => [
+		'types' => ['third-party', 'member', 'staff']
+	],
+
 	'superAdmin' => 'administrator',
 ];

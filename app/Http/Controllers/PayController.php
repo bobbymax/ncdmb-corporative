@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Pay;
 use App\Models\Beneficiary;
+use App\Models\Agent;
+use App\Models\User;
+use App\Models\Project;
 use App\Helpers\Identifier;
 use App\Http\Resources\PayResource;
 use Illuminate\Http\Request;
@@ -52,9 +55,74 @@ class PayController extends Controller
         //
     }
 
-    public function identifyBeneficiary($identifier)
+    /**
+     * Get Beneficiary for payment
+     */
+    public function identifyBeneficiary($type)
     {
-        //
+        if (! in_array($type, config('corporative.payment.types'))) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid payment type'
+            ], 422);
+        }
+
+        return response()->json([
+            'data' => $this->getBeneficiary($type),
+            'status' => 'success',
+            'message' => 'Beneficiary list'
+        ], 200);
+    }
+
+    private function getBeneficiary($type)
+    {
+        switch ($type) {
+            case "third-party":
+                return Agent::all();
+                break;
+            
+            default:
+                return User::latest()->get();
+                break;
+        }
+    }
+
+    public function getDependencies(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'identifier' => 'required',
+            'method' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix this errors'
+            ], 500);
+        }
+
+        return response()->json([
+            'data' => $this->splitter($request->all()),
+            'status' => 'success',
+            'message' => 'Beneficiary dependencies'
+        ], 200);
+    }
+
+    private function splitter(array $data)
+    {
+        switch ($data['method']) {
+            case "project":
+                $beneficiary = Agent::where('code', $data['identifier'])->first();
+                return $beneficiary->projects->where('status', '!=', 'completed')->get();
+                break;
+            
+            default:
+                $beneficiary = User::where('staff_no', $data['identifier'])->first();
+                return $beneficiary->loans->where('staus', 'disbursed')->get();
+                break;
+        }
     }
 
     /**

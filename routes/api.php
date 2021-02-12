@@ -63,6 +63,9 @@ Route::prefix('members/membership')->group(function () {
     Route::patch('/assign', 'MemberController@assignNumber');
 });
 
+Route::get('beneficiary/payment/{type}/get', 'PayController@identifyBeneficiary');
+Route::post('beneficiary/dependencies', 'PayController@getDependencies');
+
 // Dashboard endpoint
 Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
