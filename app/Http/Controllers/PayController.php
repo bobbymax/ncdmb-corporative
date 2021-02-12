@@ -84,17 +84,18 @@ class PayController extends Controller
 
         if ($request->payment_code !== null) {
             $this->beneficiary = Beneficiary::where('payment_code', $request->payment_code)->first();   
-        }
-
-        if (! $this->beneficiary) {
-
+        } else {
             $this->identity = (new Identifier($request->type, $request->identifier, $request->method, $request->code))->init();
 
-            $this->beneficiary = new Beneficiary;
-            $this->beneficiary->payment_code = "BEN" . time();
-
-            $this->identity->beneficiary()->save($this->beneficiary);
+            if (! is_object($this->identity->beneficiary)) {
+                $this->beneficiary = new Beneficiary;
+                $this->beneficiary->payment_code = "BEN" . time();
+                $this->identity->beneficiary()->save($this->beneficiary);   
+            } else {
+                $this->beneficiary = $this->identity;
+            }
         }
+
 
         $this->sector = (new Identifier($request->type, $request->identifier, $request->method, $request->code))->meth();
 

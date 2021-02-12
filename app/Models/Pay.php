@@ -9,6 +9,8 @@ class Pay extends Model
 {
     use HasFactory;
 
+    // protected $table = "pays";
+
     public function getRouteKeyName()
     {
     	return 'trxRef';

@@ -112,8 +112,6 @@ class LoanController extends Controller
 
                 $loan->guarantors()->attach($member);
             }
-            // $loan->status = "registered";
-            // $loan->save();
         }
 
         setlocale(LC_MONETARY, 'en_US');
