@@ -105,7 +105,7 @@ class PayController extends Controller
 
         return response()->json([
             'data' => $this->splitter($request->all()),
-            'status' => 'succe@ss',
+            'status' => 'success',
             'message' => 'Beneficiary dependencies'
         ], 200);
     }
@@ -120,7 +120,7 @@ class PayController extends Controller
 
             default:
                 $beneficiary = User::where('staff_no', $data['identifier'])->first();
-                return $beneficiary->loans->where('status', 'disbursed'); //->get();
+                return $beneficiary->loans->where('staus', 'disbursed'); //->get();
                 break;
         }
     }
