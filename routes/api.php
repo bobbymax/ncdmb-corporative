@@ -18,6 +18,8 @@ Route::post('online/deposit', 'PaymentController@onlineDeposit');
 Route::post('bank/deposit', 'PaymentController@bankDeposit');
 Route::post('verify/member/payment', 'PaymentController@verifyPayment');
 
+Route::post('import/members', 'MemberController@importMembers');
+
 
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
