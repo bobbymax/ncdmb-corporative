@@ -11,14 +11,40 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use App\Imports\MemberImport;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Excel;
 
 class MemberController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api')->except('store');
+    }
+
+
+    public function importMembers(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the error!'
+            ], 500);
+        }
+
+        $members = Excel::import(new MemberImport, $request->file);
+
+        return response()->json([
+            'data' => UserResource::collection($members),
+            'status' => 'success',
+            'message' => 'Members records have been created successfully!'
+        ], 201);
     }
 
     /**
@@ -30,6 +56,7 @@ class MemberController extends Controller
     {
         $members = User::with(['roles', 'kin', 'contribution', 'wallet']);
         $resource = UserResource::collection($members->latest()->get());
+
         if ($resource->count() < 1) {
             return response()->json([
                 'data' => null,
@@ -71,7 +98,7 @@ class MemberController extends Controller
             'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
             'mobile' => 'required|unique:users',
-            'type' => 'required|string|in:member',
+            'type' => 'required|string|in:member,exco',
             'name' => 'required|string|max:255',
             'relationship' => 'required|string|max:255',
             'password' => 'required|string|min:8',

@@ -120,7 +120,7 @@ class PayController extends Controller
 
             default:
                 $beneficiary = User::where('staff_no', $data['identifier'])->first();
-                return $beneficiary->loans->where('staus', 'disbursed'); //->get();
+                return $beneficiary->loans->where('status', 'disbursed')->get();
                 break;
         }
     }
