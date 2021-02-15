@@ -115,12 +115,12 @@ class PayController extends Controller
         switch ($data['method']) {
             case "project":
                 $beneficiary = Agent::where('code', $data['identifier'])->first();
-                return $beneficiary->projects->where('status', '!=', 'completed')->get();
+                return $beneficiary->projects;
                 break;
             
             default:
                 $beneficiary = User::where('staff_no', $data['identifier'])->first();
-                return $beneficiary->loans->where('status', 'disbursed')->get();
+                return $beneficiary->loans;
                 break;
         }
     }
