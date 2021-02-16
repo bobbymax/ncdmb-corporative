@@ -23,8 +23,8 @@ Route::post('import/members', 'MemberController@importMembers');
 
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
-Route::apiResource('expenditures', 'ExpenditureController');
-Route::apiResource('categories', 'CategoryController');
+Route::apiResource('budgetHeads', 'BudgetHeadController');
+Route::apiResource('loanCategories', 'LoanCategoryController');
 Route::apiResource('groups', 'GroupController');
 Route::apiResource('guarantors', 'GuarantorController');
 Route::apiResource('investments', 'InvestmentController');

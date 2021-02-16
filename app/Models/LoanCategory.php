@@ -20,4 +20,9 @@ class LoanCategory extends Model
     {
     	return $this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
+
+    public function loans()
+    {
+    	return $this->hasMany(Loan::class);
+    }
 }
