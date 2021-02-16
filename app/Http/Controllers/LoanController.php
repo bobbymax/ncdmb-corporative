@@ -178,7 +178,7 @@ class LoanController extends Controller
     public function update(Request $request, $loan)
     {
         $validation = Validator::make($request->all(), [
-            'category_id' => 'required|integer',
+            'loan_category_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -203,7 +203,7 @@ class LoanController extends Controller
         }
 
         $loan->update([
-            'category_id' => $request->category_id,
+            'loan_category_id' => $request->loan_category_id,
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),
