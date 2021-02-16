@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Str;
 use App\Models\Category;
+use App\Models\LoanCategory;
 // use App\Models\Expenditure;
 // use App\Models\User;
 // use Carbon\Carbon;
@@ -12,11 +13,11 @@ use App\Models\Category;
 class BudgetChecker
 {
 
-	protected $category, $amount;
+	protected $loanCategory, $amount;
 
-	public function __construct(Category $category, $amount)
+	public function __construct(LoanCategory $loanCategory, $amount)
 	{
-		$this->category = $category;
+		$this->loanCategory = $loanCategory;
 		$this->amount = $amount;
 	}
 
@@ -31,14 +32,14 @@ class BudgetChecker
 
 	private function computeInterest()
 	{
-		$this->amount * ($this->category->interest / 100) + $this->amount;
+		return $this->amount * ($this->loanCategory->interest / 100) + $this->amount;
 	}
 
 	private function availableFunds()
 	{
-		$funds = $this->getCategoryExpenditureDiff() >= $this->category->limit;
+		// $funds = $this->getCategoryExpenditureDiff() >= $this->category->limit;
 
-		if (! $funds) {
+		if ($this->getBalance() < $this->amount) {
 			return response()->json([
 				'data' => false,
 				'status' => 'warning',
@@ -55,7 +56,7 @@ class BudgetChecker
 
 	private function loanLimitCheck()
 	{
-		$limiter = $this->amount <= $this->category->limit;
+		$limiter = $this->amount <= $this->loanCategory->limit;
 
 		if (! $limiter) {
 			return response()->json([
@@ -91,18 +92,18 @@ class BudgetChecker
 		], 200);
 	}
 
-	private function getCategoryExpenditureDiff()
+	private function getBalance()
 	{
-		return $this->getCategoryExpenditureTotal() - $this->getCategoryExpenditureBalance();
+		return $this->loanCategory->balance;
 	}
 
-	private function getCategoryExpenditureTotal()
-	{
-		return $this->category->expenditure->amount;
-	}
+	// private function getCategoryExpenditureTotal()
+	// {
+	// 	return $this->category->expenditure->amount;
+	// }
 
-	private function getCategoryExpenditureBalance()
-	{
-		return $this->category->expenditure->balance;
-	}
+	// private function getCategoryExpenditureBalance()
+	// {
+	// 	return $this->category->expenditure->balance;
+	// }
 }

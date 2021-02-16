@@ -20,9 +20,6 @@ class CreateCategoriesTable extends Migration
             $table->string('path')->nullable();
             $table->string('module')->nullable();
             $table->text('description')->nullable();
-            $table->integer('interest')->default(0);
-            $table->enum('frequency', ['na', 'monthly', 'annually', 'special', 'rated'])->default('na');
-            $table->boolean('fundable')->default(false);
             $table->timestamps();
         });
     }

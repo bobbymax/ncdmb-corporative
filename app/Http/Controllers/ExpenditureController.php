@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expenditure;
 use App\Models\Budget;
-use App\Models\Category;
+use App\Models\LoanCategory;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use App\Helpers\LoanCalculator;
@@ -56,7 +56,6 @@ class ExpenditureController extends Controller
 
     public function budgetChecker(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'category' => 'required|integer',
             'amount' => 'required|integer'
@@ -70,9 +69,9 @@ class ExpenditureController extends Controller
             ], 505);
         }
 
-        $category = Category::find($request->category);
+        $loanCategory = LoanCategory::find($request->category);
 
-        if (!$category) {
+        if (! $loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -80,7 +79,7 @@ class ExpenditureController extends Controller
             ], 422);
         }
 
-        $results = (new BudgetChecker($category, $request->amount))->init();
+        $results = (new BudgetChecker($loanCategory, $request->amount))->init();
 
         return response()->json([
             'data' => $results,
@@ -93,7 +92,7 @@ class ExpenditureController extends Controller
     {
         $loan = Loan::where('code', $loan)->first();
 
-        if (!$loan) {
+        if (! $loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -118,56 +117,56 @@ class ExpenditureController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), [
-            'budget_id' => 'required|integer',
-            'category_id' => 'required|integer',
-            'title' => 'required|string|max:255|unique:budgets',
-            'label' => 'unique:expenditures',
-            'code' => 'unique:expenditures',
-            'amount' => 'required|integer'
-        ]);
+        // $validation = Validator::make($request->all(), [
+        //     'budget_id' => 'required|integer',
+        //     'category_id' => 'required|integer',
+        //     'title' => 'required|string|max:255|unique:budgets',
+        //     'label' => 'unique:expenditures',
+        //     'code' => 'unique:expenditures',
+        //     'amount' => 'required|integer'
+        // ]);
 
-        if ($validation->fails()) {
-            return response()->json([
-                'data' => $validation->errors(),
-                'status' => 'error',
-                'message' => 'Please fix the following errors!'
-            ], 500);
-        }
+        // if ($validation->fails()) {
+        //     return response()->json([
+        //         'data' => $validation->errors(),
+        //         'status' => 'error',
+        //         'message' => 'Please fix the following errors!'
+        //     ], 500);
+        // }
 
-        $budget = Budget::find($request->budget_id);
+        // $budget = Budget::find($request->budget_id);
 
-        if (!$budget) {
-            return response()->json([
-                'data' => null,
-                'status' => 'error',
-                'message' => 'The budget code is invalid'
-            ], 500);
-        }
+        // if (! $budget) {
+        //     return response()->json([
+        //         'data' => null,
+        //         'status' => 'error',
+        //         'message' => 'The budget code is invalid'
+        //     ], 500);
+        // }
 
-        if (!(($budget->expenditures->sum('amount') + $request->amount) < $budget->amount)) {
-            return response()->json([
-                'data' => null,
-                'status' => 'error',
-                'message' => 'You cannot exceed the approved budget amount allocated!'
-            ], 403);
-        }
+        // if (!(($budget->expenditures->sum('amount') + $request->amount) < $budget->amount)) {
+        //     return response()->json([
+        //         'data' => null,
+        //         'status' => 'error',
+        //         'message' => 'You cannot exceed the approved budget amount allocated!'
+        //     ], 403);
+        // }
 
-        $expenditure = Expenditure::create([
-            'code' => 'exp' . LoanUtilController::generateCode(),
-            'budget_id' => $budget->id,
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'label' => Str::slug($request->title),
-            'amount' => $request->amount,
-            'balance' => isset($request->balance)?$request->balance:0
-        ]);
+        // $expenditure = Expenditure::create([
+        //     'code' => 'exp' . LoanUtilController::generateCode(),
+        //     'budget_id' => $budget->id,
+        //     'category_id' => $request->category_id,
+        //     'title' => $request->title,
+        //     'label' => Str::slug($request->title),
+        //     'amount' => $request->amount,
+        //     'balance' => isset($request->balance)?$request->balance:0
+        // ]);
 
-        return response()->json([
-            'data' => new ExpenditureResource($expenditure),
-            'status' => 'success',
-            'message' => 'This expenditexpenditureure has been created successfully!'
-        ], 200);
+        // return response()->json([
+        //     'data' => new ExpenditureResource($expenditure),
+        //     'status' => 'success',
+        //     'message' => 'This expenditexpenditureure has been created successfully!'
+        // ], 200);
     }
 
     /**

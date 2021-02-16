@@ -4,7 +4,6 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Str;
-use App\Models\Category;
 use App\Models\Loan;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,7 +32,7 @@ class LoanCalculator
 
 	private function payable()
 	{
-		return $this->loan->amount + ($this->loan->amount * ($this->loan->category->interest / 100));
+		return $this->loan->amount + ($this->loan->amount * ($this->loan->loanCategory->interest / 100));
 	}
 
 	private function payment()
@@ -61,7 +60,7 @@ class LoanCalculator
 
 	private function normaliser()
 	{
-		switch ($this->loan->category->frequency) {
+		switch ($this->loan->loanCategory->frequency) {
 			case "annually":
 				return $this->paySetter('years');
 				break;

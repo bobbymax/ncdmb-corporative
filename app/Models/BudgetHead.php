@@ -5,26 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Budget extends Model
+class BudgetHead extends Model
 {
     use HasFactory;
 
     protected $guarded = [''];
-
-    protected $dates = ['start', 'end'];
 
     public function getRouteKeyName()
     {
     	return 'code';
     }
 
-    public function heads()
+    public function budget()
     {
-        return $this->hasMany(BudgetHead::class);
+    	return $this->belongsTo(Budget::class, 'budget_id');
     }
 
-    public function expenditures()
+    public function loanCategories()
     {
-    	return $this->hasMany(Expenditure::class);
+    	return $this->hasMany(LoanCategory::class);
     }
 }

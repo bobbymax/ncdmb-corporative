@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Category;
-use App\Models\Expenditure;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class BugetHeadResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,11 +18,14 @@ class CategoryResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'code' => $this->code,
+            'title' => $this->title,
             'label' => $this->label,
+            'amount' => $this->amount,
             'description' => $this->description,
-            'module' => $this->module,
-            'created_at' => $this->created_at->format('d M, Y')
+            'status' => $this->status,
+            'budget' => new BudgetResource($this->budget),
+            'created_at' => $this->created_at->format('d F, Y')
         ];
     }
 }
