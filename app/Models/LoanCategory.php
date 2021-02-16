@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expenditure extends Model
+class LoanCategory extends Model
 {
     use HasFactory;
 
@@ -13,16 +13,16 @@ class Expenditure extends Model
 
     public function getRouteKeyName()
     {
-    	return 'code';
+    	return 'label';
     }
 
-    public function budget()
+    public function head()
     {
-    	return $this->belongsTo(Budget::class, 'budget_id');
+    	return $this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
 
-    public function category()
+    public function loans()
     {
-    	return $this->belongsTo(Category::class, 'category_id');
+    	return $this->hasMany(Loan::class);
     }
 }

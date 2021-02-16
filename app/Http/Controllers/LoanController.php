@@ -62,8 +62,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'category_id' => 'required|integer',
-            'code' => 'unique:loans',
+            'loan_category_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -90,7 +89,7 @@ class LoanController extends Controller
         $loan = Loan::create([
             'user_id' => $request->user()->id,
             'category_id' => $request->category_id,
-            'code' => 'ln' . LoanUtilController::generateCode(), //$request->code,
+            'code' => 'LN' . LoanUtilController::generateCode(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
             'start_date' => Carbon::parse($request->start_date),

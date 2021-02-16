@@ -22,9 +22,9 @@ class Loan extends Model
     	return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function category()
+    public function loanCategory()
     {
-    	return $this->belongsTo(Category::class, 'category_id');
+    	return $this->belongsTo(LoanCategory::class, 'loan_category_id');
     }
 
     public function schedules()

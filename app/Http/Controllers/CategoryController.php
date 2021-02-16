@@ -58,8 +58,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:categories',
-            // 'label' => 'required|string|max:255|unique:categories',
+            'name' => 'required|string|max:255|unique:categories'
         ]);
 
         if ($validation->fails()) {
@@ -75,17 +74,9 @@ class CategoryController extends Controller
             'label' => Str::slug($request->name),
             'module' => $request->module,
             'description' => $request->description,
-            'interest' => isset($request->interest) ? $request->interest : 0,
-            'frequency' => isset($request->frequency) ? $request->frequency : 'na',
-            'fundable' => isset($request->fundable) ? $request->fundable : false,
-            'isLoan' => isset($request->isLoan) ? $request->isLoan : false,
-            'restriction' => isset($request->restriction) ? $request->restriction : 0,
-            'limit' => isset($request->limit) ? $request->limit : 0,
-            'payable' => isset($request->payable) ? $request->payable : 'undefined',
-            'committment' => isset($request->committment) ? $request->committment : 0
         ]);
 
-        if (!$category) {
+        if (! $category) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -110,7 +101,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (!$category) {
+        if (! $category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
@@ -161,7 +152,6 @@ class CategoryController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'label' => 'required|string|max:255',
         ]);
 
         if ($validation->fails()) {
@@ -174,17 +164,9 @@ class CategoryController extends Controller
 
         $category->update([
             'name' => $request->name,
-            'label' => $request->label,
+            'label' => Str::slug($request->name),
             'module' => $request->module,
-            'description' => $request->description,
-            'interest' => isset($request->interest) ? $request->interest : 0,
-            'frequency' => isset($request->frequency) ? $request->frequency : 'na',
-            'fundable' => isset($request->fundable) ? $request->fundable : false,
-            'isLoan' => isset($request->isLoan) ? $request->isLoan : false,
-            'restriction' => isset($request->restriction) ? $request->restriction : 0,
-            'limit' => isset($request->limit) ? $request->limit : 0,
-            'payable' => isset($request->payable) ? $request->payable : 'undefined',
-            'committment' => isset($request->committment) ? $request->committment : 0
+            'description' => $request->description
         ]);
 
         return response()->json([
@@ -204,7 +186,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('label', $category)->first();
 
-        if (!$category) {
+        if (! $category) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
