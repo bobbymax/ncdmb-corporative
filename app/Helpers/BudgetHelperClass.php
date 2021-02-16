@@ -9,7 +9,7 @@ use App\Models\Budget;
 class BudgetHelperClass
 {
     
-	private $budget, $identifier, $amount;
+	private $budget, $identifier, $balance, $amount;
 
 	public function __construct($code, $amount)
 	{
@@ -24,12 +24,17 @@ class BudgetHelperClass
 
 	private function balanceChecker()
 	{
-		if ($this->budget = $this->getBudget() == null) {
+		if ($this->setBudget() == null) {
 			return false;
 		}
 
-		$balance = $this->budget->amount - $this->budget->heads()->sum('amount');
-		return $balance >= $this->amount ? true : false;
+		$this->balance = $this->setBudget()->amount - $this->budget->heads->sum('amount');
+		return $this->balance >= $this->amount ? true : false;
+	}
+
+	private function setBudget()
+	{
+		return $this->budget = $this->getBudget();
 	}
 
 	private function getBudget()

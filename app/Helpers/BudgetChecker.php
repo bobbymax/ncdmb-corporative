@@ -37,8 +37,6 @@ class BudgetChecker
 
 	private function availableFunds()
 	{
-		// $funds = $this->getCategoryExpenditureDiff() >= $this->category->limit;
-
 		if ($this->getBalance() < $this->amount) {
 			return response()->json([
 				'data' => false,
@@ -96,14 +94,4 @@ class BudgetChecker
 	{
 		return $this->loanCategory->balance;
 	}
-
-	// private function getCategoryExpenditureTotal()
-	// {
-	// 	return $this->category->expenditure->amount;
-	// }
-
-	// private function getCategoryExpenditureBalance()
-	// {
-	// 	return $this->category->expenditure->balance;
-	// }
 }

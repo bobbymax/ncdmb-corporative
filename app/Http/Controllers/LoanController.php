@@ -88,7 +88,7 @@ class LoanController extends Controller
 
         $loan = Loan::create([
             'user_id' => $request->user()->id,
-            'category_id' => $request->category_id,
+            'loan_category_id' => $request->loan_category_id,
             'code' => 'LN' . LoanUtilController::generateCode(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
