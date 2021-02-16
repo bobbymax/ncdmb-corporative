@@ -6,6 +6,7 @@ use App\Models\LoanCategory;
 use App\Models\BudgetHead;
 use Illuminate\Http\Request;
 use App\Http\Resources\LoanCategoryResource;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class LoanCategoryController extends Controller
