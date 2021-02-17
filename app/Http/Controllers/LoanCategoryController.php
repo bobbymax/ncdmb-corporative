@@ -79,7 +79,7 @@ class LoanCategoryController extends Controller
 
         $budgetHead = BudgetHead::find($request->budget_head_id);
 
-        if ($budgetHead->count() != 1) {
+        if (! $budgetHead) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
