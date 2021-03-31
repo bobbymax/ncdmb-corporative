@@ -66,7 +66,7 @@ class LoanController extends Controller
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'description' => 'required|min:5',
+            'description' => 'required|min:ogi5',
             'guarantors' => 'required',
         ]);
 

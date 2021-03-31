@@ -6,6 +6,7 @@ use App\Models\LoanCategory;
 use App\Models\BudgetHead;
 use Illuminate\Http\Request;
 use App\Http\Resources\LoanCategoryResource;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class LoanCategoryController extends Controller
@@ -78,7 +79,7 @@ class LoanCategoryController extends Controller
 
         $budgetHead = BudgetHead::find($request->budget_head_id);
 
-        if (! $budgetHead) {
+        if (!$budgetHead) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -110,7 +111,7 @@ class LoanCategoryController extends Controller
             'committment' => $request->committment
         ]);
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -135,7 +136,7 @@ class LoanCategoryController extends Controller
     {
         $loanCategory = LoanCategory::where('label', $loanCategory)->first();
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -160,7 +161,7 @@ class LoanCategoryController extends Controller
     {
         $loanCategory = LoanCategory::where('label', $loanCategory)->first();
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -204,7 +205,7 @@ class LoanCategoryController extends Controller
 
         $loanCategory = LoanCategory::where('label', $loanCategory)->first();
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -224,7 +225,7 @@ class LoanCategoryController extends Controller
             'committment' => $request->committment
         ]);
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -249,7 +250,7 @@ class LoanCategoryController extends Controller
     {
         $loanCategory = LoanCategory::where('label', $loanCategory)->first();
 
-        if (! $loanCategory) {
+        if (!$loanCategory) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',

@@ -57,8 +57,7 @@ class SpecificationController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'investment_id' => 'required|integer',
-            'title' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:specifications',
+            'title' => 'required|string|max:255|unique:specifications',
             'description' => 'required|min:5',
             'amount' => 'required|integer',
             'slots' => 'required|integer'
@@ -75,7 +74,7 @@ class SpecificationController extends Controller
         $specification = Specification::create([
             'investment_id' => $request->investment_id,
             'title' => $request->title,
-            'label' => $request->label,
+            'label' => Str::slug($request->title),
             'description' => $request->description,
             'amount' => $request->amount,
             'slots' => $request->slots

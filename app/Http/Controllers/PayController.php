@@ -60,7 +60,7 @@ class PayController extends Controller
      */
     public function identifyBeneficiary($type)
     {
-        if (! in_array($type, config('corporative.payment.types'))) {
+        if (!in_array($type, config('corporative.payment.types'))) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -81,7 +81,7 @@ class PayController extends Controller
             case "third-party":
                 return Agent::all();
                 break;
-            
+
             default:
                 return User::latest()->get();
                 break;
@@ -117,7 +117,7 @@ class PayController extends Controller
                 $beneficiary = Agent::where('code', $data['identifier'])->first();
                 return $beneficiary->projects;
                 break;
-            
+
             default:
                 $beneficiary = User::where('staff_no', $data['identifier'])->first();
                 return $beneficiary->loans;
@@ -136,7 +136,7 @@ class PayController extends Controller
         $validator = Validator::make($request->all(), [
             'identifier' => 'required',
             'code' => 'required',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|unique:pays|max:255',
             'amount' => 'required|integer',
             'type' => 'required|string|in:member,staff,third-party',
             'method' => 'required|string|in:loan,project'
@@ -151,14 +151,14 @@ class PayController extends Controller
         }
 
         if ($request->payment_code !== null) {
-            $this->beneficiary = Beneficiary::where('payment_code', $request->payment_code)->first();   
+            $this->beneficiary = Beneficiary::where('payment_code', $request->payment_code)->first();
         } else {
             $this->identity = (new Identifier($request->type, $request->identifier, $request->method, $request->code))->init();
 
-            if (! is_object($this->identity->beneficiary)) {
+            if (!is_object($this->identity->beneficiary)) {
                 $this->beneficiary = new Beneficiary;
                 $this->beneficiary->payment_code = "BEN" . time();
-                $this->identity->beneficiary()->save($this->beneficiary);   
+                $this->identity->beneficiary()->save($this->beneficiary);
             } else {
                 $this->beneficiary = $this->identity;
             }
@@ -195,7 +195,7 @@ class PayController extends Controller
     {
         $payment = Pay::where('trxRef', $payment)->first();
 
-        if (! $payment) {
+        if (!$payment) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
