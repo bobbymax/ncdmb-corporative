@@ -74,11 +74,19 @@ class BudgetHeadController extends Controller
 
         $status = (new BudgetHelperClass($request->budget_id, $request->amount))->init();
 
-        if (! $status) {
+        if ($status === "not found") {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'It is either the Budget was not found or the amount for this budget head exceeds the approved budget amount'
+                'message' => 'Budget not found!!'
+            ], 422);
+        }
+
+        if ($status === "amount not valid") {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'The BudgetHead amount sum cannot be higher than the Budget amount!!'
             ], 422);
         }
 
@@ -122,7 +130,7 @@ class BudgetHeadController extends Controller
             'data' => new BugetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head details'
-        ], 200);        
+        ], 200);
     }
 
     /**
@@ -147,7 +155,7 @@ class BudgetHeadController extends Controller
             'data' => new BugetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head details'
-        ], 200); 
+        ], 200);
     }
 
     /**

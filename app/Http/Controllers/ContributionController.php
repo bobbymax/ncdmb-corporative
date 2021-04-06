@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\Contribution;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\ContributionResource;
@@ -14,25 +17,25 @@ class ContributionController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
         $contributions = Contribution::all();
         if ($contributions->count() < 1) {
             return response()->json([
-                'data' => null, 
-                'status' => 'success', 
+                'data' => null,
+                'status' => 'success',
                 'message' => 'No data found!'
             ], 200);
         }
         return response()->json([
-            'data' => ContributionResource::collection($contributions), 
-            'status' => 'success', 
+            'data' => ContributionResource::collection($contributions),
+            'status' => 'success',
             'message' => 'List of contributions'
         ], 200);
     }
@@ -40,7 +43,7 @@ class ContributionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -50,8 +53,8 @@ class ContributionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -61,8 +64,8 @@ class ContributionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Contribution  $contribution
-     * @return \Illuminate\Http\Response
+     * @param Contribution $contribution
+     * @return Response
      */
     public function show($contribution)
     {
@@ -85,8 +88,8 @@ class ContributionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Contribution  $contribution
-     * @return \Illuminate\Http\Response
+     * @param Contribution $contribution
+     * @return Response
      */
     public function edit($contribution)
     {
@@ -106,14 +109,20 @@ class ContributionController extends Controller
         ], 200);
     }
 
+    public function update(Request $request, $contribution)
+    {
+        // Code goes here...
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Contribution  $contribution
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $member
+     * @return Response
      */
-    public function update(Request $request, $contribution)
+    public function editContribution(Request $request, $member)
     {
         $validation = Validator::make($request->all(), [
             'fee' => 'required|integer',
@@ -121,37 +130,37 @@ class ContributionController extends Controller
 
         if ($validation->fails()) {
             return response()->json([
-                'data' => null,
+                'data' => $validation->errors(),
                 'status' => 'error',
                 'message' => 'Please fix this errors before proceeding!'
             ], 500);
         }
 
-        $contribution = Contribution::find($contribution);
-        if (! $contribution) {
+        $member = User::where('staff_no', $member)->first();
+
+        if (! $member) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'This contribution does not exist'
+                'message' => 'This member does not exist'
             ], 404);
         }
 
-        $contribution->update([
-            'fee' => $request->fee,
-        ]);
+        $member->contribution->fee = $request->fee;
+        $member->contribution->save();
 
         return response()->json([
-            'data' => new ContributionResource($contribution),
+            'data' => new UserResource($member),
             'status' => 'success',
-            'message' => 'Contribution updated successfully!'
+            'message' => 'Member contribution updated successfully!'
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Contribution  $contribution
-     * @return \Illuminate\Http\Response
+     * @param Contribution $contribution
+     * @return void
      */
     public function destroy(Contribution $contribution)
     {

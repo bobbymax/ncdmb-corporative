@@ -63,6 +63,8 @@ Route::post('approval/levels', 'ApprovalController@approveLoan');
 Route::prefix('members/membership')->group(function () {
     Route::get('/generate', 'MemberController@generateNumber');
     Route::patch('/assign', 'MemberController@assignNumber');
+    // Edit Members Contribution
+    Route::patch('/{member}/contribution', 'ContributionController@editContribution');
 });
 
 Route::get('beneficiary/payment/{type}/get', 'PayController@identifyBeneficiary');
