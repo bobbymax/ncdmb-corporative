@@ -8,6 +8,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Just checking
+
 Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
 
 Route::get('dashboard/details', 'DashboardController@index');
