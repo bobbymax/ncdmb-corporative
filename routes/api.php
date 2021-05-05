@@ -24,6 +24,7 @@ Route::post('import/members', 'MemberController@importMembers');
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('budgetHeads', 'BudgetHeadController');
+Route::apiResource('funds', 'FundController');
 // Route::apiResource('loanCategories', 'LoanCategoryController');
 Route::apiResource('groups', 'GroupController');
 Route::apiResource('guarantors', 'GuarantorController');
