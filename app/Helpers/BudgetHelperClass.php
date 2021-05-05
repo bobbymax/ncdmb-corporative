@@ -3,8 +3,8 @@
 
 namespace App\Helpers;
 
+use App\Models\BudgetHead;
 use Illuminate\Support\Str;
-use App\Models\Budget;
 
 class BudgetHelperClass
 {
@@ -13,10 +13,11 @@ class BudgetHelperClass
 
 	const BNF = "not found";
 	const AIH = "amount not valid";
+	const POS = "everything looks good";
 
-	public function __construct($code, $amount)
+	public function __construct($budgetId, $amount)
 	{
-		$this->identifier = $code;
+		$this->identifier = $budgetId;
 		$this->amount = $amount;
 	}
 
@@ -31,12 +32,11 @@ class BudgetHelperClass
 			return static::BNF;
 		}
 
-		$accumulated = $this->amount + $this->budget->heads->sum('amount');
-		if (! ($this->setBudget()->amount >= $accumulated)) {
+		if (! ($this->setBudget()->fund->actual_balance >= $this->amount)) {
 		    return static::AIH;
         }
 
-		return true;
+		return static::POS;
 	}
 
 	private function setBudget()
@@ -46,8 +46,7 @@ class BudgetHelperClass
 
 	private function getBudget()
 	{
-		$this->budget = Budget::find($this->identifier);
-		return ($this->budget !== null && $this->budget->active == 1) ? $this->budget : static::BNF;
+	    return BudgetHead::find($this->identifier);
 	}
 
 }

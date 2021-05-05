@@ -22,7 +22,7 @@ class ApprovalController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -97,7 +97,7 @@ class ApprovalController extends Controller
 
         $loan = Loan::where('code', $request->loan)->first();
 
-        if (!$loan) {
+        if (! $loan) {
             return response()->json([@
                 'data' => null,
                 'status' => 'error',
@@ -110,7 +110,7 @@ class ApprovalController extends Controller
         $trail->description = $request->description;
         $trail->action = $request->status;
 
-        if (!$loan->trails()->save($trail)) {
+        if (! $loan->trails()->save($trail)) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -171,7 +171,7 @@ class ApprovalController extends Controller
 
                 return $loan;
                 break;
-                
+
         }
     }
 

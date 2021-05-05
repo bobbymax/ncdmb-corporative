@@ -22,14 +22,13 @@ class LoanResource extends JsonResource
             'amount' => $this->amount,
             'reason' => $this->reason,
             'description' => $this->description,
-            'frequency' => $this->frequency,
-            'status' => $this->status,
-            'member' => new UserResource($this->member),
-            'loan_category' => $this->loanCategory,
+            'owner' => new UserResource($this->member),
+            'budget_head' => new BugetHeadResource($this->fund),
             'created_at' => $this->created_at->format('d M, Y'),
-            'closed' => $this->closed == 1 ? true : false,
+            'closed' => $this->closed ? 'Yes' : 'No',
             'schedules' => ScheduleResource::collection($this->schedules),
-            'guarantors' => $this->guarantors
+            'guarantors' => $this->guarantors,
+            'status' => $this->status
         ];
     }
 }

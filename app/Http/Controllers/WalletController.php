@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ class WalletController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -101,6 +102,41 @@ class WalletController extends Controller
             'data' => $wallet,
             'status' => 'success',
             'message' => 'Data was found!'
+        ], 200);
+    }
+
+    public function updateMemberWallet(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'member' => 'required',
+            'balance' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        $member = User::where('staff_no', $request->member)->first();
+
+        if (! $member) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid user token'
+            ], 422);
+        }
+
+        $member->wallet->current = $request->balance;
+        $member->wallet->save();
+
+        return response()->json([
+            'data' => new UserResource($member),
+            'status' => 'success',
+            'message' => 'Member wallet updated successfully'
         ], 200);
     }
 

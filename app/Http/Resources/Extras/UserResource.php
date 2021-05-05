@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Extras;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContributionResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,11 @@ class ContributionResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
-
         return [
-            'id' => $this->id,
-            'fee' => $this->fee,
-            'member' => new UserResource($this->member)
+            "id" => $this->id,
+            "staff_no" => $this->staff_no,
+            "membership_no" => $this->membership_no ?? null,
+            "loans" => LoanResource::collection($this->loans->where('closed', false))
         ];
     }
 }

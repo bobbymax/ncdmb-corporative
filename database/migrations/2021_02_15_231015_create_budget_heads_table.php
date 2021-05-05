@@ -16,13 +16,18 @@ class CreateBudgetHeadsTable extends Migration
         Schema::create('budget_heads', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('budget_id')->unsigned();
-            $table->foreign('budget_id')->references('id')->on('budgets')->onDelete('cascade');
-            $table->string('code')->unique()->nullable();
-            $table->string('title');
-            $table->string('label')->unique();
-            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
-            $table->text('description')->nullable();
-            $table->enum('status', ['pending', 'running', 'exhausted'])->default('pending');
+            $table->foreign('budget_id')->references('id')->on('budgets')->onDelete('cascade'); // Editable
+            $table->string('code')->unique()->nullable(); // Editable (text input)
+            $table->string('description'); // Editable
+            $table->string('category')->default('na'); // Editable (select)
+            $table->integer('interest')->default(0); // Editable
+            $table->integer('restriction')->default(0); // Editable
+            $table->integer('commitment')->default(0); // Editable
+            $table->decimal('limit', $precision = 30, $scale = 2)->default(0); // Editable
+            $table->string('payable')->default('na'); // Editable (select)
+            $table->string('frequency')->default('na'); // Editable (select)
+            $table->enum('type', ['capital', 'recursive', 'personnel'])->default('capital'); // Editable (select)
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

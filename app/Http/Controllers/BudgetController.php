@@ -18,7 +18,7 @@ class BudgetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -52,16 +52,12 @@ class BudgetController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'title' => 'required|string|max:255|unique:budgets',
-            'amount' => 'required|integer',
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'period' => 'required|integer',
+            'description' => 'required|unique:budgets',
         ]);
 
         if ($validation->fails()) {
@@ -72,26 +68,9 @@ class BudgetController extends Controller
             ], 422);
         }
 
-        $existing = Budget::where('active', 1)->latest()->get();
-
-        if ($existing->count() >= 1) {
-            return response()->json([
-                'data' => $existing,
-                'status' => 'warning',
-                'message' => 'You are not permitted to create another budget until the previous budget has been marked as closed!'
-            ], 403);
-        }
-
         $budget = Budget::create([
             'code' => 'BGT' . LoanUtilController::generateCode(),
-            'title' => $request->title,
-            'label' => Str::slug($request->title),
-            'amount' => $request->amount,
             'description' => $request->description,
-            'start' => Carbon::parse($request->start),
-            'end' => Carbon::parse($request->end),
-            'period' => $request->period,
-            'status' => 'pending',
         ]);
 
         return response()->json([
@@ -105,7 +84,7 @@ class BudgetController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Budget  $budget
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($budget)
     {
@@ -120,7 +99,7 @@ class BudgetController extends Controller
         }
 
         return response()->json([
-            'data' => $budget,
+            'data' => new BudgetResource($budget),
             'status' => 'success',
             'message' => 'Budget details'
         ], 200);
@@ -130,7 +109,7 @@ class BudgetController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Budget  $budget
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($budget)
     {
@@ -145,7 +124,7 @@ class BudgetController extends Controller
         }
 
         return response()->json([
-            'data' => $budget,
+            'data' => new BudgetResource($budget),
             'status' => 'success',
             'message' => 'Budget details'
         ], 200);
@@ -156,16 +135,12 @@ class BudgetController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Budget  $budget
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $budget)
     {
         $validation = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'amount' => 'required|integer',
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'period' => 'required|string',
+            'description' => 'required',
         ]);
 
         if ($validation->fails()) {
@@ -178,7 +153,7 @@ class BudgetController extends Controller
 
         $budget = Budget::where('code', $budget)->first();
 
-        if (!$budget) {
+        if (! $budget) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -187,27 +162,21 @@ class BudgetController extends Controller
         }
 
         $budget->update([
-            'title' => $request->title,
-            'label' => Str::slug($request->title),
-            'amount' => $request->amount,
             'description' => $request->description,
-            'start' => Carbon::parse($request->start),
-            'end' => Carbon::parse($request->end),
-            'period' => $request->period,
         ]);
 
         return response()->json([
-            'data' => $budget,
+            'data' => new BudgetResource($budget),
             'status' => 'success',
-            'message' => 'Budget has been created successfully.'
-        ], 201);
+            'message' => 'Budget has been updated successfully.'
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Budget  $budget
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($budget)
     {

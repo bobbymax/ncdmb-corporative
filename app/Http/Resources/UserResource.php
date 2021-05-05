@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'designation' => $this->designation,
             'type' => $this->type,
-            'date_joined' => $this->date_joined->format('d M, Y'),
+            'date_joined' => $this->date_joined != null ? $this->date_joined->format('d M, Y') : null,
             'mobile' => $this->mobile,
             'isActivated' => $this->membership_no !== null ? true : false,
             'location' => $this->location,

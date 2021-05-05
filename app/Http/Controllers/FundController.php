@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
+use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
 
-class ServiceController extends Controller
+class FundController extends Controller
 {
     public function __construct()
     {
@@ -22,19 +20,20 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::latest()->get();
+        $funds = Fund::all();
 
-        if ($services->count() < 1) {
+        if ($funds->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
-                'message' => 'No data found!'
+                'message' => 'No data was found'
             ], 404);
         }
+
         return response()->json([
-            'data' => $services,
+            'data' => $funds,
             'status' => 'success',
-            'message' => $services->count() . ' data found!'
+            'message' => 'No data found!'
         ], 200);
     }
 
@@ -56,82 +55,79 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), [
-            'description' => 'required|min:5',
-            'category' => 'required|string',
+        $validator = Validator::make($request->all(), [
+            'budget_head_id' => 'required|integer',
+            'approved_amount' => 'required|integer'
         ]);
 
-        if ($validation->fails()) {
+        if ($validator->fails()) {
             return response()->json([
-                'data' => $validation->errors(),
+                'data' => $validator->errors(),
                 'status' => 'error',
-                'message' => 'Please fix the following errors'
+                'message' => 'Please fix these errors:'
             ], 500);
         }
 
-        $service = Service::create([
-            'user_id' => $request->user()->id,
-            'category' => $request->category,
-            'serviceCode' => time(),
-            'request_date' => Carbon::parse($request->request_date),
-            'payment_method' => $request->payment_method,
-            'description' => $request->description
+        $fund = Fund::create([
+            'budget_head_id' => $request->budget_head_id,
+            'description' => $request->description,
+            'approved_amount' => $request->approved_amount
         ]);
 
         return response()->json([
-            'data' => $service,
+            'data' => $fund,
             'status' => 'success',
-            'message' => 'Service request created successfully!'
+            'message' => 'Fund for Budget Head has been created successfully!'
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Service  $service
+     * @param  \App\Models\Fund  $fund
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($service)
+    public function show($fund)
     {
-        $service = Service::find($service);
+        $fund = Fund::find($fund);
 
-        if (! $service) {
+        if (! $fund) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'Data entry is invalid!'
+                'message' => 'This ID is invalid'
             ], 422);
         }
 
         return response()->json([
-            'data' => $service,
+            'data' => $fund,
             'status' => 'success',
-            'message' => 'Data entry found!'
+            'message' => 'Fund for Budget Head details!'
         ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Service  $service
+     * @param  \App\Models\Fund  $fund
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($service)
+    public function edit($fund)
     {
-        $service = Service::find($service);
+        $fund = Fund::find($fund);
 
-        if (! $service) {
+        if (! $fund) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'Data entry is invalid!'
+                'message' => 'This ID is invalid'
             ], 422);
         }
 
         return response()->json([
-            'data' => $service,
+            'data' => $fund,
             'status' => 'success',
-            'message' => 'Data entry found!'
+            'message' => 'Fund for Budget Head details!'
         ], 200);
     }
 
@@ -139,72 +135,71 @@ class ServiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
+     * @param  \App\Models\Fund  $fund
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $service)
+    public function update(Request $request, $fund)
     {
-        $validation = Validator::make($request->all(), [
-            'description' => 'required|min:5',
-            'category' => 'required|string',
+        $validator = Validator::make($request->all(), [
+            'budget_head_id' => 'required|integer',
+            'approved_amount' => 'required|integer'
         ]);
 
-        if ($validation->fails()) {
+        if ($validator->fails()) {
             return response()->json([
-                'data' => $validation->errors(),
+                'data' => $validator->errors(),
                 'status' => 'error',
-                'message' => 'Please fix the following errors'
+                'message' => 'Please fix these errors:'
             ], 500);
         }
 
-        $service = Service::find($service);
+        $fund = Fund::find($fund);
 
-        if (! $service) {
+        if (! $fund) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'Data entry is invalid!'
+                'message' => 'This ID is invalid'
             ], 422);
         }
 
-        $service->update([
-            'category' => $request->category,
-            'request_date' => Carbon::parse($request->request_date),
-            'payment_method' => $request->payment_method,
-            'description' => $request->description
+        $fund->update([
+            'budget_head_id' => $request->budget_head_id,
+            'description' => $request->description,
+            'approved_amount' => $request->approved_amount
         ]);
 
         return response()->json([
-            'data' => $service,
+            'data' => $fund,
             'status' => 'success',
-            'message' => 'Service request updated successfully!'
+            'message' => 'Fund for Budget Head has been created successfully!'
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Service  $service
+     * @param  \App\Models\Fund  $fund
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($service)
+    public function destroy($fund)
     {
-        $service = Service::find($service);
+        $fund = Fund::find($fund);
 
-        if (! $service) {
+        if (! $fund) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'Data entry is invalid!'
+                'message' => 'This ID is invalid'
             ], 422);
         }
 
-        $service->delete();
+        $fund->delete();
 
         return response()->json([
             'data' => null,
             'status' => 'success',
-            'message' => 'Data entry deleted successfully!'
+            'message' => 'Fund for Budget Head details!'
         ], 200);
     }
 }

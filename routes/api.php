@@ -24,7 +24,7 @@ Route::post('import/members', 'MemberController@importMembers');
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('budgetHeads', 'BudgetHeadController');
-Route::apiResource('loanCategories', 'LoanCategoryController');
+// Route::apiResource('loanCategories', 'LoanCategoryController');
 Route::apiResource('groups', 'GroupController');
 Route::apiResource('guarantors', 'GuarantorController');
 Route::apiResource('investments', 'InvestmentController');
@@ -64,7 +64,7 @@ Route::prefix('members/membership')->group(function () {
     Route::get('/generate', 'MemberController@generateNumber');
     Route::patch('/assign', 'MemberController@assignNumber');
     // Edit Members Contribution
-    Route::patch('/{member}/contribution', 'ContributionController@editContribution');
+    Route::patch('update/{member}/contribution', 'ContributionController@editContribution');
 });
 
 Route::get('beneficiary/payment/{type}/get', 'PayController@identifyBeneficiary');

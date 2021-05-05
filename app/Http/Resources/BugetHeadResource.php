@@ -19,12 +19,17 @@ class BugetHeadResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'title' => $this->title,
-            'label' => $this->label,
-            'amount' => $this->amount,
-            'description' => $this->description,
-            'status' => $this->status,
             'budget' => new BudgetResource($this->budget),
+            'description' => $this->description,
+            'category' => $this->category,
+            'interest' => $this->interest,
+            'restriction' => $this->restriction,
+            'commitment' => $this->commitment,
+            'limit' => $this->limit,
+            'payable' => $this->payable,
+            'frequency' => $this->frequency,
+            'type' => $this->type,
+            'active' => $this->active ? 'Yes' : 'No',
             'created_at' => $this->created_at->format('d F, Y')
         ];
     }

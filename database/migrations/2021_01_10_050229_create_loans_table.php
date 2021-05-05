@@ -17,14 +17,11 @@ class CreateLoansTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('loan_category_id')->unsigned();
+            $table->bigInteger('budget_head_id')->unsigned(); // Editable (select)
             $table->string('code')->unique();
-            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
-            $table->string('reason')->nullable();
-            $table->longText('description')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->enum('frequency', ['undefined', 'monthly', 'annually'])->default('undefined');
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0); // Editable
+            $table->string('reason')->default('undefined'); // Editable (select)
+            $table->longText('description')->nullable(); // Editable
             $table->enum('status', ['pending', 'registered', 'approved', 'denied', 'disbursed', 'closed'])->default('pending');
             $table->boolean('closed')->default(false);
             $table->timestamps();

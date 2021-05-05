@@ -24,11 +24,12 @@ class LoanController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $loans = Loan::all()->sortByDesc("created_at");
+        $loans = auth()->user()->loans;
+
         if ($loans->count() < 1) {
             return response()->json([
                 'data' => null,
@@ -57,26 +58,17 @@ class LoanController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'loan_category_id' => 'required|integer',
+            'budget_head_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'description' => 'required|min:ogi5',
+            'description' => 'required|min:3',
             'guarantors' => 'required',
         ]);
-
-        if (count($request->guarantors) != 3) {
-            return response()->json([
-                'data' => [],
-                'status' => 'error',
-                'message' => 'You can only select 3 guarantors'
-            ], 422);
-        }
 
         if ($validation->fails()) {
             return response()->json([
@@ -86,22 +78,28 @@ class LoanController extends Controller
             ], 500);
         }
 
+        if (count($request->guarantors) != 3) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'You can only select 3 guarantors'
+            ], 422);
+        }
+
         $loan = Loan::create([
             'user_id' => $request->user()->id,
-            'loan_category_id' => $request->loan_category_id,
-            'code' => 'LN' . LoanUtilController::generateCode(), //$request->code,
+            'budget_head_id' => $request->budget_head_id,
+            'code' => 'LN' . time(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
-            'start_date' => Carbon::parse($request->start_date),
             'description' => $request->description,
-            'status' => 'pending'
         ]);
 
         if ($loan) {
             foreach ($request->guarantors as $guarantor) {
                 $member = User::where('staff_no', $guarantor)->first();
 
-                if (!$member) {
+                if (! $member) {
                     return response()->json([
                         'data' => null,
                         'status' => 'error',
@@ -113,7 +111,7 @@ class LoanController extends Controller
             }
         }
 
-        NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
+        // NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
 
         return response()->json([
             'data' => new LoanResource($loan),
@@ -126,17 +124,18 @@ class LoanController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        if (!$loan) {
+
+        if (! $loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'No data was found!'
-            ], 404);
+                'message' => 'Invalid token entered!'
+            ], 422);
         }
         return response()->json([
             'data' => new LoanResource($loan),
@@ -149,18 +148,20 @@ class LoanController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit(Loan $loan)
     {
         $loan = Loan::where('code', $loan)->first();
-        if (!$loan) {
+
+        if (! $loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'No data was found!'
-            ], 404);
+                'message' => 'Invalid token entered!'
+            ], 422);
         }
+
         return response()->json([
             'data' => $loan,
             'status' => 'success',
@@ -173,16 +174,15 @@ class LoanController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $loan)
     {
         $validation = Validator::make($request->all(), [
-            'loan_category_id' => 'required|integer',
+            'budget_head_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'description' => 'required|min:5',
+            'description' => 'required|min:3',
         ]);
 
         if ($validation->fails()) {
@@ -194,21 +194,20 @@ class LoanController extends Controller
         }
 
         $loan = Loan::where('code', $loan)->first();
-        if (!$loan) {
+
+        if (! $loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
-                'message' => 'No data was found!'
-            ], 200);
+                'message' => 'Invalid token entered!'
+            ], 422);
         }
 
         $loan->update([
-            'loan_category_id' => $request->loan_category_id,
+            'budget_head_id' => $request->budget_head_id,
             'amount' => $request->amount,
             'reason' => $request->reason,
-            'start_date' => Carbon::parse($request->start_date),
-            'end_date' => Carbon::parse($request->end_date),
-            'description' => $request->description
+            'description' => $request->description,
         ]);
 
         return response()->json([
@@ -236,7 +235,7 @@ class LoanController extends Controller
 
         $loan = Loan::where('code', $request->loan)->first();
 
-        if (!$loan) {
+        if (! $loan) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -266,7 +265,7 @@ class LoanController extends Controller
             // $loan->level += 1;
             // $loan->status = "registered";
             // $loan->save();
-            $role = Role::where('label', config('corporative.approvals.first'))->first();
+            $role = Role::where('label', config('corporative.loans.approvals.first'))->first();
 
             if (! $role) {
                 return response()->json([
@@ -282,7 +281,7 @@ class LoanController extends Controller
                 $loan->save();
             }
 
-            NotificationController::messageAfterLoanRegistered([$loan->member->mobile], $loan);
+            // NotificationController::messageAfterLoanRegistered([$loan->member->mobile], $loan);
         }
 
         return response()->json([
@@ -296,7 +295,7 @@ class LoanController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($loan)
     {

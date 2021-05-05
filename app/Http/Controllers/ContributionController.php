@@ -21,7 +21,7 @@ class ContributionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -65,7 +65,7 @@ class ContributionController extends Controller
      * Display the specified resource.
      *
      * @param Contribution $contribution
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($contribution)
     {
@@ -89,7 +89,7 @@ class ContributionController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contribution $contribution
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($contribution)
     {
@@ -120,7 +120,7 @@ class ContributionController extends Controller
      *
      * @param Request $request
      * @param $member
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function editContribution(Request $request, $member)
     {
@@ -154,6 +154,11 @@ class ContributionController extends Controller
             'status' => 'success',
             'message' => 'Member contribution updated successfully!'
         ], 200);
+    }
+
+    public function memberBulkCredit(Request $request)
+    {
+        //
     }
 
     /**

@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Approval extends Model
+class Fund extends Model
 {
     use HasFactory;
 
-    public function loans()
+    protected $guarded = [''];
+
+    public function budgetHead()
     {
-        return $this->morphedByMany(Loan::class, 'approveable')->withPivot('remark', 'status');
+    	$this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
 }

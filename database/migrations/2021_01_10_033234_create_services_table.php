@@ -17,14 +17,15 @@ class CreateServicesTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
-            $table->string('title');
-            $table->string('label')->unique();
-            $table->longText('description')->nullable();
-            $table->enum('method', ['none', 'wallet', 'salary'])->default('none');
-            $table->enum('status', ['pending', 'approved', 'completed', 'declined'])->default('pending');
+            $table->string('serviceCode')->unique();
+            $table->string('category')->default('undefined'); // Editable (select)
+
+            $table->longText('description')->nullable(); // Editable
+            $table->date('request_date')->nullable(); // Editable
+            $table->string('payment_method')->default('na'); // Editable (select)
+            $table->enum('status', ['registered', 'approved', 'denied', 'completed'])->default('registered');
+            $table->boolean('closed')->default(false);
             $table->timestamps();
         });
     }

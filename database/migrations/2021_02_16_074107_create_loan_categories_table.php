@@ -17,15 +17,9 @@ class CreateLoanCategoriesTable extends Migration
             $table->id();
             $table->bigInteger('budget_head_id')->unsigned();
             $table->foreign('budget_head_id')->references('id')->on('budget_heads')->onDelete('cascade');
-
-            $table->string('name');
-            $table->string('label')->unique();
-            $table->text('description')->nullable();
             $table->integer('interest')->default(0);
             $table->integer('restriction')->default(0);
             $table->integer('committment')->default(0);
-            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
-            $table->decimal('balance', $precision = 30, $scale = 2)->default(0);
             $table->decimal('limit', $precision = 30, $scale = 2)->default(0);
             $table->enum('payable', ['undefined', 'contribution', 'salary', 'upfront'])->default('undefined');
             $table->enum('frequency', ['monthly', 'annually', 'special', 'rated'])->default('monthly');

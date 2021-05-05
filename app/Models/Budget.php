@@ -22,9 +22,4 @@ class Budget extends Model
     {
         return $this->hasMany(BudgetHead::class);
     }
-
-    public function expenditures()
-    {
-    	return $this->hasMany(Expenditure::class);
-    }
 }

@@ -18,7 +18,7 @@ class BudgetHeadController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -53,15 +53,15 @@ class BudgetHeadController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'budget_id' => 'required|integer',
-            'title' => 'required|string|max:255',
-            'description' => 'required|min:3',
-            'amount' => 'required|integer'
+            'description' => 'required|min:3|unique:budget_heads',
+            'category' => 'required|string|max:255',
+            'type' => 'required|in:capital,recursive,personnel'
         ]);
 
         if ($validator->fails()) {
@@ -69,34 +69,21 @@ class BudgetHeadController extends Controller
                 'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix these errors:'
-            ], 505);
-        }
-
-        $status = (new BudgetHelperClass($request->budget_id, $request->amount))->init();
-
-        if ($status === "not found") {
-            return response()->json([
-                'data' => null,
-                'status' => 'error',
-                'message' => 'Budget not found!!'
-            ], 422);
-        }
-
-        if ($status === "amount not valid") {
-            return response()->json([
-                'data' => null,
-                'status' => 'error',
-                'message' => 'The BudgetHead amount sum cannot be higher than the Budget amount!!'
-            ], 422);
+            ], 500);
         }
 
         $budgetHead = BudgetHead::create([
             'budget_id' => $request->budget_id,
             'code' => "BHD" . time(),
-            'title' => $request->title,
-            'label' => Str::slug($request->title),
-            'amount' => $request->amount,
             'description' => $request->description,
+            'category' => $request->category,
+            'interest' => $request->interest,
+            'restriction' => $request->restriction,
+            'commitment' => $request->commitment,
+            'limit' => $request->limit,
+            'payable' => $request->payable,
+            'frequency' => $request->frequency,
+            'type' => $request->type
         ]);
 
         // Alert new activity before sending response
@@ -112,7 +99,7 @@ class BudgetHeadController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\BudgetHead  $budgetHead
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($budgetHead)
     {
@@ -137,7 +124,7 @@ class BudgetHeadController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\BudgetHead  $budgetHead
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($budgetHead)
     {
@@ -163,13 +150,15 @@ class BudgetHeadController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\BudgetHead  $budgetHead
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $budgetHead)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
+            'budget_id' => 'required|integer',
             'description' => 'required|min:3',
+            'category' => 'required|string|max:255',
+            'type' => 'required|in:capital,recursive,personnel'
         ]);
 
         if ($validator->fails()) {
@@ -191,9 +180,15 @@ class BudgetHeadController extends Controller
         }
 
         $budgetHead->update([
-            'title' => $request->title,
-            'label' => Str::slug($request->title),
             'description' => $request->description,
+            'category' => $request->category,
+            'interest' => $request->interest,
+            'restriction' => $request->restriction,
+            'commitment' => $request->commitment,
+            'limit' => $request->limit,
+            'payable' => $request->payable,
+            'frequency' => $request->frequency,
+            'type' => $request->type
         ]);
 
         // Alert new activity before sending response
@@ -209,7 +204,7 @@ class BudgetHeadController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\BudgetHead  $budgetHead
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($budgetHead)
     {

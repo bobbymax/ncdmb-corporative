@@ -17,14 +17,8 @@ class BudgetResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'description' => $this->description,
             'code' => $this->code,
-            'amount' => $this->amount,
-            'period' => $this->period,
-            'status' => $this->status,
-            'start' => $this->start,
-            'end' => $this->end,
-            'active' => $this->active == 1 ? true : false
         ];
     }
 }

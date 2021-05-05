@@ -15,6 +15,7 @@ class AddCanGuaranteeColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('can_guarantee')->default(true)->after('date_joined');
+            $table->boolean('has_loan')->default(false)->after('can_guarantee');
         });
     }
 
@@ -27,6 +28,7 @@ class AddCanGuaranteeColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('can_guarantee');
+            $table->dropColumn('has_loan');
         });
     }
 }
