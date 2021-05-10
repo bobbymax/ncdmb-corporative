@@ -18,7 +18,7 @@ class LoanCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -53,7 +53,7 @@ class LoanCategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -130,7 +130,7 @@ class LoanCategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\LoanCategory  $loanCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($loanCategory)
     {
@@ -155,7 +155,7 @@ class LoanCategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\LoanCategory  $loanCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($loanCategory)
     {
@@ -181,7 +181,7 @@ class LoanCategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\LoanCategory  $loanCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $loanCategory)
     {
@@ -244,7 +244,7 @@ class LoanCategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\LoanCategory  $loanCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($loanCategory)
     {

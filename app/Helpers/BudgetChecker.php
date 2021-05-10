@@ -3,21 +3,16 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Str;
-use App\Models\Category;
-use App\Models\LoanCategory;
-// use App\Models\Expenditure;
-// use App\Models\User;
-// use Carbon\Carbon;
+use App\Models\BudgetHead;
 
 class BudgetChecker
 {
 
-	protected $loanCategory, $amount;
+	protected $budgetHead, $amount;
 
-	public function __construct(LoanCategory $loanCategory, $amount)
+	public function __construct(BudgetHead $budgetHead, $amount)
 	{
-		$this->loanCategory = $loanCategory;
+		$this->budgetHead = $budgetHead;
 		$this->amount = $amount;
 	}
 
@@ -32,7 +27,7 @@ class BudgetChecker
 
 	private function computeInterest()
 	{
-		return $this->amount * ($this->loanCategory->interest / 100) + $this->amount;
+		return $this->amount * ($this->budgetHead->interest / 100) + $this->amount;
 	}
 
 	private function availableFunds()
@@ -54,7 +49,7 @@ class BudgetChecker
 
 	private function loanLimitCheck()
 	{
-		$limiter = $this->amount <= $this->loanCategory->limit;
+		$limiter = $this->amount <= $this->budgetHead->limit;
 
 		if (! $limiter) {
 			return response()->json([
@@ -92,6 +87,6 @@ class BudgetChecker
 
 	private function getBalance()
 	{
-		return $this->loanCategory->balance;
+		return $this->budgetHead->fund->actual_balance;
 	}
 }

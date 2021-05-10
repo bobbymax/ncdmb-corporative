@@ -2,8 +2,9 @@
 
 return [
 	'category' => [
-		'loan' => 'Loan', 
-		'asset' => 'Asset'
+		'loan' => 'Loan',
+		'asset' => 'Asset',
+        'shares' => 'Shares'
 	],
 
 	'loans' => [
@@ -14,9 +15,9 @@ return [
 		],
 
 		'frequency' => [
-			'monthly' => 'Monthly', 
-			'annually' => 'Annually', 
-			'special' => 'Special', 
+			'monthly' => 'Monthly',
+			'annually' => 'Annually',
+			'special' => 'Special',
 			'rated' => 'Rated'
 		],
 

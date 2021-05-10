@@ -22,12 +22,16 @@ Route::post('verify/member/payment', 'PaymentController@verifyPayment');
 
 Route::post('import/members', 'MemberController@importMembers');
 
+// Form Fetchers
+Route::get('get/budget/types', 'DependencyController@budgetHeadCategory');
+Route::get('budgetHead/loan/type', 'BudgetHeadController@loaners');
+
 
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('budgetHeads', 'BudgetHeadController');
+
 Route::apiResource('funds', 'FundController');
-// Route::apiResource('loanCategories', 'LoanCategoryController');
 Route::apiResource('groups', 'GroupController');
 Route::apiResource('guarantors', 'GuarantorController');
 Route::apiResource('investments', 'InvestmentController');

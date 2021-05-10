@@ -39,6 +39,25 @@ class BudgetHeadController extends Controller
         ], 200);
     }
 
+    public function loaners()
+    {
+        $budgetHeads = BudgetHead::where('category', 'loan')->get();
+
+        if ($budgetHeads->count() < 1) {
+            return response()->json([
+                'data' => null,
+                'status' => 'info',
+                'message' => 'No data was found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => BugetHeadResource::collection($budgetHeads),
+            'status' => 'success',
+            'message' => $budgetHeads->count() . ' data found!'
+        ], 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

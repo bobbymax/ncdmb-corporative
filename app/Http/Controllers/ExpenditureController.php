@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BudgetHead;
 use App\Models\LoanCategory;
 use App\Models\Loan;
 use Illuminate\Http\Request;
@@ -32,9 +33,9 @@ class ExpenditureController extends Controller
             ], 505);
         }
 
-        $loanCategory = LoanCategory::find($request->category);
+        $budgetHead = BudgetHead::find($request->category);
 
-        if (! $loanCategory) {
+        if (! $budgetHead) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -42,7 +43,7 @@ class ExpenditureController extends Controller
             ], 422);
         }
 
-        $results = (new BudgetChecker($loanCategory, $request->amount))->init();
+        $results = (new BudgetChecker($budgetHead, $request->amount))->init();
 
         return response()->json([
             'data' => $results,
