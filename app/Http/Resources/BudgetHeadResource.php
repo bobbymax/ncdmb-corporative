@@ -29,6 +29,7 @@ class BudgetHeadResource extends JsonResource
             'payable' => $this->payable,
             'frequency' => $this->frequency,
             'type' => $this->type,
+            'fund' => $this->fund,
             'active' => $this->active ? 'Yes' : 'No',
             'created_at' => $this->created_at->format('d F, Y')
         ];
