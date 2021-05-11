@@ -337,7 +337,7 @@ class LoanController extends Controller
 
     public function loanApprovalList()
     {
-        $roles = config('corporative.approvals');
+        $roles = config('corporative.loans.approvals');
         $loans = collect();
 
         if (auth()->user()->hasRole($roles['first'])) {
