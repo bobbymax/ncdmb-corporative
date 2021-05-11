@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BudgetHeadResource;
 use App\Models\BudgetHead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Http\Resources\BugetHeadResource;
 use App\Helpers\BudgetHelperClass;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,7 +33,7 @@ class BudgetHeadController extends Controller
         }
 
         return response()->json([
-            'data' => BugetHeadResource::collection($budgetHeads),
+            'data' => BudgetHeadResource::collection($budgetHeads),
             'status' => 'success',
             'message' => $budgetHeads->count() . ' data found!'
         ], 200);
@@ -52,7 +52,7 @@ class BudgetHeadController extends Controller
         }
 
         return response()->json([
-            'data' => BugetHeadResource::collection($budgetHeads),
+            'data' => BudgetHeadResource::collection($budgetHeads),
             'status' => 'success',
             'message' => $budgetHeads->count() . ' data found!'
         ], 200);
@@ -108,7 +108,7 @@ class BudgetHeadController extends Controller
         // Alert new activity before sending response
 
         return response()->json([
-            'data' => new BugetHeadResource($budgetHead),
+            'data' => new BudgetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head created successfully!'
         ], 201);
@@ -133,7 +133,7 @@ class BudgetHeadController extends Controller
         }
 
         return response()->json([
-            'data' => new BugetHeadResource($budgetHead),
+            'data' => new BudgetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head details'
         ], 200);
@@ -158,7 +158,7 @@ class BudgetHeadController extends Controller
         }
 
         return response()->json([
-            'data' => new BugetHeadResource($budgetHead),
+            'data' => new BudgetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head details'
         ], 200);
@@ -213,7 +213,7 @@ class BudgetHeadController extends Controller
         // Alert new activity before sending response
 
         return response()->json([
-            'data' => new BugetHeadResource($budgetHead),
+            'data' => new BudgetHeadResource($budgetHead),
             'status' => 'success',
             'message' => 'Budget head created successfully!'
         ], 201);
