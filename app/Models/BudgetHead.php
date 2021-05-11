@@ -23,7 +23,7 @@ class BudgetHead extends Model
 
     public function fund()
     {
-        return $this->hasOne(Fund::class);
+        return $this->hasOne(Fund::class, 'budget_head_id');
     }
 
     public function loans()

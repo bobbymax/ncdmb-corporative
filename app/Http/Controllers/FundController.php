@@ -168,7 +168,8 @@ class FundController extends Controller
         $fund->update([
             'budget_head_id' => $request->budget_head_id,
             'description' => $request->description,
-            'approved_amount' => $request->approved_amount
+            'approved_amount' => $request->approved_amount,
+            'available_balance' => $request->approved_amount
         ]);
 
         return response()->json([
