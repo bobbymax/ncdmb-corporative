@@ -23,7 +23,7 @@ class LoanResource extends JsonResource
             'reason' => $this->reason,
             'description' => $this->description,
             'owner' => new UserResource($this->member),
-            'budget_head' => new BugetHeadResource($this->fund),
+            'budget_head' => new BudgetHeadResource($this->fund),
             'created_at' => $this->created_at->format('d M, Y'),
             'closed' => $this->closed ? 'Yes' : 'No',
             'schedules' => ScheduleResource::collection($this->schedules),
