@@ -13,6 +13,6 @@ class Fund extends Model
 
     public function budgetHead()
     {
-    	$this->belongsTo(BudgetHead::class, 'budget_head_id');
+    	return $this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
 }
