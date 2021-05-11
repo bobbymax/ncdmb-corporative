@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FundResource;
+use App\Models\BudgetHead;
 use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

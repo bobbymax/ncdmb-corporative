@@ -63,7 +63,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'budget_head_id' => 'required|integer',
+            'category_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
             'description' => 'required|min:3',
@@ -88,7 +88,7 @@ class LoanController extends Controller
 
         $loan = Loan::create([
             'user_id' => $request->user()->id,
-            'budget_head_id' => $request->budget_head_id,
+            'budget_head_id' => $request->category_id,
             'code' => 'LN' . time(), //$request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
@@ -150,7 +150,7 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Loan $loan)
+    public function edit($loan)
     {
         $loan = Loan::where('code', $loan)->first();
 
