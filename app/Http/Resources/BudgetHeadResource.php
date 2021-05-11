@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BugetHeadResource extends JsonResource
+class BudgetHeadResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -29,7 +29,7 @@ class BugetHeadResource extends JsonResource
             'payable' => $this->payable,
             'frequency' => $this->frequency,
             'type' => $this->type,
-            'fund' => new FundResource($this->fund),
+            'fund' => $this->fund,
             'active' => $this->active ? 'Yes' : 'No',
             'created_at' => $this->created_at->format('d F, Y')
         ];
