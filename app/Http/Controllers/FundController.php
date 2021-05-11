@@ -71,7 +71,8 @@ class FundController extends Controller
         $fund = Fund::create([
             'budget_head_id' => $request->budget_head_id,
             'description' => $request->description,
-            'approved_amount' => $request->approved_amount
+            'approved_amount' => $request->approved_amount,
+            'actual_balance' => $request->approved_amount
         ]);
 
         return response()->json([
