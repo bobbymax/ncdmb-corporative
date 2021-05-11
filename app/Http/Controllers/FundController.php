@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FundResource;
 use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,7 @@ class FundController extends Controller
         }
 
         return response()->json([
-            'data' => $funds,
+            'data' => FundResource::collection($funds),
             'status' => 'success',
             'message' => 'No data found!'
         ], 200);
@@ -76,7 +77,7 @@ class FundController extends Controller
         ]);
 
         return response()->json([
-            'data' => $fund,
+            'data' => new FundResource($fund),
             'status' => 'success',
             'message' => 'Fund for Budget Head has been created successfully!'
         ], 201);
@@ -101,7 +102,7 @@ class FundController extends Controller
         }
 
         return response()->json([
-            'data' => $fund,
+            'data' => new FundResource($fund),
             'status' => 'success',
             'message' => 'Fund for Budget Head details!'
         ], 200);
@@ -126,7 +127,7 @@ class FundController extends Controller
         }
 
         return response()->json([
-            'data' => $fund,
+            'data' => new FundResource($fund),
             'status' => 'success',
             'message' => 'Fund for Budget Head details!'
         ], 200);
@@ -171,7 +172,7 @@ class FundController extends Controller
         ]);
 
         return response()->json([
-            'data' => $fund,
+            'data' => new FundResource($fund),
             'status' => 'success',
             'message' => 'Fund for Budget Head has been created successfully!'
         ], 200);
