@@ -15,8 +15,8 @@ class CreateAccountCodesTable extends Migration
     {
         Schema::create('account_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('range')->nullable();
-            $table->string('name');
+            $table->string('range')->nullable(); // editable text
+            $table->string('name'); // editable text
             $table->string('label')->unique();
             $table->boolean('isActive')->default(true);
             $table->timestamps();

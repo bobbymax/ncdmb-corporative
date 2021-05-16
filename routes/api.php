@@ -50,6 +50,8 @@ Route::apiResource('agents', 'AgentController');
 Route::apiResource('projects', 'ProjectController');
 Route::apiResource('payments', 'PayController');
 Route::apiResource('expenses', 'ExpenseController');
+Route::apiResource('accountCodes', 'AccountCodeController');
+Route::apiResource('journals', 'JournalController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
