@@ -23,4 +23,9 @@ class Expense extends Model
         return $this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
 
+    public function batchEntries()
+    {
+        return $this->morphMany(BatchEntry::class, 'batchable');
+    }
+
 }

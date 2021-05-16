@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\BatchEntry;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -73,10 +74,11 @@ class BatchController extends Controller
 
         if ($batch->save() && $request->has('batchables')) {
             foreach ($request->batchables as $entry) {
+                $expense = Expense::find($entry);
                 $batchEntry = new BatchEntry;
                 $batchEntry->batch_id = $batch->id;
-                $batchEntry->batchable()->save($entry);
-                // $entry->batchEntries()->save($batchEntry);
+                // $batchEntry->batchable()->save($entry);
+                $expense->batchEntries()->save($batchEntry);
             }
         }
 

@@ -15,16 +15,16 @@ class CreateJournalsTable extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('account_code_id')->unsigned();
+            $table->bigInteger('account_code_id')->unsigned(); // dropdown
             $table->foreign('account_code_id')->references('id')->on('account_codes')->onDelete('cascade');
-            $table->bigInteger('budget_head_id')->unsigned();
+            $table->bigInteger('budget_head_id')->unsigned(); // dropdown
             $table->foreign('budget_head_id')->references('id')->on('budget_heads')->onDelete('cascade');
-            $table->string('name');
-            $table->date('entry_date')->nullable();
-            $table->decimal('amount', $precision = 30, $scale = 2)->default(0);
-            $table->text('description')->nullable();
+            $table->string('name'); // editable
+            $table->date('entry_date')->nullable(); // editable
+            $table->decimal('amount', $precision = 30, $scale = 2)->default(0); // amount
+            $table->text('description')->nullable(); // editable
             $table->enum('payment_type', ['credit', 'debit'])->default('debit');
-            $table->enum('payment_methods', ['electronic', 'check', 'cash'])->default('electronic');
+            $table->enum('payment_methods', ['electronic', 'check', 'cash'])->default('electronic'); // dropdown
             $table->timestamps();
         });
     }

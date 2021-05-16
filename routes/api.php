@@ -52,6 +52,8 @@ Route::apiResource('payments', 'PayController');
 Route::apiResource('expenses', 'ExpenseController');
 Route::apiResource('accountCodes', 'AccountCodeController');
 Route::apiResource('journals', 'JournalController');
+Route::apiResource('receives', 'ReceiveController');
+Route::apiResource('batches', 'BatchController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
