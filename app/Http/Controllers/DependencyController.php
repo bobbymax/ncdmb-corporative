@@ -17,6 +17,15 @@ class DependencyController extends Controller
             'data' => config('corporative.category'),
             'status' => 'success',
             'message' => 'List of Budget Head Types'
+        ], 200);
+    }
+
+    public function serviceCategories()
+    {
+        return response()->json([
+            'data' => config('corporative.services'),
+            'status' => 'success',
+            'message' => 'List of service categories'
         ]);
     }
 }

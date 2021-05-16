@@ -7,6 +7,7 @@ use App\Http\Resources\LoanResource;
 use App\Models\Approval;
 use App\Models\Guarantor;
 use App\Models\Loan;
+use App\Models\Receive;
 use App\Models\Trail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -153,6 +154,10 @@ class ApprovalController extends Controller
                 } else {
                     $loan->level += 1;
                     $loan->status = $status;
+
+                    $receiver = new Receive;
+                    $receiver->identifier = time();
+                    $loan->receiver()->save($receiver);
                 }
 
                 $loan->save();

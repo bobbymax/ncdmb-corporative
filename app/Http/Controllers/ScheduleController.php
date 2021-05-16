@@ -21,11 +21,11 @@ class ScheduleController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -58,7 +58,7 @@ class ScheduleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -97,25 +97,25 @@ class ScheduleController extends Controller
         }
 
         $loan->status = "disbursed";
+        $loan->save();
 
-        if ($loan->save()) {
-            $transaction = new Transaction;
-            $transaction->code = "LN" . time() . strtoupper(Str::random(5));
-            $transaction->type = "loan";
-            $transaction->amount = $loan->amount;
-
-            if ($loan->transactions()->save($transaction)) {
-
-                foreach ($this->types as $type) {
-                    $transactee = new Transactee;
-                    $transactee->user_id = $this->setType($type, $loan)[0];
-                    $transactee->type = $type;
-                    $transactee->status = $this->setType($type, $loan)[1];
-
-                    $transaction->transactees()->save($transactee);
-                }
-            }
-        }
+//        if ($loan->save()) {
+//            $transaction = new Transaction;
+//            $transaction->code = "LN" . time() . strtoupper(Str::random(5));
+//            $transaction->type = "loan";
+//            $transaction->amount = $loan->amount;
+//
+//            if ($loan->transactions()->save($transaction)) {
+//                foreach ($this->types as $type) {
+//                    $transactee = new Transactee;
+//                    $transactee->user_id = $this->setType($type, $loan)[0];
+//                    $transactee->type = $type;
+//                    $transactee->status = $this->setType($type, $loan)[1];
+//
+//                    $transaction->transactees()->save($transactee);
+//                }
+//            }
+//        }
 
         return response()->json([
             'data' => new LoanResource($loan),
@@ -130,7 +130,7 @@ class ScheduleController extends Controller
             case "credit":
                 return [$loan->member->id, "receiver"];
                 break;
-            
+
             default:
                 return [auth()->user()->id, "sender"];
                 break;
@@ -164,7 +164,7 @@ class ScheduleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Schedule  $schedule
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $schedule)
     {

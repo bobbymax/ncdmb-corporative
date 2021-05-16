@@ -22,6 +22,11 @@ class Loan extends Model
     	return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function batchEntries()
+    {
+        return $this->morphMany(BatchEntry::class, 'batchable');
+    }
+
     public function fund()
     {
     	return $this->belongsTo(BudgetHead::class, 'budget_head_id');
@@ -30,6 +35,11 @@ class Loan extends Model
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function receivers()
+    {
+        return $this->morphMany(Receive::class, 'receiveable');
     }
 
     public function guarantors()

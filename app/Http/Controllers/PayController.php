@@ -24,7 +24,7 @@ class PayController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -129,7 +129,7 @@ class PayController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response@
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -189,13 +189,13 @@ class PayController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Pay  $payment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($payment)
     {
         $payment = Pay::where('trxRef', $payment)->first();
 
-        if (!$payment) {
+        if (! $payment) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',

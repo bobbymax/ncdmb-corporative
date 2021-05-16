@@ -25,6 +25,7 @@ Route::post('import/members', 'MemberController@importMembers');
 // Form Fetchers
 Route::get('get/budget/types', 'DependencyController@budgetHeadCategory');
 Route::get('budgetHead/loan/type', 'BudgetHeadController@loaners');
+Route::get('get/service/categories', 'DependencyController@serviceCategories');
 
 
 Route::apiResource('members', 'MemberController');
@@ -48,6 +49,7 @@ Route::apiResource('deposits', 'DepositController');
 Route::apiResource('agents', 'AgentController');
 Route::apiResource('projects', 'ProjectController');
 Route::apiResource('payments', 'PayController');
+Route::apiResource('expenses', 'ExpenseController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
