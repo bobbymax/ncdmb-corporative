@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReceiveResource;
 use App\Models\Receive;
 use Illuminate\Http\Request;
 
@@ -26,11 +27,11 @@ class ReceiveController extends Controller
                 'data' => null,
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 204);
+            ], 404);
         }
 
         return response()->json([
-            'data' => $receiveables,
+            'data' => ReceiveResource::collection($receiveables),
             'status' => 'success',
             'message' => 'Receiveables List'
         ], 200);
@@ -61,22 +62,50 @@ class ReceiveController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Receive  $receive
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Receive $receive)
+    public function show($receive)
     {
-        //
+        $receive = Receive::where('identifier', $receive)->first();
+
+        if (! $receive) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token'
+            ]);
+        }
+
+        return response()->json([
+            'data' => new ReceiveResource($receive),
+            'status' => 'error',
+            'message' => 'Invalid token'
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Receive  $receive
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Receive $receive)
+    public function edit($receive)
     {
-        //
+        $receive = Receive::where('identifier', $receive)->first();
+
+        if (! $receive) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token'
+            ]);
+        }
+
+        return response()->json([
+            'data' => new ReceiveResource($receive),
+            'status' => 'error',
+            'message' => 'Invalid token'
+        ]);
     }
 
     /**
