@@ -28,14 +28,14 @@ class AccountCodeController extends Controller
                 'data' => null,
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 204);
+            ], 404);
         }
 
         return response()->json([
             'data' => $accountCodes,
             'status' => 'success',
             'message' => 'Account Codes List'
-        ], 204);
+        ], 200);
     }
 
     /**
