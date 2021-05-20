@@ -28,7 +28,7 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = auth()->user()->loans;
+        $loans = Loan::all();
 
         if ($loans->count() < 1) {
             return response()->json([
