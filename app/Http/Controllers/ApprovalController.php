@@ -157,7 +157,7 @@ class ApprovalController extends Controller
 
                     $receiver = new Receive;
                     $receiver->identifier = time();
-                    $loan->receiver()->save($receiver);
+                    $loan->receivers()->save($receiver);
                 }
 
                 $loan->save();
