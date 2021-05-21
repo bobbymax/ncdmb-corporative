@@ -18,7 +18,9 @@ class ReceiveResource extends JsonResource
         return [
             'id' => $this->id,
             'identifier' => $this->identifier,
-            'beneficiary' => $this->receiveable
+            'benefactor' => $this->receiveable->member->getFullname(),
+            'beneficiary' => $this->receiveable,
+            'type' => $this->receiveable_type
         ];
     }
 }

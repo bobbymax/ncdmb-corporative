@@ -39,7 +39,7 @@ class Loan extends Model
 
     public function receivers()
     {
-        return $this->morphMany(Receive::class, 'receiveable');
+        return $this->morphOne(Receive::class, 'receiveable');
     }
 
     public function guarantors()

@@ -46,6 +46,11 @@ class User extends Authenticatable
         return 'staff_no';
     }
 
+    public function getFullname()
+    {
+        return $this->firstname . " "  . $this->middlename ?? null .  " " . $this->surname;
+    }
+
     public function contribution()
     {
         return $this->hasOne(Contribution::class);
