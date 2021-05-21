@@ -100,8 +100,8 @@ class BudgetHeadController extends Controller
             'restriction' => isset($request->restriction) ? $request->restriction : 0,
             'commitment' => isset($request->commitment) ? $request->commitment : 0,
             'limit' => isset($request->limit) ? $request->limit : 0,
-            'payable' => $request->payable,
-            'frequency' => $request->frequency,
+            'payable' => isset($request->payable) ? $request->payable : "na",
+            'frequency' => isset($request->frequency) ? $request->frequency : "na",
             'type' => $request->type
         ]);
 
