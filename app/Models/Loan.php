@@ -66,4 +66,6 @@ class Loan extends Model
     {
         return $this->morphMany(Pay::class, 'payable');
     }
+
+
 }

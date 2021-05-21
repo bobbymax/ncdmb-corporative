@@ -20,6 +20,7 @@ class ReceiveResource extends JsonResource
             'identifier' => $this->identifier,
             'benefactor' => $this->receiveable->member->getFullname(),
             'beneficiary' => $this->receiveable,
+            'budget_head' => new BudgetHeadResource($this->receiveable->fund),
             'type' => substr($this->receiveable_type, 11)
         ];
     }
