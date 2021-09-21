@@ -9,8 +9,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Just checking
-
 Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
+
 
 Route::get('dashboard/details', 'DashboardController@index');
 Route::post('get/transactions', 'DashboardController@adminDisplay');
@@ -62,7 +62,6 @@ Route::post('grant/member/loan', 'LoanController@grantStat');
 // Loan Checker
 Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
 
-
 Route::post('login', 'LoginController@login');
 
 // Route::get('transactions/filter/{type}', 'TransactionController@transactionType');
@@ -88,6 +87,7 @@ Route::get('dashboard/all', 'DashboardController@index');
 Route::get('dashboard', 'DashboardController@userDashboard');
 
 Route::get('loan/approvals','LoanController@loanApprovalList');
+Route::post('extract/data', 'ImportController@import');
 
 // Route::post('notification/message', 'NotificationController@message');
 Route::post('notification/message', function () {

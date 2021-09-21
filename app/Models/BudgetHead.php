@@ -21,9 +21,19 @@ class BudgetHead extends Model
     	return $this->belongsTo(Budget::class, 'budget_id');
     }
 
-    public function fund()
+    // public function fund()
+    // {
+    //     return $this->hasOne(Fund::class, 'budget_head_id');
+    // }
+
+    public function fund($yr)
     {
-        return $this->hasOne(Fund::class, 'budget_head_id');
+        return $this->funding->where('year', $yr)->first();
+    }
+
+    public function funding()
+    {
+        return $this->hasMany(Fund::class, 'budget_head_id');
     }
 
     public function loans()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\Contribution;
+use App\Models\Wallet;
 use App\Models\Deposit;
 use App\Models\Transactee;
 use App\Models\Transaction;
@@ -55,9 +56,7 @@ class DashboardController extends Controller
         // $totalDeposits = auth()->user()->deposits()->sum('amount');
         $totalDeposits = Deposit::where('user_id', auth()->user()->id)->where('paid', 1)->sum('amount');
 
-        $availableBalance = Transaction::whereHas('transactees', function ($query) {
-            return $query->where('user_id', auth()->user()->id);
-        })->sum('amount');
+        $availableBalance = Wallet::where('user_id', auth()->user()->id)->first();
 
         $totalWithdrawals = Transaction::whereHas('transactees', function ($query) {
             return $query->where('user_id', auth()->user()->id);

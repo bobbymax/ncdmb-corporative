@@ -61,6 +61,11 @@ class ContributionController extends Controller
         //
     }
 
+    public function loadMemberContributions(Request $request)
+    {
+        //
+    }
+
     /**
      * Display the specified resource.
      *

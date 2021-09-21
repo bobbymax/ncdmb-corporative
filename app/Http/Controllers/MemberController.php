@@ -142,7 +142,9 @@ class MemberController extends Controller
         if ($request->fee !== null) {
             $contribution = Contribution::create([
                 'user_id' => $member->id,
-                'fee' => $request->fee
+                'fee' => $request->fee,
+                'month' => now()->month,
+                'current' => true
             ]);
         }
 
@@ -188,7 +190,7 @@ class MemberController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($user)
     {

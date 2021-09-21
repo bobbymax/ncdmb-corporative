@@ -51,9 +51,14 @@ class User extends Authenticatable
         return $this->firstname . " "  . $this->middlename ?? null .  " " . $this->surname;
     }
 
+    public function contributions()
+    {
+        return $this->hasMany(Contribution::class);
+    }
+
     public function contribution()
     {
-        return $this->hasOne(Contribution::class);
+        return $this->contributions->where('current', true);
     }
 
     public function roles()

@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             "id" => $this->id,
             "staff_no" => $this->staff_no,
             "membership_no" => $this->membership_no ?? null,
+            "contribution" => $this->contribution,
             "loans" => LoanResource::collection($this->loans->where('closed', false))
         ];
     }
