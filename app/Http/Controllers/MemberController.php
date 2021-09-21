@@ -59,7 +59,7 @@ class MemberController extends Controller
 
         $members = User::latest()->get();
 
-        if ($resource->count() < 1) {
+        if ($members->count() < 1) {
             return response()->json([
                 'data' => null,
                 'status' => 'info',
