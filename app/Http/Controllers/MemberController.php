@@ -54,8 +54,10 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = User::with(['roles', 'kin', 'contribution', 'wallet']);
-        $resource = UserResource::collection($members->latest()->get());
+        // $members = User::with(['roles', 'kin', 'contribution', 'wallet']);
+        // $resource = UserResource::collection($members->latest()->get());
+
+        $members = User::latest()->get();
 
         if ($resource->count() < 1) {
             return response()->json([
@@ -66,7 +68,7 @@ class MemberController extends Controller
         }
 
         return response()->json([
-            'data' => $resource,
+            'data' => UserResource::collection($members),
             'status' => 'success',
             'message' => 'List of members'
         ], 200);
