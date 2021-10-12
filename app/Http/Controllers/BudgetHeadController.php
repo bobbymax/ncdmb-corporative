@@ -102,7 +102,8 @@ class BudgetHeadController extends Controller
             'limit' => isset($request->limit) ? $request->limit : 0,
             'payable' => isset($request->payable) ? $request->payable : "na",
             'frequency' => isset($request->frequency) ? $request->frequency : "na",
-            'type' => $request->type
+            'type' => $request->type,
+            'year' => date('Y')
         ]);
 
         // Alert new activity before sending response
