@@ -15,6 +15,10 @@ Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
 Route::get('dashboard/details', 'DashboardController@index');
 Route::post('get/transactions', 'DashboardController@adminDisplay');
 
+Route::apiResource('members', 'MemberController');
+Route::apiResource('budgets', 'BudgetController');
+Route::apiResource('budgetHeads', 'BudgetHeadController');
+
 // Payment Endpoints
 Route::post('online/deposit', 'PaymentController@onlineDeposit');
 Route::post('bank/deposit', 'PaymentController@bankDeposit');
@@ -27,10 +31,6 @@ Route::get('get/budget/types', 'DependencyController@budgetHeadCategory');
 Route::get('budgetHead/loan/type', 'BudgetHeadController@loaners');
 Route::get('get/service/categories', 'DependencyController@serviceCategories');
 
-
-Route::apiResource('members', 'MemberController');
-Route::apiResource('budgets', 'BudgetController');
-Route::apiResource('budgetHeads', 'BudgetHeadController');
 
 Route::apiResource('funds', 'FundController');
 Route::apiResource('groups', 'GroupController');
