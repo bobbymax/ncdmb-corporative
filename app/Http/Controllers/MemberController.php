@@ -54,9 +54,6 @@ class MemberController extends Controller
      */
     public function index()
     {
-        // $members = User::with(['roles', 'kin', 'contribution', 'wallet']);
-        // $resource = UserResource::collection($members->latest()->get());
-
         $members = User::latest()->get();
 
         if ($members->count() < 1) {
