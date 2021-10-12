@@ -9,6 +9,7 @@ class BudgetChecker
 {
 
 	protected $budgetHead, $amount;
+	protected $current_year = 2021;
 
 	public function __construct(BudgetHead $budgetHead, $amount)
 	{
@@ -32,7 +33,7 @@ class BudgetChecker
 
 	private function availableFunds()
 	{
-		if ($this->getBalance() < $this->amount) {
+		if ($this->getBalance($this->current_year) < $this->amount) {
 			return response()->json([
 				'data' => false,
 				'status' => 'warning',
@@ -85,8 +86,8 @@ class BudgetChecker
 		], 200);
 	}
 
-	private function getBalance()
+	private function getBalance($yr)
 	{
-		return $this->budgetHead->fund(date('Y'))->actual_balance;
+		return $this->budgetHead->fund($yr)->actual_balance;
 	}
 }
