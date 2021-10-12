@@ -87,6 +87,6 @@ class BudgetChecker
 
 	private function getBalance()
 	{
-		return $this->budgetHead->fund->actual_balance;
+		return $this->budgetHead->fund(date('Y'))->actual_balance;
 	}
 }

@@ -11,10 +11,10 @@ class BudgetHead extends Model
 
     protected $guarded = [''];
 
-    public function getRouteKeyName()
-    {
-    	return 'code';
-    }
+    // public function getRouteKeyName()
+    // {
+    // 	return 'code';
+    // }
 
     public function budget()
     {
