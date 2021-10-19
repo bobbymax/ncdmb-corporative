@@ -25,13 +25,13 @@ class GroupController extends Controller
 
         if ($groups->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'success',
                 'message' => 'No data found'
             ], 200);
         }
         return response()->json([
-            'data' => null,
+            'data' => $groups,
             'status' => 'success',
             'message' => 'Group list'
         ], 200);
