@@ -26,7 +26,7 @@ class ImportController extends Controller
     public function import(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'data' => 'required',
+            'data' => 'required|array',
             'type' => 'required|string'
         ]);
 
@@ -42,6 +42,8 @@ class ImportController extends Controller
             case "members" :
                 $this->result = $this->membersBulkAdd($request->data);
                 break;
+            case "credit-members" :
+                $this->result = $this->creditMembersWallet($request->data);
             default :
                 $this->result = [];
                 break;
@@ -52,6 +54,22 @@ class ImportController extends Controller
             'status' => 'success',
             'message' => 'Imported successfully!!'
         ], 200);
+    }
+
+    protected function creditMembersWallet(array $data)
+    {
+        foreach($data as $user) {
+            $member = User::where('staff_no', $user['membership_no'])->first();
+
+            if ($member) {
+                $member->wallet->current += $user['amount'];
+                $member->wallet->save();
+            }
+
+            $this->bulkRecords[] = $member;
+        }
+
+        return $this->bulkRecords;
     }
 
     protected function membersBulkAdd(array $data)
