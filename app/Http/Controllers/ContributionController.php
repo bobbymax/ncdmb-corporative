@@ -10,9 +10,13 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\ContributionResource;
+// use App\Http\Resources\UserResource;
 
 class ContributionController extends Controller
 {
+
+    protected $results = [];
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -64,6 +68,38 @@ class ContributionController extends Controller
     public function loadMemberContributions(Request $request)
     {
         //
+    }
+
+    public function creditUserAccounts(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'members' => 'required|array'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'error',
+                'message' => 'Please fix this errors before proceeding!'
+            ], 500);
+        }
+
+        foreach($request->members as $user) {
+            $member = User::where('staff_no', $user['membership_no'])->first();
+
+            if ($member) {
+                $member->wallet->current += $user['amount'];
+                $member->wallet->save();
+            }
+
+            $this->results[] = $member;
+        }
+
+        return response()->json([
+            'data' => UserResource::collection($this->results),
+            'status' => 'success',
+            'message' => 'Accounts credited successfully!!'
+        ], 200);        
     }
 
     /**

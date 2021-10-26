@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\Contribution;
 use App\Models\Wallet;
+use App\Models\User;
+use App\Models\Fund;
 use App\Models\Deposit;
 use App\Models\Transactee;
 use App\Models\Transaction;
@@ -17,6 +19,8 @@ use App\Http\Resources\TransacteeResource;
 use App\Http\Resources\DepositResource;
 use App\Http\Resources\LoanResource;
 use App\Http\Resources\TransactionResource;
+
+use DB;
 
 class DashboardController extends Controller
 {
@@ -76,14 +80,16 @@ class DashboardController extends Controller
 
     private function adminDashboard()
     {
-        $totalContributions = Transaction::where('type', 'contribution')->sum('amount');
+        $totalContributions = Contribution::sum('fee');
         $totalDeposits = Deposit::where('paid', true)->sum('amount');
-        $availableBalance = Transaction::where('completed', true)->sum('amount');
+        $availableBalance = Wallet::sum('current');
         $totalWithdrawals = Transaction::where('type', 'withdrawal')->sum('amount');
-        $totalLoans = Transaction::where('type', 'loan')->sum('amount');
+        $totalLoans = 0;
         $currentLoan = Transaction::where('type', 'loan')->where('completed', false)->sum('amount');
+        $registeredMembers = User::where('type', 'member')->count();
+        $approvedBudgetAmount = Fund::sum('approved_amount');
 
-        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoan');
+        return compact('totalContributions', 'totalDeposits', 'availableBalance', 'totalWithdrawals', 'totalLoans', 'currentLoan', 'registeredMembers', 'approvedBudgetAmount');
     }
 
     public function display($filter)
