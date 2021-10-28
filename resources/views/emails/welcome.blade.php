@@ -10,7 +10,7 @@ Username: {{ $user->membership_no }}, <br/>
 Password: {{ strtolower($user->firstname) . "." . strtolower($user->surname) }}
 @endcomponent
 
-@component('mail::button', ['url' => 'https:://portal.ncdmbcoop.com'])
+@component('mail::button', ['url' => 'https://portal.ncdmbcoop.com'])
 Login
 @endcomponent
 
