@@ -117,9 +117,7 @@ class ImportController extends Controller
                     $role = Role::create([
                         'name' => 'Member',
                         'label' => 'member',
-                        'max_slots' => 1000,
-                        'start_date' => Carbon::now(),
-                        'cannot_expire' => 1,
+                        'slots' => 1000
                     ]);
                 }
 
