@@ -31,7 +31,7 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->from('cooperative@ncdmb.gov.ng')
+        return $this->from('coop@ncdmb.gov.ng')
                     ->subject('Welcome to NCDMB Cooperative Portal')
                     ->markdown('emails.welcome');
     }
