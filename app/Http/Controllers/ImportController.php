@@ -12,6 +12,8 @@ use App\Models\Transaction;
 use App\Models\Contribution;
 use App\Http\Resources\UserResource;
 use Carbon\Carbon;
+use App\Mail\WelcomeMail;
+use Mail;
 
 class ImportController extends Controller
 {
@@ -87,7 +89,7 @@ class ImportController extends Controller
                     'firstname' => ucfirst(strtolower($value['firstname'])),
                     'surname' => ucfirst(strtolower($value['surname'])),
                     'middlename' => isset($value['middlename']) ? ucfirst(strtolower($value['middlename'])) : null,
-                    'email' => $email,
+                    'email' => $value['email'] ?? $email,
                     'type' => 'member',
                     'password' => Hash::make($pass),
                 ]);
@@ -122,6 +124,8 @@ class ImportController extends Controller
                 }
 
                 $member->actAs($role);
+
+                Mail::to($member->email)->queue(new WelcomeMail($member));
             }
 
             $this->bulkRecords[] = $member;
