@@ -97,7 +97,7 @@ class ImportController extends Controller
                 $contribution = Contribution::create([
                     'user_id' => $member->id,
                     'month' => $today->month,
-                    'fee' => $value['current_contribution'],
+                    'fee' => isset($value['current_contribution']) ? $value['current_contribution'] : 0,
                     'current' => true
                 ]);
 
