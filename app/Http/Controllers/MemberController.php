@@ -47,6 +47,33 @@ class MemberController extends Controller
         ], 201);
     }
 
+    public function passwordReset(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string'
+        ]);
+
+        $user = User::find($request->loggedInUser);
+
+        if (! $user || auth()->user()->id != $user->id) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid user request'
+            ], 422);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->passwordChange = true;
+        $user->save();
+
+        return response()->json([
+            'data' => new UserResource(auth()->user()),
+            'status' => 'success',
+            'message' => 'Password has been updated successfully!!'
+        ], 200);
+    }
+
     /**
      * Display a listing of the resource.
      *

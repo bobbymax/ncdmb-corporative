@@ -36,6 +36,7 @@ class UserResource extends JsonResource
             'contribution' => $this->contributions->where('current', true)[0] ?? null,
             'next_of_kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
             'wallet' => isset($this->wallet) ? $this->wallet : null,
+            'changedPassword' => $this->passwordChange == 1 ? true : false,
             'roles' => RoleResource::collection($this->roles),
             'can_guarantee' => $request->user()->guaranteed()->wherePivot('status', 'approved')->get()->count() >= 2 ? false : true,
             'can_loan' => auth()->user()->loans->last() !== null
