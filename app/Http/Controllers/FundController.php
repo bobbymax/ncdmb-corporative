@@ -74,7 +74,8 @@ class FundController extends Controller
             'budget_head_id' => $request->budget_head_id,
             'description' => $request->description,
             'approved_amount' => $request->approved_amount,
-            'actual_balance' => $request->approved_amount
+            'actual_balance' => $request->approved_amount,
+            'year' => 2021
         ]);
 
         return response()->json([
