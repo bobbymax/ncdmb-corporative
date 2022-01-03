@@ -1,0 +1,771 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "NCDMB Corporative API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/accountCodes": {
+            "get": {
+                "tags": [
+                    "AccountCodes"
+                ],
+                "summary": "Returns all accountCodes on the system",
+                "description": "Returns all accountCodes on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "AccountCodes List",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/details": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Route",
+                "description": "Returns Dashboard Info",
+                "operationId": "dashBoard",
+                "responses": {
+                    "200": {
+                        "description": "User Dashboard Info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Please fix these errors"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/import/members": {
+            "post": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Import Members from Excel File",
+                "operationId": "importMembers",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "byte"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Members records have been created successfully",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Please fix the error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reset/password": {
+            "post": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Reset User Password",
+                "operationId": "resetPassword",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password has been updated successfully",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Invalud User Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/online/deposit": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Make Payments",
+                "operationId": "onlineDeposit",
+                "parameters": [
+                    {
+                        "name": "trxRef",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_method",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "You have successfully deposited into your account!!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Please fix the following errors"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Oops we think something went wrong!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bank/deposit": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Bank Deposit",
+                "operationId": "bankDeposit",
+                "parameters": [
+                    {
+                        "name": "trxRef",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_method",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Your request has been received awaiting verification!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Please fix the following errors"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Oops we think something went wrong!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/verify/member/payment": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Verify Member Payments",
+                "operationId": "verifyMemberPayment",
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "transaction",
+                        "in": "query",
+                        "required": true,
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "This transaction has been updated successfully",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Please fix the following errors"
+                    },
+                    "409": {
+                        "description": "this payment transaction has been verified already!"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "The transaction was not saved for some reason!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AccountCode": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "range": {
+                        "type": "string",
+                        "example": "Account code range"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Account code Name"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "144"
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "AccountCode"
+                }
+            },
+            "Agent": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "Agent Code"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Agent Name"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Agent Label"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "Storage Path"
+                    },
+                    "short_name": {
+                        "type": "string",
+                        "example": "Agent Short Name"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "inReview",
+                            "verified"
+                        ],
+                        "example": "verified"
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Agent"
+                }
+            },
+            "Approval": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "637434"
+                    },
+                    "remark": {
+                        "type": "string",
+                        "example": "Remarks (Long text)"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "approved",
+                            "review",
+                            "declined"
+                        ],
+                        "example": "pending"
+                    },
+                    "approvable_id": {
+                        "type": "integer",
+                        "example": "345"
+                    },
+                    "approvable_type": {
+                        "type": "string",
+                        "example": "Approvable Type"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Approval"
+                }
+            },
+            "Batch": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "code": {
+                        "type": "status",
+                        "readOnly": "true",
+                        "example": "dsf6"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "registered",
+                            "in-progress",
+                            "completed"
+                        ],
+                        "example": "in-progress"
+                    },
+                    "closed": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Batch"
+                }
+            },
+            "BatchEntry": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "batch_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "batchable_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "batchable_type": {
+                        "type": "string",
+                        "readOnly": "true",
+                        "example": "Batchable Type"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "BatchEntry"
+                }
+            },
+            "Beneficiary": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "payment_code": {
+                        "type": "string",
+                        "readOnly": "true",
+                        "example": "sdg6"
+                    },
+                    "beneficiaryable_id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "beneficiaryable_type": {
+                        "type": "string",
+                        "readOnly": "true",
+                        "example": "Type"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Beneficiary"
+                }
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "membership_no": {
+                        "type": "string",
+                        "example": "Membership Number"
+                    },
+                    "staff_no": {
+                        "type": "string",
+                        "example": "Staff Number"
+                    },
+                    "designation": {
+                        "type": "string",
+                        "example": "Designation"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "middlename": {
+                        "type": "string",
+                        "example": "F."
+                    },
+                    "surname": {
+                        "type": "String",
+                        "example": "Doe"
+                    },
+                    "email": {
+                        "type": "String",
+                        "example": "john@ncdmb.ng"
+                    },
+                    "mobile": {
+                        "type": "String",
+                        "example": "08127820880"
+                    },
+                    "location": {
+                        "type": "String",
+                        "example": "Abuja"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "member",
+                            "exco"
+                        ],
+                        "example": "exco"
+                    },
+                    "date_joined": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "can_guarantee": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "has_loan": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "email_verified_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "remember_token": {
+                        "type": "string",
+                        "example": "e8ryhqwer3r38r9h3rq3rq"
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "example": "path to avatar"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    },
+                    "deleted_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    },
+                    "passwordChange": {
+                        "type": "boolean",
+                        "example": "True"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
