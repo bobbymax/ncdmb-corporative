@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AccountCode;
+use App\Models\ChartOfAccount;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
-class AccountCodeController extends Controller
+class ChartOfAccountController extends Controller
 {
     public function __construct()
     {
@@ -17,22 +15,22 @@ class AccountCodeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $accountCodes = AccountCode::all();
+        $chartOfAccounts = ChartOfAccount::latest()->get();
 
-        if ($accountCodes->count() < 1) {
+        if ($chartOfAccounts->count() < 1) {
             return response()->json([
                 'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 404);
+            ], 204);
         }
 
         return response()->json([
-            'data' => $accountCodes,
+            'data' => $chartOfAccounts,
             'status' => 'success',
             'message' => 'Account Codes List'
         ], 200);
@@ -52,13 +50,14 @@ class AccountCodeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'range' => 'required'
+            'account_code_id' => 'required|integer',
+            'code' => 'required|integer',
+            'name' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -69,30 +68,31 @@ class AccountCodeController extends Controller
             ], 500);
         }
 
-        $accountCode = AccountCode::create([
+        $chartOfAccount = ChartOfAccount::create([
+            'account_code_id' => $request->account_code_id,
             'name' => $request->name,
-            'range' => $request->range,
+            'code' => $request->code,
             'label' => Str::slug($request->name)
         ]);
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
-            'message' => 'New Account Code created!!'
+            'message' => 'New Chart of Account created!!'
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function show($accountCode)
+    public function show($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -101,7 +101,7 @@ class AccountCodeController extends Controller
         }
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -110,14 +110,14 @@ class AccountCodeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function edit($accountCode)
+    public function edit($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -126,7 +126,7 @@ class AccountCodeController extends Controller
         }
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -136,19 +136,28 @@ class AccountCodeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $accountCode)
+    public function update(Request $request, $chartOfAccount)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'range' => 'required'
+            'account_code_id' => 'required|integer',
+            'code' => 'required|integer',
+            'name' => 'required|string|max:255'
         ]);
 
-        $accountCode = AccountCode::find($accountCode);
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Please fix the following errors!'
+            ], 500);
+        }
 
-        if (! $accountCode) {
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
+
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -156,30 +165,31 @@ class AccountCodeController extends Controller
             ], 422);
         }
 
-        $accountCode->update([
+        $chartOfAccount->update([
+            'account_code_id' => $request->account_code_id,
             'name' => $request->name,
-            'range' => $request->range,
+            'code' => $request->code,
             'label' => Str::slug($request->name)
         ]);
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
-            'message' => 'Account Code Details'
+            'message' => 'New Chart of Account updated!!'
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function destroy($accountCode)
+    public function destroy($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -187,12 +197,12 @@ class AccountCodeController extends Controller
             ], 422);
         }
 
-        $accountCode->delete();
+        $old = $chartOfAccount;
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
-            'message' => 'Account Code deleted successfully!'
+            'message' => 'Chart of Account deleted successfully!!'
         ], 200);
     }
 }
