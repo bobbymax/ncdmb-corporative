@@ -2140,6 +2140,379 @@
                     }
                 }
             }
+        },
+        "/schedules": {
+            "get": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "Returns all schedules on the system",
+                "description": "Returns all schedules on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Schedule"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "Save  schedule",
+                "operationId": "schedules",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "registered",
+                                "approved",
+                                "denied",
+                                "disbursed",
+                                "closed"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "guaranteed",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "closed",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Schedule   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/schedules/{id}": {
+            "get": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "Get schedule by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "schedule id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Schedule"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "update schedule by database",
+                "description": "Updates schedule in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "approved_amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid schedule id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "remove schedule from database",
+                "description": "Deletes schedule in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "schedule id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Schedule"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid schedule id"
+                    }
+                }
+            }
+        },
+        "/schedules/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Schedules"
+                ],
+                "summary": "Open form to edit schedule",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "schedule id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Schedule"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid schedule id"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2666,6 +3039,49 @@
                 "type": "object",
                 "xml": {
                     "name": "Loan"
+                }
+            },
+            "Schedule": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "loan_id": {
+                        "type": "integer",
+                        "example": "14"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "example": "14.43"
+                    },
+                    "due_date": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "paid",
+                            "overdue"
+                        ],
+                        "example": "overdue"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Schedule"
                 }
             },
             "User": {
