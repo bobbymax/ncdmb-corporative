@@ -10,6 +10,380 @@ use Carbon\Carbon;
 use App\Http\Resources\LoanResource;
 use Illuminate\Support\Facades\Validator;
 
+
+/**
+     * @OA\Post(
+     * path="/loans",
+     *   tags={"Loans"},
+     *   summary="Save  loan",
+     *   operationId="loans",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="user_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="budget_head_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="code",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="amount",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="reason",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="description",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="status",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          enum={"pending", "registered", "approved", "denied", "disbursed", "closed"}
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="level",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="guaranteed",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="closed",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="boolean",
+     *
+     *      )
+     * ),
+     *
+     *   @OA\Response(
+     *      response=201,
+     *       description="Loan   has been created successfully!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+      /**
+     * @OA\Get(
+     *     path="/loans",
+     *     tags={"Loans"},
+     *      summary="Returns all loans on the system",
+     *     description="Returns all loans on the system",
+     *     operationId="findRoles",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Loan")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+       * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     * )
+     *     )
+     * )
+     */
+
+           /**
+     * @OA\Get(
+     *     path="/loans/{id}",
+     *     tags={"Loans"},
+     *     summary="Get loan by id",
+     *     description="Returns based on id ",
+     *     operationId="showRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="loan id to get",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Loan for  details!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Loan")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="This ID is invalid"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                /**
+     * @OA\Get(
+     *     path="/loans/{id}/edit",
+     *     tags={"Loans"},
+     *      summary="Open form to edit loan",
+     *     description="Returns based on id ",
+     *     operationId="editRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="loan id to edit",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Loan")
+     *         )
+     *
+     *     ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid loan id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+
+                /**
+     * @OA\Put(
+     *     path="/loans/{id}",
+     *     tags={"Loans"},
+     *      summary="update loan by database",
+     *     description="Updates loan in database",
+     *     operationId="updateRole",
+     *
+     *    @OA\Parameter(
+     *      name="budget_head_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="description",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="approved_amount",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid loan id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                     /**
+     * @OA\Delete(
+     *     path="/loans/{id}",
+     *     tags={"Loans"},
+     *      summary="remove loan from database",
+     *     description="Deletes loan in database",
+     *     operationId="updateRole",
+     *
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="loan id to delete",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Loan deleted successfully!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Loan")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid loan id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
 class LoanController extends Controller
 {
     protected $guarantors = [];

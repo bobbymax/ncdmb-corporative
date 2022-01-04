@@ -541,15 +541,7 @@
                 "operationId": "groups",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "description",
+                        "name": "name",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -557,80 +549,11 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "label",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "booked_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "booked_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "expected_performance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "actual_performance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "year",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "exhausted",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
+                            "type": "string"
                         }
                     },
                     {
@@ -926,7 +849,7 @@
                 "operationId": "guarantors",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
+                        "name": "loan_id",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -934,7 +857,15 @@
                         }
                     },
                     {
-                        "name": "description",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "remark",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -942,88 +873,11 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "status",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "booked_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "booked_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "expected_performance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "actual_performance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "year",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "exhausted",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "deactivated",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
+                            "type": "string"
                         }
                     }
                 ],
@@ -1311,11 +1165,27 @@
                 "operationId": "investments",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
+                        "name": "category_id",
                         "in": "query",
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -1327,7 +1197,23 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "date_acquired",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "expiry_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "amount",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -1336,43 +1222,7 @@
                         }
                     },
                     {
-                        "name": "booked_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_expenditure",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "booked_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "actual_balance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "expected_performance",
+                        "name": "allocations",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -1380,31 +1230,7 @@
                         }
                     },
                     {
-                        "name": "actual_performance",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "year",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "exhausted",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "deactivated",
+                        "name": "closed",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -1638,6 +1464,379 @@
                     },
                     "422": {
                         "description": "Invalid investment id"
+                    }
+                }
+            }
+        },
+        "/loans": {
+            "get": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Returns all loans on the system",
+                "description": "Returns all loans on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Loan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Save  loan",
+                "operationId": "loans",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "registered",
+                                "approved",
+                                "denied",
+                                "disbursed",
+                                "closed"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "guaranteed",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "closed",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Loan   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/loans/{id}": {
+            "get": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Get loan by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "loan id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Loan for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Loan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "update loan by database",
+                "description": "Updates loan in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "approved_amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid loan id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "remove loan from database",
+                "description": "Deletes loan in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "loan id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Loan deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Loan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid loan id"
+                    }
+                }
+            }
+        },
+        "/loans/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Open form to edit loan",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "loan id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Loan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid loan id"
                     }
                 }
             }
@@ -2376,7 +2575,7 @@
                     },
                     "amount": {
                         "type": "number",
-                        "format": "float",
+                        "format": "double",
                         "example": "Invest Label"
                     },
                     "allocations": {
@@ -2398,6 +2597,75 @@
                 "type": "object",
                 "xml": {
                     "name": "Investment"
+                }
+            },
+            "Loan": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "14"
+                    },
+                    "budget_head_id": {
+                        "type": "integer",
+                        "example": "14"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "Loan Code"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "example": "Investment Label"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "example": "Loan reason"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Loan Description"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "registered",
+                            "approved",
+                            "denied",
+                            "disbursed",
+                            "closed"
+                        ],
+                        "example": "closed"
+                    },
+                    "level": {
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "guaranteed": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "closed": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Loan"
                 }
             },
             "User": {

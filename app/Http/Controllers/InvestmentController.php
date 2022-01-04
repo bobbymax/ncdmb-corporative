@@ -18,7 +18,7 @@ use Carbon\Carbon;
      *
      *
      *   @OA\Parameter(
-     *      name="budget_head_id",
+     *      name="category_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -26,6 +26,22 @@ use Carbon\Carbon;
      *      )
      *   ),
      *   @OA\Parameter(
+     *      name="title",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="label",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
      *      name="description",
      *      in="query",
      *      required=true,
@@ -34,25 +50,25 @@ use Carbon\Carbon;
      *      )
      * ),
      * @OA\Parameter(
-     *      name="approved_amount",
+     *      name="date_acquired",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="date",
+     *
      *      )
      * ),
      * @OA\Parameter(
-     *      name="booked_expenditure",
+     *      name="expiry_date",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="date",
+     *
      *      )
      * ),
      * @OA\Parameter(
-     *      name="actual_expenditure",
+     *      name="amount",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -61,65 +77,23 @@ use Carbon\Carbon;
      *      )
      * ),
      *  @OA\Parameter(
-     *      name="booked_balance",
+     *      name="allocations",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="integer",
+     *
      *      )
      * ),
      * @OA\Parameter(
-     *      name="actual_balance",
+     *      name="closed",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="boolean",
+     *
      *      )
      * ),
-     *  @OA\Parameter(
-     *      name="expected_performance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="actual_performance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="year",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="exhausted",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="boolean"
-     *
-     *      )
-     *   ),
-     *
-     * @OA\Parameter(
-     *      name="deactivated",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="boolean"
-     *      )
-     *   ),
      *
      *   @OA\Response(
      *      response=201,

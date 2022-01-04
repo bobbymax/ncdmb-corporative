@@ -17,15 +17,15 @@ use Illuminate\Support\Str;
      *
      *
      *   @OA\Parameter(
-     *      name="budget_head_id",
+     *      name="name",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="integer"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="label",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -33,92 +33,14 @@ use Illuminate\Support\Str;
      *      )
      * ),
      * @OA\Parameter(
-     *      name="approved_amount",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="booked_expenditure",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="actual_expenditure",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
-     *  @OA\Parameter(
-     *      name="booked_balance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="actual_balance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
-     *  @OA\Parameter(
-     *      name="expected_performance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="actual_performance",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="year",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     * @OA\Parameter(
-     *      name="exhausted",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="boolean"
-     *
-     *      )
-     *   ),
-     *
-     * @OA\Parameter(
      *      name="deactivated",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="boolean"
+     *          type="boolean",
+     *
      *      )
-     *   ),
+     * ),
      *
      *   @OA\Response(
      *      response=201,
