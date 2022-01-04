@@ -55,6 +55,7 @@ Route::apiResource('batches', 'BatchController');
 Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('budgetHeads', 'BudgetHeadController');
+Route::apiResource('accounts', 'AccountController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');

@@ -71,7 +71,7 @@ class AccountCodeController extends Controller
 
         if ($accountCodes->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!!'
             ], 404);

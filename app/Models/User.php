@@ -167,6 +167,11 @@ class User extends Authenticatable
         return $this->hasMany(Pay::class);
     }
 
+    public function accounts()
+    {
+        return $this->morphMany(Account::class, 'accountable');
+    }
+
     public function hasRole($role)
     {
         if (is_string($role)) {
