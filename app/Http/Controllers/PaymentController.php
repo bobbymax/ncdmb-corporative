@@ -9,7 +9,253 @@ use App\Models\User;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+/**
+     * @OA\Post(
+     * path="/online/deposit",
+     *   tags={"Payments"},
+     *   summary="Make Payments",
+     *   operationId="onlineDeposit",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="trxRef",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="status",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="message",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="amount",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="payment_type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     *
+     * @OA\Parameter(
+     *      name="payment_method",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     *   @OA\Response(
+     *      response=201,
+     *       description="You have successfully deposited into your account!!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=422,
+     *       description="Please fix the following errors"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Oops we think something went wrong!",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
 
+    /**
+     * @OA\Post(
+     * path="/bank/deposit",
+     *   tags={"Payments"},
+     *   summary="Bank Deposit",
+     *   operationId="bankDeposit",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="trxRef",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="amount",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="payment_type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="payment_method",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="status",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     *
+     *   @OA\Response(
+     *      response=201,
+     *       description="Your request has been received awaiting verification!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=422,
+     *       description="Please fix the following errors"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Oops we think something went wrong!",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+
+       /**
+     * @OA\Post(
+     * path="/verify/member/payment",
+     *   tags={"Payments"},
+     *   summary="Verify Member Payments",
+     *   operationId="verifyMemberPayment",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="member",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="transaction",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *
+     *      )
+     * ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="This transaction has been updated successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=422,
+     *       description="Please fix the following errors"
+     *   ),
+     *   @OA\Response(
+     *      response=409,
+     *      description="this payment transaction has been verified already!"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="The transaction was not saved for some reason!",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
 class PaymentController extends Controller
 {
 	public function __construct()
@@ -73,7 +319,7 @@ class PaymentController extends Controller
     	return response()->json([
     		'data' => new TransactionResource($transaction),
     		'status' => 'success',
-    		'message' => 'You have successfully deposited to your account successfully!!'
+    		'message' => 'You have successfully deposited into your account!!'
     	], 201);
     }
 

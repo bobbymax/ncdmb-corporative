@@ -8,14 +8,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 // Just checking
 Route::post('loans/{loan}/calculator', 'ExpenditureController@loanCalculator');
 
 
-Route::get('dashboard/details', 'DashboardController@index');
-Route::post('get/transactions', 'DashboardController@adminDisplay');
+Route::get('dashboard/details', 'DashboardController@index'); //done
+Route::post('get/transactions', 'DashboardController@adminDisplay'); //???????/
 
-// Payment Endpoints
+// Payment Endpoints -Documented
 Route::post('online/deposit', 'PaymentController@onlineDeposit');
 Route::post('bank/deposit', 'PaymentController@bankDeposit');
 Route::post('verify/member/payment', 'PaymentController@verifyPayment');

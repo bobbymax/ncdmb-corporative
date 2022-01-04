@@ -5,14 +5,14 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                'title' => 'NCDMB Corporative API',
             ],
 
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/documentation',
+                'api' => '/docs', //Url to access Swagger documentation - Localhost/docs
             ],
             'paths' => [
                 /*
@@ -56,7 +56,16 @@ return [
              * Middleware allows to prevent unexpected access to API documentation
             */
             'middleware' => [
-                'api' => [],
+                'api' => [
+//                     \App\Http\Middleware\EncryptCookies::class,
+//   \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+//   \Illuminate\Session\Middleware\StartSession::class,
+//   \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+//   \App\Http\Middleware\VerifyCsrfToken::class,
+//   \Illuminate\Routing\Middleware\SubstituteBindings::class,
+//   \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+//   'auth',
+],
                 'asset' => [],
                 'docs' => [],
                 'oauth2_callback' => [],
@@ -90,9 +99,56 @@ return [
             'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
 
             /*
+             * Edit to include full URL in ui for assets
+            */
+            'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
+
+            /*
              * Absolute path to directories that should be exclude from scanning
+             * @deprecated Please use `scanOptions.exclude`
+             * `scanOptions.exclude` overwrites this
             */
             'excludes' => [],
+        ],
+
+        'scanOptions' => [
+            /**
+             * analyser: defaults to \OpenApi\StaticAnalyser .
+             *
+             * @see \OpenApi\scan
+             */
+            'analyser' => null,
+
+            /**
+             * analysis: defaults to a new \OpenApi\Analysis .
+             *
+             * @see \OpenApi\scan
+             */
+            'analysis' => null,
+
+            /**
+             * Custom query path processors classes.
+             *
+             * @link https://github.com/zircote/swagger-php/tree/master/Examples/schema-query-parameter-processor
+             * @see \OpenApi\scan
+             */
+            'processors' => [
+                // new \App\SwaggerProcessors\SchemaQueryParameter(),
+            ],
+
+            /**
+             * pattern: string       $pattern File pattern(s) to scan (default: *.php) .
+             *
+             * @see \OpenApi\scan
+             */
+            'pattern' => null,
+
+            /*
+             * Absolute path to directories that should be exclude from scanning
+             * @note This option overwrites `paths.excludes`
+             * @see \OpenApi\scan
+            */
+            'exclude' => [],
         ],
 
         /*
@@ -161,7 +217,7 @@ return [
          * Set this to `true` in development mode so that docs would be regenerated on each request
          * Set this to `false` to disable swagger generation on production
         */
-        'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
+        'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', true),
 
         /*
          * Set this to `true` to generate a copy of documentation in yaml format
@@ -192,6 +248,11 @@ return [
          * A null value here disables validation.
         */
         'validator_url' => null,
+
+        /*
+         * Persist authorization login after refresh browser
+         */
+        'persist_authorization' => true,
 
         /*
          * Uncomment to add constants which can be used in annotations

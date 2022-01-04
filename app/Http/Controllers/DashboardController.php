@@ -22,6 +22,60 @@ use App\Http\Resources\TransactionResource;
 
 use DB;
 
+/**
+     * @OA\Get(
+     *     path="/dashboard/details",
+     *     tags={"Dashboard"},
+     *      summary="Dashboard Route",
+     *     description="Returns Dashboard Info",
+     *     operationId="dashBoard",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="User Dashboard Info",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/User")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=422,
+     *          description="Please fix these errors"
+     *      ),
+       * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     * )
+     *     )
+     * )
+     */
+
+
+
 class DashboardController extends Controller
 {
     public function __construct()

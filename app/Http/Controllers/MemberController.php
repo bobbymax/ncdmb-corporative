@@ -15,6 +15,84 @@ use App\Imports\MemberImport;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Excel;
+  /**
+     * @OA\Post(
+     * path="/import/members",
+     *   tags={"Members"},
+     *   summary="Import Members from Excel File",
+     *   operationId="importMembers",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="file",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *             format="byte"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=201,
+     *       description="Members records have been created successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *
+        * @OA\Response(
+     *         response=500,
+     *         description="Please fix the error",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+
+
+     /**
+     * @OA\Post(
+     * path="/reset/password",
+     *   tags={"Members"},
+     *   summary="Reset User Password",
+     *   operationId="resetPassword",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Password has been updated successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *
+        * @OA\Response(
+     *         response=422,
+     *         description="Invalud User Request",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
 
 class MemberController extends Controller
 {

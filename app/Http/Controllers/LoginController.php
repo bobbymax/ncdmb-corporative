@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+   public function login(Request $request)
     {
         // test change
         $loginRules = [
@@ -31,7 +31,7 @@ class LoginController extends Controller
         }
 
         $loginCredentials = $request->only('staff_no', 'password');
-        
+
         if (! Auth::attempt($loginCredentials)) {
             return response()->json([
                 'data' => null,
