@@ -225,34 +225,44 @@ use Illuminate\Support\Str;
      *     description="Updates permission in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *
+     *   @OA\Parameter(
+     *      name="key",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="integer"
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="module",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
      *          type="string"
      *      )
      * ),
-     * @OA\Parameter(
-     *      name="approved_amount",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
-     *      )
-     * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Permission Updated Successfully",
      *         @OA\JsonContent(
      *             type="string",
      *

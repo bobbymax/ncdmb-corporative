@@ -93,7 +93,7 @@ use Carbon\Carbon;
      *     tags={"Guarantors"},
      *      summary="Returns all guarantors on the system",
      *     description="Returns all guarantors on the system",
-     *     operationId="findRoles",
+     *     operationId="findGuarantors",
      *
      *     @OA\Response(
      *         response=200,
@@ -140,7 +140,7 @@ use Carbon\Carbon;
      *     tags={"Guarantors"},
      *     summary="Get guarantor by id",
      *     description="Returns based on id ",
-     *     operationId="showRole",
+     *     operationId="showGuarantor",
      *   @OA\Parameter(
      *         name="id",
      *         in="query",
@@ -186,7 +186,7 @@ use Carbon\Carbon;
      *     tags={"Guarantors"},
      *      summary="Open form to edit guarantor",
      *     description="Returns based on id ",
-     *     operationId="editRole",
+     *     operationId="editGuarantor",
      *   @OA\Parameter(
      *         name="id",
      *         in="query",
@@ -233,31 +233,22 @@ use Carbon\Carbon;
      *     tags={"Guarantors"},
      *      summary="update guarantor by database",
      *     description="Updates guarantor in database",
-     *     operationId="updateRole",
+     *     operationId="updateGuarantor",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *   @OA\Parameter(
+     *      name="remark",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="integer"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="status",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
      *          type="string"
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="approved_amount",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number",
-     *          format="double"
      *      )
      * ),
      * @OA\Response(
@@ -289,7 +280,7 @@ use Carbon\Carbon;
      *     tags={"Guarantors"},
      *      summary="remove guarantor from database",
      *     description="Deletes guarantor in database",
-     *     operationId="updateRole",
+     *     operationId="updateGuarantor",
      *
      *   @OA\Parameter(
      *         name="id",

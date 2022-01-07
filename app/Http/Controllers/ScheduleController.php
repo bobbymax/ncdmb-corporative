@@ -20,9 +20,8 @@ use App\Http\Resources\LoanResource;
      *   summary="Save  schedule",
      *   operationId="schedules",
      *
-     *
-     *   @OA\Parameter(
-     *      name="user_id",
+     *  @OA\Parameter(
+     *      name="loan_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -30,81 +29,30 @@ use App\Http\Resources\LoanResource;
      *      )
      *   ),
      * @OA\Parameter(
-     *      name="budget_head_id",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="integer"
-     *      )
-     *   ),
-     *   @OA\Parameter(
-     *      name="code",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="string"
-     *      )
-     * ),
-     *  @OA\Parameter(
      *      name="amount",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
+     *           type="number",
      *          format="double"
+     *
      *      )
-     * ),
-     * @OA\Parameter(
-     *      name="reason",
+     *   ),
+     *   @OA\Parameter(
+     *      name="due_date",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="string"
+     *          type="date"
      *      )
      * ),
      *  @OA\Parameter(
-     *      name="description",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="string"
-     *      )
-     * ),
-     * @OA\Parameter(
      *      name="status",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
      *          type="string",
-     *          enum={"pending", "registered", "approved", "denied", "disbursed", "closed"}
-     *
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="level",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="integer",
-     *
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="guaranteed",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="integer",
-     *
-     *      )
-     * ),
-     *  @OA\Parameter(
-     *      name="closed",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="boolean",
-     *
+     *          enum={"pending", "paid", "overdue"}
      *      )
      * ),
      *
@@ -283,7 +231,6 @@ use App\Http\Resources\LoanResource;
      * )
      */
 
-
                 /**
      * @OA\Put(
      *     path="/schedules/{id}",
@@ -292,34 +239,53 @@ use App\Http\Resources\LoanResource;
      *     description="Updates schedule in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *   @OA\Parameter(
+     *      name="loan_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
      *           type="integer"
      *      )
      *   ),
-     *   @OA\Parameter(
-     *      name="description",
+     * @OA\Parameter(
+     *      name="amount",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="string"
+     *           type="number",
+     *          format="double"
+     *
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="due_date",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="date"
      *      )
      * ),
-     * @OA\Parameter(
-     *      name="approved_amount",
+     *  @OA\Parameter(
+     *      name="status",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="string",
+     *          enum={"pending", "paid", "overdue"}
      *      )
      * ),
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Success",
      *         @OA\JsonContent(
      *             type="string",
      *

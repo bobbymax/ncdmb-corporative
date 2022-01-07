@@ -5,53 +5,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/accountCodes": {
-            "get": {
-                "tags": [
-                    "AccountCodes"
-                ],
-                "summary": "Returns all accountCodes on the system",
-                "description": "Returns all accountCodes on the system",
-                "operationId": "findRoles",
-                "responses": {
-                    "200": {
-                        "description": "AccountCodes List",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/AccountCode"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "404": {
-                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "500": {
-                        "description": "Error, please fix the following error(s)!;",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/dashboard/details": {
             "get": {
                 "tags": [
@@ -654,15 +607,7 @@
                 "operationId": "updateRole",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "description",
+                        "name": "name",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -670,12 +615,19 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "label",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "deactivated",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -802,7 +754,7 @@
                 ],
                 "summary": "Returns all guarantors on the system",
                 "description": "Returns all guarantors on the system",
-                "operationId": "findRoles",
+                "operationId": "findGuarantors",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -920,7 +872,7 @@
                 ],
                 "summary": "Get guarantor by id",
                 "description": "Returns based on id ",
-                "operationId": "showRole",
+                "operationId": "showGuarantor",
                 "parameters": [
                     {
                         "name": "id",
@@ -967,18 +919,10 @@
                 ],
                 "summary": "update guarantor by database",
                 "description": "Updates guarantor in database",
-                "operationId": "updateRole",
+                "operationId": "updateGuarantor",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "description",
+                        "name": "remark",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -986,12 +930,11 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "status",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
+                            "type": "string"
                         }
                     }
                 ],
@@ -1020,7 +963,7 @@
                 ],
                 "summary": "remove guarantor from database",
                 "description": "Deletes guarantor in database",
-                "operationId": "updateRole",
+                "operationId": "updateGuarantor",
                 "parameters": [
                     {
                         "name": "id",
@@ -1069,7 +1012,7 @@
                 ],
                 "summary": "Open form to edit guarantor",
                 "description": "Returns based on id ",
-                "operationId": "editRole",
+                "operationId": "editGuarantor",
                 "parameters": [
                     {
                         "name": "id",
@@ -1327,11 +1270,27 @@
                 "operationId": "updateRole",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
+                        "name": "category_id",
                         "in": "query",
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     {
@@ -1343,18 +1302,44 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "date_acquired",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "amount",
                         "in": "query",
                         "required": true,
                         "schema": {
                             "type": "number",
                             "format": "double"
                         }
+                    },
+                    {
+                        "name": "allocations",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "500": {
                         "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "INVESTMENT UPDATED SUCCESSFULLY",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1708,7 +1693,16 @@
                         }
                     },
                     {
-                        "name": "description",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "reason",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -1716,18 +1710,27 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "description",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
                     "500": {
                         "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Loan has been updated successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2308,15 +2311,7 @@
                 "operationId": "updateRole",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "description",
+                        "name": "key",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -2324,18 +2319,35 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "name",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "module",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
                     "500": {
                         "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Permission Updated Successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2819,27 +2831,11 @@
                 "operationId": "schedules",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "loan_id",
                         "in": "query",
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     },
                     {
@@ -2852,19 +2848,11 @@
                         }
                     },
                     {
-                        "name": "reason",
+                        "name": "due_date",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "type": "date"
                         }
                     },
                     {
@@ -2875,36 +2863,9 @@
                             "type": "string",
                             "enum": [
                                 "pending",
-                                "registered",
-                                "approved",
-                                "denied",
-                                "disbursed",
-                                "closed"
+                                "paid",
+                                "overdue"
                             ]
-                        }
-                    },
-                    {
-                        "name": "level",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "guaranteed",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "closed",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
                         }
                     }
                 ],
@@ -2997,7 +2958,7 @@
                 "operationId": "updateRole",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
+                        "name": "loan_id",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -3005,26 +2966,49 @@
                         }
                     },
                     {
-                        "name": "description",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "approved_amount",
+                        "name": "amount",
                         "in": "query",
                         "required": true,
                         "schema": {
                             "type": "number",
                             "format": "double"
                         }
+                    },
+                    {
+                        "name": "due_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "paid",
+                                "overdue"
+                            ]
+                        }
                     }
                 ],
                 "responses": {
                     "500": {
                         "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3521,6 +3505,385 @@
                     },
                     "422": {
                         "description": "Invalid service id"
+                    }
+                }
+            }
+        },
+        "/specifications": {
+            "get": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "Returns all specifications on the system",
+                "description": "Returns all specifications on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Specification"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "Save  specification",
+                "operationId": "specifications",
+                "parameters": [
+                    {
+                        "name": "investment_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "slots",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "exhausted"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Specification   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/specifications/{id}": {
+            "get": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "Get specification by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Specification for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Specification"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "update specification by database",
+                "description": "Updates specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "investment_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "slots",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "remove specification from database",
+                "description": "Deletes specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Specification deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Specification"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            }
+        },
+        "/specifications/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Specifications"
+                ],
+                "summary": "Open form to edit specification",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Specification"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
                     }
                 }
             }
@@ -4222,6 +4585,60 @@
                 "type": "object",
                 "xml": {
                     "name": "Service"
+                }
+            },
+            "Specification": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "investment_id": {
+                        "type": "integer",
+                        "example": "14"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Specification Title"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Specification Label"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Specification description"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "example": "2302.2"
+                    },
+                    "slots": {
+                        "type": "integer",
+                        "example": "33"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "exhausted"
+                        ],
+                        "example": "exhausted"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Specification"
                 }
             },
             "User": {

@@ -227,15 +227,15 @@ use Illuminate\Support\Str;
      *     operationId="updateRole",
      *
      *    @OA\Parameter(
-     *      name="budget_head_id",
+     *      name="name",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="integer"
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="label",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -243,14 +243,15 @@ use Illuminate\Support\Str;
      *      )
      * ),
      * @OA\Parameter(
-     *      name="approved_amount",
+     *      name="deactivated",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="boolean",
+     *
      *      )
      * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
