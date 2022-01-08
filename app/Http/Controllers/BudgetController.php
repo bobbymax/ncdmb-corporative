@@ -360,7 +360,7 @@ use Carbon\Carbon;
                      /**
      * @OA\Delete(
      *     path="/budgets/{id}",
-     *     tags={"Budget "},
+     *     tags={"Budgets"},
      *      summary="remove budget from database",
      *     description="Deletes budget in database",
      *     operationId="updateBudget",

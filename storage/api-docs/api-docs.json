@@ -5,6 +5,322 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/accountCodes": {
+            "get": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "Returns all accountCodes on the system",
+                "description": "Returns all accountCodes on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "Save  role",
+                "operationId": "accountCodes",
+                "parameters": [
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "AccountCode   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/accountCodes/{id}": {
+            "get": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "Get role by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "role id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "AccountCode for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "update role by database",
+                "description": "Updates role in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "approved_amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid role id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "remove role from database",
+                "description": "Deletes role in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "role id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "AccountCode deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid role id"
+                    }
+                }
+            }
+        },
+        "/accountCodes/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Account Codes"
+                ],
+                "summary": "Open form to edit role",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "role id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid role id"
+                    }
+                }
+            }
+        },
         "/agents": {
             "get": {
                 "tags": [
@@ -669,7 +985,7 @@
             },
             "delete": {
                 "tags": [
-                    "Budget "
+                    "Budgets"
                 ],
                 "summary": "remove budget from database",
                 "description": "Deletes budget in database",
@@ -1482,7 +1798,7 @@
                 ],
                 "summary": "Returns all deposits on the system",
                 "description": "Returns all deposits on the system",
-                "operationId": "findRoles",
+                "operationId": "findDeposit",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1518,6 +1834,284 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Deposits"
+                ],
+                "summary": "Save  deposit",
+                "operationId": "deposit",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trxRef",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "paid",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Deposit  has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deposits/{id}": {
+            "get": {
+                "tags": [
+                    "Deposits"
+                ],
+                "summary": "Get deposit by id",
+                "description": "Returns based on id ",
+                "operationId": "showDeposit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "deposit id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deposit for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Deposit"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Deposits"
+                ],
+                "summary": "update deposit head by database",
+                "description": "Updates deposit head in database",
+                "operationId": "updateDeposit",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trxRef",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "paid",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid deposit id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Deposits"
+                ],
+                "summary": "remove deposit from database",
+                "description": "Deletes deposit in database",
+                "operationId": "updateDeposit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "deposit id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deposit deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Deposit"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid deposit id"
+                    }
+                }
+            }
+        },
+        "/deposits/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Deposits"
+                ],
+                "summary": "Open form to edit deposit",
+                "description": "Returns  Deposit based on id ",
+                "operationId": "editDeposit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "deposit id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Deposit"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid deposit id"
                     }
                 }
             }
@@ -3386,6 +3980,495 @@
                 }
             }
         },
+        "/members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Returns all members on the system",
+                "description": "Returns all members on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Save Member",
+                "operationId": "members",
+                "parameters": [
+                    {
+                        "name": "staff_no",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "designation",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "firstname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "surname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "member",
+                                "exco"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "date_joined",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "can_guarantee",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "has_loan",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "inactive"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "email_verified_at",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "remember_token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "avatar",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Member   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/members/{id}": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get specification by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "update specification by database",
+                "description": "Updates specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "staff_no",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "designation",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "firstname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "surname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "member",
+                                "exco"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "date_joined",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "remove specification from database",
+                "description": "Deletes specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            }
+        },
+        "/members/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Open form to edit specification",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            }
+        },
         "/online/deposit": {
             "post": {
                 "tags": [
@@ -3944,7 +5027,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Permission"
+                                        "$ref": "#/components/schemas/Role"
                                     }
                                 }
                             }
@@ -4070,7 +5153,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Permission"
+                                        "$ref": "#/components/schemas/Role"
                                     }
                                 }
                             }
@@ -4103,15 +5186,7 @@
                 "operationId": "updateRole",
                 "parameters": [
                     {
-                        "name": "budget_head_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "description",
+                        "name": "name",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -4119,12 +5194,27 @@
                         }
                     },
                     {
-                        "name": "approved_amount",
+                        "name": "label",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "number",
-                            "format": "double"
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "slots",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "deactivated",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -4170,7 +5260,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Permission"
+                                        "$ref": "#/components/schemas/Role"
                                     }
                                 }
                             }
@@ -4219,7 +5309,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Permission"
+                                        "$ref": "#/components/schemas/Role"
                                     }
                                 }
                             }
@@ -6756,6 +7846,115 @@
                 "type": "object",
                 "xml": {
                     "name": "Loan"
+                }
+            },
+            "Member": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "membership_no": {
+                        "type": "string",
+                        "example": "Membership Number"
+                    },
+                    "staff_no": {
+                        "type": "string",
+                        "example": "Staff Number"
+                    },
+                    "designation": {
+                        "type": "string",
+                        "example": "Designation"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "middlename": {
+                        "type": "string",
+                        "example": "F."
+                    },
+                    "surname": {
+                        "type": "String",
+                        "example": "Doe"
+                    },
+                    "email": {
+                        "type": "String",
+                        "example": "john@ncdmb.ng"
+                    },
+                    "mobile": {
+                        "type": "String",
+                        "example": "08127820880"
+                    },
+                    "location": {
+                        "type": "String",
+                        "example": "Abuja"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "member",
+                            "exco"
+                        ],
+                        "example": "exco"
+                    },
+                    "date_joined": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "can_guarantee": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "has_loan": {
+                        "type": "boolean",
+                        "example": "True"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "email_verified_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "remember_token": {
+                        "type": "string",
+                        "example": "e8ryhqwer3r38r9h3rq3rq"
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "example": "path to avatar"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    },
+                    "deleted_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    },
+                    "passwordChange": {
+                        "type": "boolean",
+                        "example": "True"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Member"
                 }
             },
             "Permission": {

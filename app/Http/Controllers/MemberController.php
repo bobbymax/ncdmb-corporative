@@ -15,7 +15,8 @@ use App\Imports\MemberImport;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Excel;
-  /**
+
+ /**
      * @OA\Post(
      * path="/import/members",
      *   tags={"Members"},
@@ -93,6 +94,527 @@ use Excel;
      * )
      * )
     */
+
+/**
+     * @OA\Post(
+     * path="/members",
+     *   tags={"Members"},
+     *   summary="Save Member",
+     *   operationId="members",
+     *
+     *  @OA\Parameter(
+     *      name="staff_no",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="designation",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="firstname",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="middlename",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="surname",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="location",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *            enum={"member","exco"}
+     *
+     *
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="date_joined",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="date"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="can_guarantee",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="boolean",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="has_loan",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="boolean",
+     *
+     *      )
+     * ),
+     *
+     * @OA\Parameter(
+     *      name="status",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *         enum={"active", "inactive"},
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="email_verified_at",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="date",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * * @OA\Parameter(
+     *      name="remember_token",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * * @OA\Parameter(
+     *      name="avatar",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     *
+     *
+     *   @OA\Response(
+     *      response=201,
+     *       description="Member   has been created successfully!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+      /**
+     * @OA\Get(
+     *     path="/members",
+     *     tags={"Members"},
+     *      summary="Returns all members on the system",
+     *     description="Returns all members on the system",
+     *     operationId="findRoles",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Member")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+       * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     * )
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/members/{id}",
+     *     tags={"Members"},
+     *     summary="Get specification by id",
+     *     description="Returns based on id ",
+     *     operationId="showRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="specification id to get",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Member for  details!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Member")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="This ID is invalid"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/members/{id}/edit",
+     *     tags={"Members"},
+     *      summary="Open form to edit specification",
+     *     description="Returns based on id ",
+     *     operationId="editRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="specification id to edit",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Member")
+     *         )
+     *
+     *     ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid specification id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                /**
+     * @OA\Put(
+     *     path="/members/{id}",
+     *     tags={"Members"},
+     *      summary="update specification by database",
+     *     description="Updates specification in database",
+     *     operationId="updateRole",
+     *
+     *      *  @OA\Parameter(
+     *      name="staff_no",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="designation",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="firstname",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="middlename",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="surname",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *
+     *  @OA\Parameter(
+     *      name="mobile",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="location",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *            enum={"member","exco"}
+     *
+     *
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="date_joined",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="date"
+     *      )
+     * ),
+     *
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid specification id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                     /**
+     * @OA\Delete(
+     *     path="/members/{id}",
+     *     tags={"Members"},
+     *      summary="remove specification from database",
+     *     description="Deletes specification in database",
+     *     operationId="updateRole",
+     *
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="specification id to delete",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Member deleted successfully!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Member")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid specification id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
 
 class MemberController extends Controller
 {
