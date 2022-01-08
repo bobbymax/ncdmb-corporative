@@ -290,7 +290,8 @@ use Illuminate\Support\Facades\Validator;
      *     description="Updates loan in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
+     *
+     * @OA\Parameter(
      *      name="budget_head_id",
      *      in="query",
      *      required=true,
@@ -298,16 +299,9 @@ use Illuminate\Support\Facades\Validator;
      *           type="integer"
      *      )
      *   ),
-     *   @OA\Parameter(
-     *      name="description",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="string"
-     *      )
-     * ),
-     * @OA\Parameter(
-     *      name="approved_amount",
+
+     *  @OA\Parameter(
+     *      name="amount",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -315,9 +309,34 @@ use Illuminate\Support\Facades\Validator;
      *          format="double"
      *      )
      * ),
+     * @OA\Parameter(
+     *      name="reason",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="description",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Loan has been updated successfully",
      *         @OA\JsonContent(
      *             type="string",
      *

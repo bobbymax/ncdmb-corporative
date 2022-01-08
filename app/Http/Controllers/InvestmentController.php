@@ -279,8 +279,9 @@ use Carbon\Carbon;
      *     description="Updates investment in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *
+     *   @OA\Parameter(
+     *      name="category_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -288,6 +289,22 @@ use Carbon\Carbon;
      *      )
      *   ),
      *   @OA\Parameter(
+     *      name="title",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="label",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
      *      name="description",
      *      in="query",
      *      required=true,
@@ -296,7 +313,16 @@ use Carbon\Carbon;
      *      )
      * ),
      * @OA\Parameter(
-     *      name="approved_amount",
+     *      name="date_acquired",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="date",
+     *
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="amount",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -304,9 +330,28 @@ use Carbon\Carbon;
      *          format="double"
      *      )
      * ),
+     *  @OA\Parameter(
+     *      name="allocations",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *
+     *      )
+     * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="INVESTMENT UPDATED SUCCESSFULLY",
      *         @OA\JsonContent(
      *             type="string",
      *

@@ -305,7 +305,8 @@ use Illuminate\Support\Facades\Validator;
      *     description="Updates fund in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
+     *
+     *   @OA\Parameter(
      *      name="budget_head_id",
      *      in="query",
      *      required=true,
@@ -330,6 +331,7 @@ use Illuminate\Support\Facades\Validator;
      *          format="double"
      *      )
      * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
