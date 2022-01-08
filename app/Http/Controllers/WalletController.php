@@ -8,6 +8,416 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+/**
+     * @OA\Post(
+     * path="/wallets",
+     *   tags={"Wallets"},
+     *   summary="Save  wallet",
+     *   operationId="wallets",
+     *
+     *  @OA\Parameter(
+     *      name="user_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="identifier",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="deposit",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="current",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="available",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="ledger",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="bank_name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="account_number",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     *
+     *   @OA\Response(
+     *      response=201,
+     *       description="Wallet   has been created successfully!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+      /**
+     * @OA\Get(
+     *     path="/wallets",
+     *     tags={"Wallets"},
+     *      summary="Returns all wallets on the system",
+     *     description="Returns all wallets on the system",
+     *     operationId="findRoles",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Wallet")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+       * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     * )
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/wallets/{id}",
+     *     tags={"Wallets"},
+     *     summary="Get wallet by id",
+     *     description="Returns based on id ",
+     *     operationId="showRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="wallet id to get",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Wallet for  details!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Wallet")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="This ID is invalid"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/wallets/{id}/edit",
+     *     tags={"Wallets"},
+     *      summary="Open form to edit wallet",
+     *     description="Returns based on id ",
+     *     operationId="editRole",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="wallet id to edit",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Wallet")
+     *         )
+     *
+     *     ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid wallet id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                /**
+     * @OA\Put(
+     *     path="/wallets/{id}",
+     *     tags={"Wallets"},
+     *      summary="update wallet by database",
+     *     description="Updates wallet in database",
+     *     operationId="updateRole",
+     * @OA\Parameter(
+     *      name="user_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="identifier",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *
+     *
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="deposit",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="current",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="available",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="ledger",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="double"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="bank_name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     * @OA\Parameter(
+     *      name="account_number",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *
+     *      )
+     * ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid wallet id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                     /**
+     * @OA\Delete(
+     *     path="/wallets/{id}",
+     *     tags={"Wallets"},
+     *      summary="remove wallet from database",
+     *     description="Deletes wallet in database",
+     *     operationId="updateRole",
+     *
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="wallet id to delete",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Wallet deleted successfully!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Wallet")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid wallet id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
 class WalletController extends Controller
 {
     public function __construct()

@@ -15,10 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @OA\Property(property="fee", type="number", format="double",  example="Specification Title"),
  * @OA\Property(property="month", type="string",  example="contribution month"),
  * @OA\Property(property="current", type="boolean",  example="true"),
- * @OA\Property(property="previous", type="array", example="2302.2"),
- * @OA\Property(property="slots", type="integer" , example="33"),
- * @OA\Property(property="status", type="string", enum={"pending", "exhausted"},  example="exhausted"),
- * @OA\Property(property="created_at", type="date", example="2020-10-20"),
+ * @OA\Property(property="previous", type="json", example="2302.2"),
+* @OA\Property(property="created_at", type="date", example="2020-10-20"),
  * @OA\Property(property="updated_at", type="date", example="2020-12-22"),
  * )
  * Class Contribution
