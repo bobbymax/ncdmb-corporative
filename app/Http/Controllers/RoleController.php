@@ -52,7 +52,7 @@ use Illuminate\Support\Str;
      *
      *   @OA\Response(
      *      response=201,
-     *       description="Permission   has been created successfully!",
+     *       description="Role   has been created successfully!",
      *      @OA\MediaType(
      *           mediaType="application/json",
      *      )
