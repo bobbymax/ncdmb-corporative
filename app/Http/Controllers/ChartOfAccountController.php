@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AccountCode;
+use App\Models\ChartOfAccount;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+
 
 /**
      * @OA\Post(
-     * path="/accountCodes",
-     *   tags={"Account Codes"},
-     *   summary="Save  role",
-     *   operationId="accountCodes",
+     * path="/chartofaccounts",
+     *   tags={"Chart Of Accounts"},
+     *   summary="Save ChartOfAccount",
+     *   operationId="chartofaccounts",
      *
-     *
-     *   @OA\Parameter(
-     *      name="range",
+     *  @OA\Parameter(
+     *      name="account_code_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="string"
+     *           type="integer"
      *      )
      *   ),
      * @OA\Parameter(
-     *      name="label",
+     *      name="code",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="string"
+     *           type="integer",
+     *
+     *
      *      )
      *   ),
      *   @OA\Parameter(
@@ -39,18 +39,20 @@ use Illuminate\Support\Str;
      *          type="string"
      *      )
      * ),
-     *  @OA\Parameter(
-     *      name="isActive",
+     * @OA\Parameter(
+     *      name="label",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="boolean"
+     *          type="string",
+     *
      *      )
      * ),
      *
+     *
      *   @OA\Response(
      *      response=201,
-     *       description="AccountCode   has been created successfully!",
+     *       description="ChartOfAccount   has been created successfully!",
      *      @OA\MediaType(
      *           mediaType="application/json",
      *      )
@@ -86,18 +88,18 @@ use Illuminate\Support\Str;
     */
       /**
      * @OA\Get(
-     *     path="/accountCodes",
-     *     tags={"Account Codes"},
-     *      summary="Returns all accountCodes on the system",
-     *     description="Returns all accountCodes on the system",
-     *     operationId="findRoles",
+     *     path="/chartofaccounts",
+     *     tags={"Chart Of Accounts"},
+     *      summary="Returns all chartofaccounts on the system",
+     *     description="Returns all chartofaccounts on the system",
+     *     operationId="findChartOfAccounts",
      *
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/AccountCode")
+     *             @OA\Items(ref="#/components/schemas/ChartOfAccount")
      *         )
      *
      *     ),
@@ -131,26 +133,26 @@ use Illuminate\Support\Str;
      * )
      */
 
-           /**
+    /**
      * @OA\Get(
-     *     path="/accountCodes/{id}",
-     *     tags={"Account Codes"},
-     *     summary="Get role by id",
+     *     path="/chartofaccounts/{id}",
+     *     tags={"Chart Of Accounts"},
+     *     summary="Get Chart of account by id",
      *     description="Returns based on id ",
-     *     operationId="showRole",
+     *     operationId="showChartOfAccount",
      *   @OA\Parameter(
      *         name="id",
      *         in="query",
-     *         description="role id to get",
+     *         description="Chart of account id to get",
      *         required=true,
      *      ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="AccountCode for  details!",
+     *         description="ChartOfAccount for  details!",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/AccountCode")
+     *             @OA\Items(ref="#/components/schemas/ChartOfAccount")
      *         )
      *
      *     ),
@@ -177,17 +179,17 @@ use Illuminate\Support\Str;
      * )
      */
 
-                /**
+    /**
      * @OA\Get(
-     *     path="/accountCodes/{id}/edit",
-     *     tags={"Account Codes"},
-     *      summary="Open form to edit role",
+     *     path="/chartofaccounts/{id}/edit",
+     *     tags={"Chart Of Accounts"},
+     *      summary="Open form to edit Chart of account",
      *     description="Returns based on id ",
-     *     operationId="editRole",
+     *     operationId="editChartOfAccount",
      *   @OA\Parameter(
      *         name="id",
      *         in="query",
-     *         description="role id to edit",
+     *         description="Chart of account id to edit",
      *         required=true,
      *      ),
      *
@@ -196,7 +198,7 @@ use Illuminate\Support\Str;
      *         description="Success",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/AccountCode")
+     *             @OA\Items(ref="#/components/schemas/ChartOfAccount")
      *         )
      *
      *     ),
@@ -215,7 +217,7 @@ use Illuminate\Support\Str;
      *   ),
      *      @OA\Response(
      *          response=422,
-     *          description="Invalid role id"
+     *          description="Invalid Chart of account id"
      *      )
      *
      * )
@@ -223,25 +225,34 @@ use Illuminate\Support\Str;
      * )
      */
 
-
                 /**
      * @OA\Put(
-     *     path="/accountCodes/{id}",
-     *     tags={"Account Codes"},
-     *      summary="update role by database",
-     *     description="Updates role in database",
-     *     operationId="updateRole",
+     *     path="/chartofaccounts/{id}",
+     *     tags={"Chart Of Accounts"},
+     *      summary="update Chart of account by database",
+     *     description="Updates Chart of account in database",
+     *     operationId="updateChartOfAccount",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *      *  @OA\Parameter(
+     *      name="account_code_id",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
      *           type="integer"
      *      )
      *   ),
+     * @OA\Parameter(
+     *      name="code",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer",
+     *
+     *
+     *      )
+     *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="name",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
@@ -249,17 +260,27 @@ use Illuminate\Support\Str;
      *      )
      * ),
      * @OA\Parameter(
-     *      name="approved_amount",
+     *      name="label",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="string",
+     *
      *      )
      * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Success",
      *         @OA\JsonContent(
      *             type="string",
      *
@@ -272,7 +293,7 @@ use Illuminate\Support\Str;
      *   ),
      *      @OA\Response(
      *          response=422,
-     *          description="Invalid role id"
+     *          description="Invalid Chart of account id"
      *      )
      *
      * )
@@ -282,25 +303,25 @@ use Illuminate\Support\Str;
 
                      /**
      * @OA\Delete(
-     *     path="/accountCodes/{id}",
-     *     tags={"Account Codes"},
-     *      summary="remove role from database",
-     *     description="Deletes role in database",
-     *     operationId="updateRole",
+     *     path="/chartofaccounts/{id}",
+     *     tags={"Chart Of Accounts"},
+     *      summary="remove Chart of account from database",
+     *     description="Deletes Chart of account in database",
+     *     operationId="updateChartOfAccount",
      *
      *   @OA\Parameter(
      *         name="id",
      *         in="query",
-     *         description="role id to delete",
+     *         description="Chart of account id to delete",
      *         required=true,
      *      ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="AccountCode deleted successfully!",
+     *         description="ChartOfAccount deleted successfully!",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/AccountCode")
+     *             @OA\Items(ref="#/components/schemas/ChartOfAccount")
      *         )
      *
      *     ),
@@ -319,14 +340,14 @@ use Illuminate\Support\Str;
      *   ),
      *      @OA\Response(
      *          response=422,
-     *          description="Invalid role id"
+     *          description="Invalid Chart of account id"
      *      )
      *
      * )
      *     )
      * )
      */
-class AccountCodeController extends Controller
+class ChartOfAccountController extends Controller
 {
     public function __construct()
     {
@@ -336,22 +357,22 @@ class AccountCodeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $accountCodes = AccountCode::all();
+        $chartOfAccounts = ChartOfAccount::latest()->get();
 
-        if ($accountCodes->count() < 1) {
+        if ($chartOfAccounts->count() < 1) {
             return response()->json([
                 'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 404);
+            ], 204);
         }
 
         return response()->json([
-            'data' => $accountCodes,
+            'data' => $chartOfAccounts,
             'status' => 'success',
             'message' => 'Account Codes List'
         ], 200);
@@ -371,13 +392,14 @@ class AccountCodeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'range' => 'required'
+            'account_code_id' => 'required|integer',
+            'code' => 'required|integer',
+            'name' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -388,30 +410,31 @@ class AccountCodeController extends Controller
             ], 500);
         }
 
-        $accountCode = AccountCode::create([
+        $chartOfAccount = ChartOfAccount::create([
+            'account_code_id' => $request->account_code_id,
             'name' => $request->name,
-            'range' => $request->range,
+            'code' => $request->code,
             'label' => Str::slug($request->name)
         ]);
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
-            'message' => 'New Account Code created!!'
+            'message' => 'New Chart of Account created!!'
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function show($accountCode)
+    public function show($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -420,7 +443,7 @@ class AccountCodeController extends Controller
         }
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -429,14 +452,14 @@ class AccountCodeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function edit($accountCode)
+    public function edit($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -445,7 +468,7 @@ class AccountCodeController extends Controller
         }
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -455,19 +478,28 @@ class AccountCodeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $accountCode)
+    public function update(Request $request, $chartOfAccount)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'range' => 'required'
+            'account_code_id' => 'required|integer',
+            'code' => 'required|integer',
+            'name' => 'required|string|max:255'
         ]);
 
-        $accountCode = AccountCode::find($accountCode);
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Please fix the following errors!'
+            ], 500);
+        }
 
-        if (! $accountCode) {
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
+
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -475,30 +507,31 @@ class AccountCodeController extends Controller
             ], 422);
         }
 
-        $accountCode->update([
+        $chartOfAccount->update([
+            'account_code_id' => $request->account_code_id,
             'name' => $request->name,
-            'range' => $request->range,
+            'code' => $request->code,
             'label' => Str::slug($request->name)
         ]);
 
         return response()->json([
-            'data' => $accountCode,
+            'data' => $chartOfAccount,
             'status' => 'success',
-            'message' => 'Account Code Details'
+            'message' => 'New Chart of Account updated!!'
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AccountCode  $accountCode
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Models\ChartOfAccount  $chartOfAccount
+     * @return \Illuminate\Http\Response
      */
-    public function destroy($accountCode)
+    public function destroy($chartOfAccount)
     {
-        $accountCode = AccountCode::find($accountCode);
+        $chartOfAccount = ChartOfAccount::find($chartOfAccount);
 
-        if (! $accountCode) {
+        if (! $chartOfAccount) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -506,12 +539,12 @@ class AccountCodeController extends Controller
             ], 422);
         }
 
-        $accountCode->delete();
+        $old = $chartOfAccount;
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
-            'message' => 'Account Code deleted successfully!'
+            'message' => 'Chart of Account deleted successfully!!'
         ], 200);
     }
 }

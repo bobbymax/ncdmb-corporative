@@ -1469,6 +1469,339 @@
                 }
             }
         },
+        "/chartofaccounts": {
+            "get": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "Returns all chartofaccounts on the system",
+                "description": "Returns all chartofaccounts on the system",
+                "operationId": "findChartOfAccounts",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChartOfAccount"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "Save ChartOfAccount",
+                "operationId": "chartofaccounts",
+                "parameters": [
+                    {
+                        "name": "account_code_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "ChartOfAccount   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/chartofaccounts/{id}": {
+            "get": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "Get Chart of account by id",
+                "description": "Returns based on id ",
+                "operationId": "showChartOfAccount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Chart of account id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ChartOfAccount for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChartOfAccount"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "update Chart of account by database",
+                "description": "Updates Chart of account in database",
+                "operationId": "updateChartOfAccount",
+                "parameters": [
+                    {
+                        "name": "account_code_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid Chart of account id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "remove Chart of account from database",
+                "description": "Deletes Chart of account in database",
+                "operationId": "updateChartOfAccount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Chart of account id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ChartOfAccount deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChartOfAccount"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid Chart of account id"
+                    }
+                }
+            }
+        },
+        "/chartofaccounts/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Chart Of Accounts"
+                ],
+                "summary": "Open form to edit Chart of account",
+                "description": "Returns based on id ",
+                "operationId": "editChartOfAccount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Chart of account id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChartOfAccount"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid Chart of account id"
+                    }
+                }
+            }
+        },
         "/contributions": {
             "get": {
                 "tags": [
@@ -7491,6 +7824,43 @@
                 "type": "object",
                 "xml": {
                     "name": "BudgetHead"
+                }
+            },
+            "ChartOfAccount": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "account_code_id": {
+                        "type": "integer",
+                        "example": "Account code ID"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "example": "Account code"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Chart of ACcount Name"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Chart of ACcount label"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ChartOfAccount"
                 }
             },
             "Contribution": {
