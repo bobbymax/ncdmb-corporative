@@ -30,9 +30,4 @@ class AccountCode extends Model
     {
         return $this->hasMany(Journal::class);
     }
-
-    public function chartOfAccounts()
-    {
-        return $this->hasMany(ChartOfAccount::class);
-    }
 }

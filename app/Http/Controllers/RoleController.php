@@ -52,7 +52,7 @@ use Illuminate\Support\Str;
      *
      *   @OA\Response(
      *      response=201,
-     *       description="Permission   has been created successfully!",
+     *       description="Role   has been created successfully!",
      *      @OA\MediaType(
      *           mediaType="application/json",
      *      )
@@ -99,7 +99,7 @@ use Illuminate\Support\Str;
      *         description="Success",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Permission")
+     *             @OA\Items(ref="#/components/schemas/Role")
      *         )
      *
      *     ),
@@ -152,7 +152,7 @@ use Illuminate\Support\Str;
      *         description="Permission for  details!",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Permission")
+     *             @OA\Items(ref="#/components/schemas/Role")
      *         )
      *
      *     ),
@@ -198,7 +198,7 @@ use Illuminate\Support\Str;
      *         description="Success",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Permission")
+     *             @OA\Items(ref="#/components/schemas/Role")
      *         )
      *
      *     ),
@@ -234,31 +234,40 @@ use Illuminate\Support\Str;
      *     description="Updates role in database",
      *     operationId="updateRole",
      *
-     *    @OA\Parameter(
-     *      name="budget_head_id",
+     *
+     *   @OA\Parameter(
+     *      name="name",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *           type="integer"
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="label",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
      *      )
      *   ),
      *   @OA\Parameter(
-     *      name="description",
+     *      name="slots",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="string"
+     *          type="integer"
      *      )
      * ),
-     * @OA\Parameter(
-     *      name="approved_amount",
+     *  @OA\Parameter(
+     *      name="deactivated",
      *      in="query",
      *      required=true,
      *      @OA\Schema(
-     *          type="number",
-     *          format="double"
+     *          type="boolean"
      *      )
      * ),
+     *
      * @OA\Response(
      *         response=500,
      *         description="Error, please fix the following error(s)!;",
@@ -302,7 +311,7 @@ use Illuminate\Support\Str;
      *         description="Permission deleted successfully!",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Permission")
+     *             @OA\Items(ref="#/components/schemas/Role")
      *         )
      *
      *     ),
