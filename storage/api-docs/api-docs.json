@@ -4802,6 +4802,375 @@
                 }
             }
         },
+        "/payments": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Returns all payments on the system",
+                "description": "Returns all payments on the system",
+                "operationId": "findPayments",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pay"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Save  payment",
+                "operationId": "payments",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "beneficiary_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trxRef",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payable_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payable_type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "member",
+                                "staff",
+                                "third-party"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/{id}": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Get payment by id",
+                "description": "Returns based on id ",
+                "operationId": "showPayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "payment id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pay"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "update payment by database",
+                "description": "Updates payment in database",
+                "operationId": "updatePayment",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "slots",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "deactivated",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid payment id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "remove payment from database",
+                "description": "Deletes payment in database",
+                "operationId": "updatePayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "payment id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pay"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid payment id"
+                    }
+                }
+            }
+        },
+        "/payments/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Open form to edit payment",
+                "description": "Returns based on id ",
+                "operationId": "editPayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "payment id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pay"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid payment id"
+                    }
+                }
+            }
+        },
         "/online/deposit": {
             "post": {
                 "tags": [
@@ -5340,6 +5709,383 @@
                     },
                     "422": {
                         "description": "Invalid permission id"
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Returns all projects on the system",
+                "description": "Returns all projects on the system",
+                "operationId": "findRoles",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Project"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Save Project",
+                "operationId": "saveProject",
+                "parameters": [
+                    {
+                        "name": "agent_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    {
+                        "name": "timeline",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "in-progress",
+                                "in-review",
+                                "verified",
+                                "completed"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Projects records have been created successfully",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Please fix the error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get specification by id",
+                "description": "Returns based on id ",
+                "operationId": "showRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Project"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "update specification by database",
+                "description": "Updates specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "agent_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "timeline",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "remove specification from database",
+                "description": "Deletes specification in database",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Project"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
+                    }
+                }
+            }
+        },
+        "/projects/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Open form to edit specification",
+                "description": "Returns based on id ",
+                "operationId": "editRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "specification id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Project"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid specification id"
                     }
                 }
             }
@@ -7943,6 +8689,78 @@
                     "name": "Deposit"
                 }
             },
+            "Expense": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "Expense ID"
+                    },
+                    "budget_head_id": {
+                        "type": "integer",
+                        "example": "Expense ID"
+                    },
+                    "receive_id": {
+                        "type": "integer",
+                        "example": "Treceiver ID"
+                    },
+                    "reference": {
+                        "type": "string",
+                        "example": "Expense reference"
+                    },
+                    "due_date": {
+                        "type": "date",
+                        "example": "2020-20-10"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": " Amount"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Expense Description"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "enum": [
+                            "NGN",
+                            "USD",
+                            "GBP"
+                        ],
+                        "example": "NGN"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "batched",
+                            "paid"
+                        ],
+                        "example": "paid"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Expense"
+                }
+            },
             "Fund": {
                 "properties": {
                     "id": {
@@ -8327,6 +9145,79 @@
                     "name": "Member"
                 }
             },
+            "Pay": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "Pay ID"
+                    },
+                    "beneficiary_id": {
+                        "type": "integer",
+                        "example": "Beneficiary ID"
+                    },
+                    "trxRef": {
+                        "type": "string",
+                        "example": "Transaction Reference"
+                    },
+                    "payable_id": {
+                        "type": "integer",
+                        "example": "Payable ID"
+                    },
+                    "payable_type": {
+                        "type": "string",
+                        "example": "Payable Type"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Pay Title"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Pay Label"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": "Pay Amount"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "member",
+                            "staff",
+                            "third-party"
+                        ],
+                        "example": "staff"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "refunded",
+                            "unpaid",
+                            "paid"
+                        ],
+                        "example": "paid"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Pay"
+                }
+            },
             "Permission": {
                 "properties": {
                     "id": {
@@ -8358,6 +9249,79 @@
                 "type": "object",
                 "xml": {
                     "name": "Permission"
+                }
+            },
+            "Project": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "agent_id": {
+                        "type": "integer",
+                        "example": "Agent ID"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "Project CODE"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Project Title"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Project label"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "Proect path"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Project Description"
+                    },
+                    "start_date": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "end_date": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "example": "4949494.49"
+                    },
+                    "timeline": {
+                        "type": "integer",
+                        "example": "5"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "in-progress",
+                            "in-review",
+                            "verified",
+                            "completed"
+                        ],
+                        "example": "completed"
+                    },
+                    "created_at": {
+                        "type": "date",
+                        "example": "2020-10-20"
+                    },
+                    "updated_at": {
+                        "type": "date",
+                        "example": "2020-12-22"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Project"
                 }
             },
             "Role": {

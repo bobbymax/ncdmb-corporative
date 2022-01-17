@@ -13,6 +13,376 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
+/**
+     * @OA\Post(
+     * path="/payments",
+     *   tags={"Payments"},
+     *   summary="Save  payment",
+     *   operationId="payments",
+     *
+     *   @OA\Parameter(
+     *      name="user_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="beneficiary_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="trxRef",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="payable_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="payable_type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *   @OA\Parameter(
+     *      name="title",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *   @OA\Parameter(
+     *      name="label",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     * ),
+     *   @OA\Parameter(
+     *      name="amount",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number",
+     *          format="float"
+     *      )
+     * ),
+     *
+     *   @OA\Parameter(
+     *      name="type",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          enum={"member", "staff", "third-party"}
+     *      )
+     * ),
+     *
+     *   @OA\Response(
+     *      response=201,
+     *       description="Payment   has been created successfully!",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+        * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     *
+     * )
+     * )
+    */
+      /**
+     * @OA\Get(
+     *     path="/payments",
+     *     tags={"Payments"},
+     *      summary="Returns all payments on the system",
+     *     description="Returns all payments on the system",
+     *     operationId="findPayments",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pay")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+       * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     )
+     * )
+     *     )
+     * )
+     */
+
+           /**
+     * @OA\Get(
+     *     path="/payments/{id}",
+     *     tags={"Payments"},
+     *     summary="Get payment by id",
+     *     description="Returns based on id ",
+     *     operationId="showPayment",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="payment id to get",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Permission for  details!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pay")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="This ID is invalid"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                /**
+     * @OA\Get(
+     *     path="/payments/{id}/edit",
+     *     tags={"Payments"},
+     *      summary="Open form to edit payment",
+     *     description="Returns based on id ",
+     *     operationId="editPayment",
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="payment id to edit",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pay")
+     *         )
+     *
+     *     ),
+     *     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid payment id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+
+                /**
+     * @OA\Put(
+     *     path="/payments/{id}",
+     *     tags={"Payments"},
+     *      summary="update payment by database",
+     *     description="Updates payment in database",
+     *     operationId="updatePayment",
+     *
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="label",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="slots",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer"
+     *      )
+     * ),
+     *  @OA\Parameter(
+     *      name="deactivated",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="boolean"
+     *      )
+     * ),
+     *
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid payment id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
+
+                     /**
+     * @OA\Delete(
+     *     path="/payments/{id}",
+     *     tags={"Payments"},
+     *      summary="remove payment from database",
+     *     description="Deletes payment in database",
+     *     operationId="updatePayment",
+     *
+     *   @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="payment id to delete",
+     *         required=true,
+     *      ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Permission deleted successfully!",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pay")
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *         response=500,
+     *         description="Error, please fix the following error(s)!;",
+     *         @OA\JsonContent(
+     *             type="string",
+     *
+     *         )
+     *
+     *     ),
+     * @OA\Response(
+     *      response=404,
+     *      description="Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+     *   ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Invalid payment id"
+     *      )
+     *
+     * )
+     *     )
+     * )
+     */
 class PayController extends Controller
 {
     protected $beneficiary, $identity, $sector;
