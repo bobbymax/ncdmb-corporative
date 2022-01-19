@@ -337,7 +337,8 @@ use Illuminate\Support\Str;
      *     )
      * )
      */
-class RoleController extends Controller
+
+     class RoleController extends Controller
 {
     public function __construct()
     {
