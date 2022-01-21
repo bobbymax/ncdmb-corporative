@@ -2449,6 +2449,322 @@
                 }
             }
         },
+        "/expenses": {
+            "get": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Returns all expenses on the system",
+                "description": "Returns all expenses on the system",
+                "operationId": "findExpenses",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Save  expense",
+                "operationId": "expenses",
+                "parameters": [
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "AccountCode   has been created successfully!",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/expenses/{id}": {
+            "get": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Get expense by id",
+                "description": "Returns based on id ",
+                "operationId": "showExpense",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "expense id to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "AccountCode for  details!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "This ID is invalid"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "update expense by database",
+                "description": "Updates expense in database",
+                "operationId": "updateExpense",
+                "parameters": [
+                    {
+                        "name": "budget_head_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "approved_amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid expense id"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "remove expense from database",
+                "description": "Deletes expense in database",
+                "operationId": "updateExpense",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "expense id to delete",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "AccountCode deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid expense id"
+                    }
+                }
+            }
+        },
+        "/expenses/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Open form to edit expense",
+                "description": "Returns based on id ",
+                "operationId": "editExpense",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "expense id to edit",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccountCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error, please fix the following error(s)!;",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page Not Found. If error persists, contact info@ncdmb.gov.ng"
+                    },
+                    "422": {
+                        "description": "Invalid expense id"
+                    }
+                }
+            }
+        },
         "/funds": {
             "get": {
                 "tags": [
