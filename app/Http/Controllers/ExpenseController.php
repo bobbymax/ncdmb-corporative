@@ -349,7 +349,7 @@ class ExpenseController extends Controller
             return response()->json([
                 'data' => null,
                 'status' => 'info',
-                'message' => 'No dara found!!'
+                'message' => 'No data found!!'
             ], 404);
         }
 

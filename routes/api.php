@@ -47,10 +47,10 @@ Route::apiResource('deposits', 'DepositController');
 Route::apiResource('agents', 'AgentController');
 Route::apiResource('projects', 'ProjectController');
 Route::apiResource('payments', 'PayController');
-
 Route::apiResource('expenses', 'ExpenseController');
 Route::apiResource('chartOfAccounts', 'ChartOfAccountController');
 Route::apiResource('accountCodes', 'AccountCodeController');
+
 Route::apiResource('journals', 'JournalController');
 Route::apiResource('receives', 'ReceiveController');
 Route::apiResource('batches', 'BatchController');
