@@ -21,8 +21,16 @@ class GuarantorResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'loan' => LoanResource::collection($this->loans),
-            'member' => new UserResource($this->member)
+            'loan_id' => $this->loan_id,
+            'user_id' => $this->user_id,
+            'code' => $this->sponsored->code,
+            'beneficiary' => $this->sponsored->member->firstname . " " . $this->sponsored->member->surname,
+            'amount' => $this->sponsored->amount,
+            'reason' => $this->sponsored->reason,
+            // 'loan' => new LoanResource($this->sponsored),
+            'member' => new UserResource($this->member),
+            'remark' => $this->remark,
+            'status' => $this->status
         ];
     }
 }

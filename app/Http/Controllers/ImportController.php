@@ -14,6 +14,7 @@ use App\Http\Resources\UserResource;
 use Carbon\Carbon;
 use App\Mail\WelcomeMail;
 use Mail;
+use DB;
 
 class ImportController extends Controller
 {
@@ -42,7 +43,7 @@ class ImportController extends Controller
 
         switch ($request->type) {
             case "members" :
-                $this->result = $this->membersBulkAdd($request->data);
+                $this->result = $this->fireMembersUpload($request->data);
                 break;
             case "credit-members" :
                 $this->result = $this->creditMembersWallet($request->data);
@@ -74,10 +75,129 @@ class ImportController extends Controller
         return $this->bulkRecords;
     }
 
+    protected function fireMembersUpload(array $data)
+    {
+        $this->importMembersRecords($data);
+        $this->importMembersContributions($data);
+        $this->importMembersWallets($data);
+        return $this->addRolesToMembers($data);
+    }
+
+    protected function importMembersRecords(array $data) 
+    {
+        $dataChunk = [];
+
+        foreach($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if (! $member) {
+                $email = strtolower($value['firstname']).".".strtolower($value['surname'])."@ncdmb.gov.ng";
+                $pass = strtolower($value['firstname']).".".strtolower($value['surname']);
+
+                $insertData = [
+                    'firstname' => $value['firstname'],
+                    'middlename' => isset($value['middlename']) ? $value['middlename'] : null,
+                    'surname' => $value['surname'],
+                    'staff_no' => $value['membership-no'],
+                    'membership_no' => $value['membership-no'],
+                    'email' => isset($value['email']) && $value['email'] !== "" ? $value['email'] : $email,
+                    'type' => 'member',
+                    'password' => Hash::make($pass),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+
+                $dataChunk[] = $insertData;
+            }
+        }
+
+        $dataChunk = collect($dataChunk);
+        $chunks = $dataChunk->chunk(100);
+        return $this->insertInto('users', $chunks);
+    }
+
+    protected function importMembersContributions(array $data)
+    {
+        $dataChunk = [];
+
+        foreach($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if ($member) {
+                $insertData = [
+                    'user_id' => $member->id,
+                    'month' => Carbon::now()->format('F'),
+                    'fee' => isset($value['current-contribution']) ? $value['current-contribution'] : 0,
+                    'current' => true,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+
+                $dataChunk[] = $insertData;
+            }
+        }
+
+        $dataChunk = collect($dataChunk);
+        $chunks = $dataChunk->chunk(100);
+        return $this->insertInto('contributions', $chunks);
+    }
+
+    protected function importMembersWallets(array $data)
+    {
+        $dataChunk = [];
+
+        foreach($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if ($member) {
+                $insertData = [
+                    'user_id' => $member->id,
+                    'identifier' => Hash::make($member->firstname),
+                    'current' => $value['total-contribution'],
+                    'available' => $value['total-contribution'],
+                    'ledger' => $value['total-contribution'],
+                    'bank_name' => "Dummy",
+                    'account_number' => uniqid() . time(),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+
+                $dataChunk[] = $insertData;
+            }
+        }
+
+        $dataChunk = collect($dataChunk);
+        $chunks = $dataChunk->chunk(100);
+        return $this->insertInto('wallets', $chunks);
+    }
+
+    protected function addRolesToMembers(array $data)
+    {
+        $role = Role::where("label", "member")->first();
+
+        if (! $role) {
+            $role = Role::create([
+                'name' => 'Member',
+                'label' => 'member',
+                'slots' => 1000
+            ]);
+        }
+
+        foreach($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if ($member) {
+                $member->actAs($role);
+            }
+        }
+
+        return $role;
+    }
+
     protected function membersBulkAdd(array $data)
     {
         foreach($data as $value) {
-            $member = User::where('membership_no', $value['membership_no'])->first();
+            $member = User::where('membership_no', $value['membership-no'])->first();
             $today = Carbon::now();
 
             if (! $member) {
@@ -130,5 +250,14 @@ class ImportController extends Controller
         }
 
         return $this->bulkRecords;
+    }
+
+    protected function insertInto($table, $chunks) 
+    {
+        foreach ($chunks as $chunk) {
+            DB::table($table)->insert($chunk->toArray());
+        }
+
+        return;
     }
 }

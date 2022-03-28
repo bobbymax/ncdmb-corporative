@@ -419,10 +419,10 @@ class FundController extends Controller
 
         if ($funds->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data was found'
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -468,7 +468,8 @@ class FundController extends Controller
             'description' => $request->description,
             'approved_amount' => $request->approved_amount,
             'actual_balance' => $request->approved_amount,
-            'year' => 2021
+            'booked_balance' => $request->approved_amount,
+            'year' => config('settings.budget_year') ?? config('corp.budget.year')
         ]);
 
         return response()->json([
@@ -592,10 +593,11 @@ class FundController extends Controller
             ], 422);
         }
 
+        $old = $fund;
         $fund->delete();
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
             'message' => 'Fund for Budget Head details!'
         ], 200);

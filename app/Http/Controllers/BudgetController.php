@@ -545,7 +545,7 @@ class BudgetController extends Controller
             ], 500);
         }
 
-        $budget = Budget::where('code', $budget)->first();
+        $budget = Budget::find($budget);
 
         if (! $budget) {
             return response()->json([
@@ -574,7 +574,7 @@ class BudgetController extends Controller
      */
     public function destroy($budget)
     {
-        $budget = Budget::where('code', $budget)->first();
+        $budget = Budget::find($budget);
 
         if (!$budget) {
             return response()->json([
@@ -584,9 +584,10 @@ class BudgetController extends Controller
             ], 404);
         }
 
+        $old = $budget;
         $budget->delete();
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
             'message' => 'This budget has been deleted successfully.'
         ], 200);

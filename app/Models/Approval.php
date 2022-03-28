@@ -24,6 +24,8 @@ class Approval extends Model
 {
     use HasFactory;
 
+    protected $guarded = [''];
+
     public function loans()
     {
         return $this->morphedByMany(Loan::class, 'approveable')->withPivot('remark', 'status');

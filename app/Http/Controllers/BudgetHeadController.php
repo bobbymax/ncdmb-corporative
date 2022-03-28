@@ -420,10 +420,10 @@ class BudgetHeadController extends Controller
 
         if ($budgetHeads->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data was found'
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -473,8 +473,9 @@ class BudgetHeadController extends Controller
         $validator = Validator::make($request->all(), [
             'budget_id' => 'required|integer',
             'description' => 'required|min:3|unique:budget_heads',
-            'category' => 'required|string|max:255',
-            'type' => 'required|in:capital,recursive,personnel'
+            'category' => 'required|string|max:255|in:loan,asset,shares',
+            'type' => 'required|in:capital,recursive,personnel',
+            'code' => 'required|string|unique:budget_heads'
         ]);
 
         if ($validator->fails()) {
@@ -487,7 +488,7 @@ class BudgetHeadController extends Controller
 
         $budgetHead = BudgetHead::create([
             'budget_id' => $request->budget_id,
-            'code' => "BHD" . time(),
+            'code' => $request->code,
             'description' => $request->description,
             'category' => $request->category,
             'interest' => isset($request->interest) ? $request->interest : 0,
@@ -497,7 +498,7 @@ class BudgetHeadController extends Controller
             'payable' => isset($request->payable) ? $request->payable : "na",
             'frequency' => isset($request->frequency) ? $request->frequency : "na",
             'type' => $request->type,
-            'year' => date('Y')
+            'year' => config('settings.budget_year') ?? config('corp.budget.year')
         ]);
 
         // Alert new activity before sending response
@@ -580,7 +581,7 @@ class BudgetHeadController extends Controller
                 'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix these errors:'
-            ], 505);
+            ], 500);
         }
 
         $budgetHead = BudgetHead::find($budgetHead);
@@ -632,12 +633,13 @@ class BudgetHeadController extends Controller
             ], 422);
         }
 
+        $old = $budgetHead;
         $budgetHead->delete();
 
         // Alert new activity before sending response
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
             'message' => 'Budget head has been deleted successfully!'
         ], 200);

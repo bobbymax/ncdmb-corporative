@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Guarantor extends Model
 {
-    protected $table = 'guarantorables';
+    protected $table = 'guarantors';
 
     use HasFactory;
 
@@ -32,8 +32,18 @@ class Guarantor extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function loans()
+    // public function loans()
+    // {
+    //     return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
+    // }
+
+    // public function loan()
+    // {
+        
+    // }
+
+    public function sponsored()
     {
-        return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
+        return $this->belongsTo(Loan::class, 'loan_id');
     }
 }

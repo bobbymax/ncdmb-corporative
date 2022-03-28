@@ -688,7 +688,7 @@ class MemberController extends Controller
                 'data' => null,
                 'status' => 'info',
                 'message' => 'No data found'
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -721,13 +721,11 @@ class MemberController extends Controller
             'surname' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users',
             'staff_no' => 'required|unique:users',
-            'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
             'mobile' => 'required|unique:users',
             'type' => 'required|string|in:member,exco',
             'name' => 'required|string|max:255',
             'relationship' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
             'phone' => 'required',
             'bank_name' => 'required|string|max:255',
             'fee' => 'required|numeric',
@@ -751,14 +749,16 @@ class MemberController extends Controller
             ], 422);
         }
 
+        $password = Str::slug($request->firstname . " " . $request->surname);
+
         $member = User::create([
             'staff_no' => $request->staff_no,
+            'membership_no' => $request->staff_no,
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'surname' => $request->surname,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'location' => $request->location,
+            'password' => Hash::make($password),
             'designation' => $request->designation,
             'mobile' => $request->mobile,
             'type' => $request->type,
@@ -855,6 +855,109 @@ class MemberController extends Controller
             'data' => new UserResource($member),
             'status' => 'success',
             'message' => 'Member found'
+        ], 200);
+    }
+
+    public function modifyAccount(Request $request, $member)
+    {
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|string|in:member,exco',
+            'membership_no' => 'required|string',
+            'date_joined' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors before proceeding'
+            ], 500);
+        }
+
+        $member = User::find($member);
+        if (!$member) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This member does not exist'
+            ], 404);
+        }
+
+        $member->update([
+            'membership_no' => $request->membership_no,
+            'type' => $request->type,
+            'date_joined' => Carbon::parse($request->date_joined)
+        ]);
+
+        return response()->json([
+            'data' => new UserResource($member),
+            'status' => 'success',
+            'message' => 'Member account has been modified successfully!'
+        ], 200);
+    }
+
+    public function modifyMemberContribution(Request $request, $member)
+    {
+        $validator = Validator::make($request->all(), [
+            'fee' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors before proceeding'
+            ], 500);
+        }
+
+        $member = User::find($member);
+        if (!$member) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This member does not exist'
+            ], 404);
+        }
+
+        $previousContribution = Contribution::where('user_id', $member->id)->where('current', true)->first();
+
+        if ($previousContribution) {
+            $contribution = new Contribution;
+            $contribution->fee = $request->fee;
+            $contribution->current = true;
+            $contribution->month = Carbon::now()->format('F');
+            $member->contributions()->save($contribution);
+
+            $previousContribution->current = false;
+            $previousContribution->save();
+        }
+
+        return response()->json([
+            'data' => new UserResource($member),
+            'status' => 'success',
+            'message' => 'Member contribution has been modified successfully!'
+        ], 200);
+    }
+
+    public function verifyMemberAccount($member)
+    {
+        $member = User::find($member);
+        if (!$member) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'This member does not exist'
+            ], 404);
+        }
+
+        $member->update([
+            'status' => 'active'
+        ]);
+
+        return response()->json([
+            'data' => new UserResource($member),
+            'status' => 'success',
+            'message' => 'Member account has been verified successfully!'
         ], 200);
     }
 

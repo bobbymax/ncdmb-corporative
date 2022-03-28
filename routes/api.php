@@ -28,6 +28,7 @@ Route::post('reset/password', 'MemberController@passwordReset');
 Route::get('get/budget/types', 'DependencyController@budgetHeadCategory');
 Route::get('budgetHead/loan/type', 'BudgetHeadController@loaners');
 Route::get('get/service/categories', 'DependencyController@serviceCategories');
+Route::post('portal/configuration', 'ConfigurationController@update');
 
 
 Route::apiResource('funds', 'FundController');
@@ -57,10 +58,20 @@ Route::apiResource('members', 'MemberController');
 Route::apiResource('budgets', 'BudgetController');
 Route::apiResource('budgetHeads', 'BudgetHeadController');
 Route::apiResource('accounts', 'AccountController');
+Route::apiResource('settings', 'SettingController');
+Route::apiResource('mandates', 'MandateController');
+Route::apiResource('disbursements', 'DisbursementController');
+Route::apiResource('bundles', 'BundleController');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');
 Route::post('grant/member/loan', 'LoanController@grantStat');
+Route::patch('modify/members/{member}', 'MemberController@modifyAccount');
+Route::get('verify/members/{member}', 'MemberController@verifyMemberAccount');
+Route::patch('modify/members/contribution/{member}', 'MemberController@modifyMemberContribution');
+Route::post('credit/members/account', 'ContributionController@memberBulkCreditPayment');
+Route::get('load/settings', 'SettingController@loader');
+Route::get('fetch/loans/{loan}', 'LoanController@getLoanFromCode');
 
 // Loan Checker
 Route::post('category/budget/check', 'ExpenditureController@budgetChecker');

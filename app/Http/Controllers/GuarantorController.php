@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guarantor;
+use App\Models\Loan;
+use App\Http\Resources\GuarantorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -337,13 +339,13 @@ class GuarantorController extends Controller
         $guarantors = Guarantor::all();
         if ($guarantors->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data was found'
-            ], 404);
+            ], 200);
         }
         return response()->json([
-            'data' => $guarantors,
+            'data' => GuarantorResource::collection($guarantors),
             'status' => 'success',
             'message' => 'Data was found'
         ], 200);
@@ -387,7 +389,7 @@ class GuarantorController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $guarantor,
+            'data' => new GuarantorResource($guarantor),
             'status' => 'success',
             'message' => 'Data was found'
         ], 200);
@@ -410,7 +412,7 @@ class GuarantorController extends Controller
             ], 404);
         }
         return response()->json([
-            'data' => $guarantor,
+            'data' => new GuarantorResource($guarantor),
             'status' => 'success',
             'message' => 'Data was found'
         ], 200);
@@ -437,6 +439,7 @@ class GuarantorController extends Controller
             ], 500);
         }
         $guarantor = Guarantor::find($guarantor);
+        $loan = Loan::find($guarantor->loan_id);
         if (! $guarantor) {
             return response()->json([
                 'data' => null,
@@ -448,10 +451,24 @@ class GuarantorController extends Controller
             'remark' => $request->remark,
             'status' => $request->status
         ]);
+
+        if ($loan) {
+            $list = $loan->sponsors->where('status', 'approved')->count();
+
+            // treasury
+
+            if ($list == 3) {
+                $loan->status = "registered";
+                $loan->stage = "secretariate";
+                $loan->save();
+            }
+        }
+
+
         return response()->json([
-            'data' => $guarantor,
+            'data' => new GuarantorResource($guarantor),
             'status' => 'success',
-            'message' => 'Data was updated successfully!'
+            'message' => 'Loan record updated successfully!!'
         ], 200);
     }
 
@@ -471,9 +488,10 @@ class GuarantorController extends Controller
                 'message' => 'No data was found'
             ], 404);
         }
+        $old = $guarantor;
         $guarantor->delete();
         return response()->json([
-            'data' => $guarantor,
+            'data' => $old,
             'status' => 'success',
             'message' => 'Data was deleted successfully!'
         ], 200);

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccount;
 use Illuminate\Http\Request;
+use App\Http\Resources\ChartOfAccountResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 
 /**
@@ -368,11 +371,11 @@ class ChartOfAccountController extends Controller
                 'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 204);
+            ], 200);
         }
 
         return response()->json([
-            'data' => $chartOfAccounts,
+            'data' => ChartOfAccountResource::collection($chartOfAccounts),
             'status' => 'success',
             'message' => 'Account Codes List'
         ], 200);
@@ -404,7 +407,7 @@ class ChartOfAccountController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'data' => null,
+                'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors!'
             ], 500);
@@ -418,7 +421,7 @@ class ChartOfAccountController extends Controller
         ]);
 
         return response()->json([
-            'data' => $chartOfAccount,
+            'data' => new ChartOfAccountResource($chartOfAccount),
             'status' => 'success',
             'message' => 'New Chart of Account created!!'
         ], 201);
@@ -443,7 +446,7 @@ class ChartOfAccountController extends Controller
         }
 
         return response()->json([
-            'data' => $chartOfAccount,
+            'data' => new ChartOfAccountResource($chartOfAccount),
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -468,7 +471,7 @@ class ChartOfAccountController extends Controller
         }
 
         return response()->json([
-            'data' => $chartOfAccount,
+            'data' => new ChartOfAccountResource($chartOfAccount),
             'status' => 'success',
             'message' => 'Account Code Details'
         ], 200);
@@ -515,7 +518,7 @@ class ChartOfAccountController extends Controller
         ]);
 
         return response()->json([
-            'data' => $chartOfAccount,
+            'data' => new ChartOfAccountResource($chartOfAccount),
             'status' => 'success',
             'message' => 'New Chart of Account updated!!'
         ], 200);
@@ -540,6 +543,7 @@ class ChartOfAccountController extends Controller
         }
 
         $old = $chartOfAccount;
+        $chartOfAccount->delete();
 
         return response()->json([
             'data' => $old,

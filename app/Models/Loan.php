@@ -33,11 +33,6 @@ class Loan extends Model
     protected $guarded = [''];
     protected $dates = ['start_date', 'end_date'];
 
-    public function getRouteKeyName()
-    {
-        return 'code';
-    }
-
     public function member()
     {
     	return $this->belongsTo(User::class, 'user_id');
@@ -53,6 +48,16 @@ class Loan extends Model
     	return $this->belongsTo(BudgetHead::class, 'budget_head_id');
     }
 
+    public function expenditure()
+    {
+        return $this->hasOne(Disbursement::class);
+    }
+
+    public function instructions()
+    {
+        return $this->hasMany(Instruction::class);
+    }
+
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
@@ -66,6 +71,11 @@ class Loan extends Model
     public function guarantors()
     {
         return $this->morphToMany(User::class, 'guarantorable')->withPivot('remarks', 'status');
+    }
+
+    public function sponsors()
+    {
+        return $this->hasMany(Guarantor::class);
     }
 
     public function transactions()
@@ -88,5 +98,9 @@ class Loan extends Model
         return $this->morphMany(Pay::class, 'payable');
     }
 
+    public function mandates()
+    {
+        return $this->morphMany(Mandate::class, 'mandateable');
+    }
 
 }

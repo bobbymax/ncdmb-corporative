@@ -18,8 +18,14 @@ class ContributionResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'user_id' => $this->member->id,
             'fee' => $this->fee,
-            'member' => new UserResource($this->member)
+            'member' => new UserResource($this->member),
+            'month' => $this->month,
+            'current' => $this->current == 1 ? true : false,
+            'name' => $this->member->firstname . " " . $this->member->surname,
+            'membership_no' => $this->member->membership_no,
+            'isAdministrator' => $this->member->isAdministrator == 1 ? true : false
         ];
     }
 }

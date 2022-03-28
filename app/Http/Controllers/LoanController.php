@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Guarantor;
+use App\Models\Sponsor;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Resources\LoanResource;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 
 /**
@@ -425,10 +428,10 @@ class LoanController extends Controller
 
         if ($loans->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data was found!'
-            ], 404);
+            ], 200);
         }
         return response()->json([
             'data' => LoanResource::collection($loans),
@@ -456,11 +459,16 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'category_id' => 'required|integer',
+            'budget_head_id' => 'required|integer',
             'amount' => 'required|integer',
             'reason' => 'required|string|max:255',
-            'description' => 'required|min:3',
-            'guarantors' => 'required',
+            'guarantors' => 'required|array',
+            'code' => 'required|string|unique:loans',
+            'instructions' => 'required|array',
+            'capitalSum' => 'required',
+            'committment' => 'required',
+            'interestSum' => 'required',
+            'totalPayable' => 'required',
         ]);
 
         if ($validation->fails()) {
@@ -480,17 +488,21 @@ class LoanController extends Controller
         }
 
         $loan = Loan::create([
-            'user_id' => $request->user()->id,
-            'budget_head_id' => $request->category_id,
-            'code' => 'LN' . time(), //$request->code,
+            'user_id' => auth()->user()->id,
+            'budget_head_id' => $request->budget_head_id,
+            'code' => $request->code,
             'amount' => $request->amount,
             'reason' => $request->reason,
-            'description' => $request->description,
+            'capitalSum' => $request->capitalSum,
+            'committment' => $request->committment,
+            'interestSum' => $request->interestSum,
+            'totalPayable' => $request->totalPayable,
         ]);
 
         if ($loan) {
+            $dataChunk = [];
             foreach ($request->guarantors as $guarantor) {
-                $member = User::where('staff_no', $guarantor)->first();
+                $member = User::find($guarantor['value']);
 
                 if (! $member) {
                     return response()->json([
@@ -500,9 +512,33 @@ class LoanController extends Controller
                     ], 422);
                 }
 
-                $loan->guarantors()->attach($member);
+                $guarantor = new Guarantor;
+                $guarantor->user_id = $member->id;
+                $guarantor->loan_id = $loan->id;
+                $guarantor->save();
             }
+
+            foreach ($request->instructions as $instruction) {
+                $insertData = [
+                    'loan_id' => $loan->id,
+                    'capital' => $instruction['capital'],
+                    'installment' => $instruction['installment'],
+                    'interest' => $instruction['interest'],
+                    'interestSum' => $instruction['interestSum'],
+                    'remain' => $instruction['remain'],
+                    'due' => Carbon::parse($instruction['index']),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ];
+                $dataChunk[] = $insertData;
+            }
+
+            $dataChunk = collect($dataChunk);
+            $chunks = $dataChunk->chunk(100);
+            $this->insertInto('instructions', $chunks);
         }
+
+
 
         // NotificationController::messageAfterLoanRequest([auth()->user()->mobile], $request->amount);
 
@@ -521,7 +557,7 @@ class LoanController extends Controller
      */
     public function show($loan)
     {
-        $loan = Loan::where('code', $loan)->first();
+        $loan = Loan::find($loan);
 
         if (! $loan) {
             return response()->json([
@@ -545,6 +581,25 @@ class LoanController extends Controller
      */
     public function edit($loan)
     {
+        $loan = Loan::find($loan);
+
+        if (! $loan) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token entered!'
+            ], 422);
+        }
+
+        return response()->json([
+            'data' => new LoanResource($loan),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
+    }
+
+    public function getLoanFromCode($loan)
+    {
         $loan = Loan::where('code', $loan)->first();
 
         if (! $loan) {
@@ -556,7 +611,7 @@ class LoanController extends Controller
         }
 
         return response()->json([
-            'data' => $loan,
+            'data' => new LoanResource($loan),
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
@@ -572,10 +627,13 @@ class LoanController extends Controller
     public function update(Request $request, $loan)
     {
         $validation = Validator::make($request->all(), [
-            'budget_head_id' => 'required|integer',
             'amount' => 'required|integer',
-            'reason' => 'required|string|max:255',
-            'description' => 'required|min:3',
+            'previousAmount' => 'required|integer',
+            'instructions' => 'required|array',
+            'capitalSum' => 'required',
+            'committment' => 'required',
+            'interestSum' => 'required',
+            'totalPayable' => 'required',
         ]);
 
         if ($validation->fails()) {
@@ -586,7 +644,7 @@ class LoanController extends Controller
             ], 500);
         }
 
-        $loan = Loan::where('code', $loan)->first();
+        $loan = Loan::find($loan);
 
         if (! $loan) {
             return response()->json([
@@ -597,23 +655,52 @@ class LoanController extends Controller
         }
 
         $loan->update([
-            'budget_head_id' => $request->budget_head_id,
             'amount' => $request->amount,
-            'reason' => $request->reason,
-            'description' => $request->description,
+            'previousAmount' => $request->previousAmount,
+            'capitalSum' => $request->capitalSum,
+            'committment' => $request->committment,
+            'interestSum' => $request->interestSum,
+            'totalPayable' => $request->totalPayable,
+            'stage' => 'treasury-officer',
+            'level' => 1
         ]);
+
+        if ($request->amount != $request->previousAmount) {
+            $loan->instructions()->delete();
+
+            $dataChunk = [];
+
+            foreach ($request->instructions as $instruction) {
+                $insertData = [
+                    'loan_id' => $loan->id,
+                    'capital' => $instruction['capital'],
+                    'installment' => $instruction['installment'],
+                    'interest' => $instruction['interest'],
+                    'interestSum' => $instruction['interestSum'],
+                    'remain' => $instruction['remain'],
+                    'due' => Carbon::parse($instruction['due']),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ];
+                $dataChunk[] = $insertData;
+            }
+
+            $dataChunk = collect($dataChunk);
+            $chunks = $dataChunk->chunk(100);
+            $this->insertInto('instructions', $chunks);
+        }
 
         return response()->json([
             'data' => new LoanResource($loan),
             'status' => 'success',
-            'message' => 'Loan has been updated successfully!'
+            'message' => 'Loan has been submitted for approval!'
         ], 200);
     }
 
     public function grantStat(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'loan' => 'required|string|max:255',
+            'loan' => 'required|integer',
             'remarks' => 'required|string|min:3',
             'status' => 'required|string|max:255'
         ]);
@@ -626,7 +713,7 @@ class LoanController extends Controller
             ], 422);
         }
 
-        $loan = Loan::where('code', $request->loan)->first();
+        $loan = Loan::find($loan);
 
         if (! $loan) {
             return response()->json([
@@ -692,7 +779,7 @@ class LoanController extends Controller
      */
     public function destroy($loan)
     {
-        $loan = Loan::where('code', $loan)->first();
+        $loan = Loan::find($loan);
 
         if (!$loan) {
             return response()->json([
@@ -708,12 +795,13 @@ class LoanController extends Controller
                 'message' => 'You are not permitted to delete an already existing loan!'
             ], 403);
         }
+        $old = $loan;
         $loan->delete();
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
-            'message' => 'Data found!'
+            'message' => 'Loan data deleted successfully!!'
         ], 200);
     }
 
@@ -754,5 +842,14 @@ class LoanController extends Controller
             'status' => 'success',
             'message' => 'Data found!'
         ], 200);
+    }
+
+    protected function insertInto($table, $chunks) 
+    {
+        foreach ($chunks as $chunk) {
+            DB::table($table)->insert($chunk->toArray());
+        }
+
+        return;
     }
 }

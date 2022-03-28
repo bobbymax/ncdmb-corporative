@@ -18,6 +18,8 @@ class FundResource extends JsonResource
         return [
             'id' => $this->id,
             'budget_head' => new BudgetHeadResource($this->budgetHead),
+            'budget_head_code' => $this->budgetHead->code,
+            'budget_head_name' => $this->budgetHead->description,
             'description' => $this->description,
             'approved_amount' => $this->approved_amount,
             'booked_expenditure' => $this->booked_expenditure,
@@ -26,7 +28,8 @@ class FundResource extends JsonResource
             'actual_balance' => $this->actual_balance,
             'expected_performance' => $this->expected_performance,
             'actual_performance' => $this->actual_performance,
-            'exhausted' => $this->exhausted ? 'Yes' : 'No'
+            'exhausted' => $this->exhausted ? 'Yes' : 'No',
+            'year' => $this->year
         ];
     }
 }

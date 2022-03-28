@@ -55,7 +55,42 @@ class ApprovalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'level' => 'required|integer',
+            'loan_id' => 'required|integer',
+            'stage' => 'required|string',
+            'status' => 'required|string|in:approve,decline'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors'
+            ], 500);
+        }
+
+        $loan = Loan::find($request->loan_id);
+
+        if (! $loan) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'The loan code is invalid!!'
+            ], 422);
+        }
+
+        $approval = Approval::create([
+            'user_id' => auth()->user()->id,
+            'status' => $request->status,
+            'remark' => $request->remark,
+            
+        ]);
+    }
+
+    protected function processLoanApproval($stage, $loan, $status, $remark) 
+    {
+
     }
 
     /**

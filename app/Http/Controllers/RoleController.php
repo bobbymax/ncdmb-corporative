@@ -417,8 +417,8 @@ class RoleController extends Controller
     public function addMember(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'staff_no' => 'required|string',
-            'roles' => 'required'
+            'user_id' => 'required|integer',
+            'role_id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -429,10 +429,11 @@ class RoleController extends Controller
             ], 500);
         }
 
-        $member = User::where('staff_no', $request->staff_no)->first();
+        $member = User::find($request->user_id);
+        $role = Role::find($request->role_id);
 
 
-        if (!$member) {
+        if (!$member || !$role) {
             return response()->json([
                 'data' => null,
                 'status' => 'error',
@@ -440,29 +441,8 @@ class RoleController extends Controller
             ], 500);
         }
 
-        if (!is_array($request->roles)) {
-            return response()->json([
-                'data' => null,
-                'status' => 'error',
-                'message' => 'Send roles in array format'
-            ]);
-        }
-
-
-        foreach ($request->roles as $value) {
-            $role = Role::where('label', $value)->first();
-
-            if (!$role) {
-                return response()->json([
-                    'data' => null,
-                    'status' => 'error',
-                    'message' => 'Role input is invalid!'
-                ], 500);
-            }
-
-            if (!in_array($role->id, $member->currentRoles())) {
-                $member->actAs($role);
-            }
+        if (!in_array($role->id, $member->currentRoles())) {
+            $member->actAs($role);
         }
 
         return response()->json([
@@ -529,14 +509,14 @@ class RoleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'label' => 'required|string|max:255|unique:roles'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 500);
         }
 
-        $role = Role::where('label', $role)->first();
+        $role = Role::find($role);
+
         if (!$role) {
             return response()->json([
                 'data' => null,

@@ -17,7 +17,11 @@ use App\Models\Loan;
 */
 
 Route::get('/', function () {
-    dd('working');
+    // dd('working');
+
+    $loan = Loan::find(7);
+
+    dd($loan->sponsors->where('status', 'approved')->count());
 });
 
 Auth::routes();

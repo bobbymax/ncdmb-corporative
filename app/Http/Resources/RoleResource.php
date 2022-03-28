@@ -20,7 +20,8 @@ class RoleResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'label' => $this->label,
-            'deactivated' => $this->deactivated == 1 ? true : false
+            'slots' => $this->slots,
+            'deactivated' => $this->deactivated == 1 ? "NOT ACTIVE" : "ACTIVE"
         ];
     }
 }

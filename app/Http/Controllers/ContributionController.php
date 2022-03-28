@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\Contribution;
 use App\Models\User;
+use App\Models\Setting;
+use App\Http\Resources\SettingResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -306,7 +308,7 @@ class ContributionController extends Controller
         $contributions = Contribution::all();
         if ($contributions->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'success',
                 'message' => 'No data found!'
             ], 200);
@@ -471,9 +473,53 @@ class ContributionController extends Controller
         ], 200);
     }
 
-    public function memberBulkCredit(Request $request)
+    public function memberBulkCreditPayment(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'payments' => 'required|array',
+            'total' => 'required'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'error',
+                'message' => 'Please fix this errors before proceeding!'
+            ], 500);
+        }
+
+        foreach ($request->payments as $value) {
+            $member = User::find($value['user_id']);
+
+            if ($member) {
+                $member->wallet->available += $value['fee'];
+                $member->wallet->current += $value['fee'];
+                $member->wallet->save();
+
+                // Create debit expenditures for each payment
+            }
+        }
+
+        // Create credit payment to the cooperative
+
+        $setting = Setting::where('key', 'credit_member_accounts')->first();
+
+        if (! $setting) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid setting key selected'
+            ], 422);
+        }
+
+        $setting->value = "inactive";
+        $setting->save();
+
+        return response()->json([
+            'data' => new SettingResource($setting),
+            'status' => 'success',
+            'message' => 'Member contribution updated successfully!'
+        ], 200);
     }
 
     /**

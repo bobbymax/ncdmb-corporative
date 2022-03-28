@@ -40,4 +40,9 @@ class Role extends Model
     {
         return $this->morphToMany(Permission::class, 'permissionable');
     }
+
+    public function settings()
+    {
+        return $this->morphedByMany(Setting::class, 'roleable');
+    }
 }

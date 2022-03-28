@@ -347,7 +347,7 @@ class AccountCodeController extends Controller
                 'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!!'
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -382,7 +382,7 @@ class AccountCodeController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'data' => null,
+                'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix the following errors!'
             ], 500);
@@ -506,10 +506,11 @@ class AccountCodeController extends Controller
             ], 422);
         }
 
+        $old = $accountCode;
         $accountCode->delete();
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
             'message' => 'Account Code deleted successfully!'
         ], 200);
