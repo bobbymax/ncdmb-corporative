@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\Loan;
+// use App\Models\Loan;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +17,11 @@ use App\Models\Loan;
 */
 
 Route::get('/', function () {
-    // dd('working');
+    dd('working');
 
-    $loan = Loan::find(7);
+    // $loan = Loan::find(7);
 
-    dd($loan->sponsors->where('status', 'approved')->count());
+    // dd($loan->sponsors->where('status', 'approved')->count());
 });
 
 Auth::routes();
