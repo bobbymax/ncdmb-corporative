@@ -33,7 +33,7 @@ class UserResource extends JsonResource
             'location' => $this->location ?? null,
             'address' => $this->address ?? null,
             'contributions' => $this->contributions,
-            'contribution' => $this->contributions->where('current', true)[0] ?? null,
+            'contribution' => $this->contributions->where('current', true)->first() ?? null,
             'next_of_kin' => isset($this->kin) ? $this->kin->only('name', 'relationship', 'mobile') : null,
             'wallet' => isset($this->wallet) ? $this->wallet : null,
             'changedPassword' => $this->passwordChange == 1 ? true : false,
@@ -41,7 +41,7 @@ class UserResource extends JsonResource
             'roleLabels' => $this->roles->pluck('label')->toArray(),
             'accounts' => $this->accounts,
             'status' => $this->status,
-            'activeLoans' => $this->loans->where('active', 1)->count() 
+            'activeLoans' => $this->loans->where('active', 1)->count()
         ];
     }
 }

@@ -334,11 +334,51 @@ class ContributionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        // Code goes here...
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'month' => 'required|string|max:255',
+            'fee' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix this errors before proceeding!'
+            ], 500);
+        }
+
+        $user = User::find($request->user_id);
+        if (! $user) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid ID selected'
+            ], 422);
+        }
+
+        $contribution = new Contribution;
+        $contribution->fee = $request->fee;
+        $contribution->month = $request->month;
+        $contribution->current = true;
+        $user->contributions()->save($contribution);
+
+        $prev = $user->contributions->where('current', true)->first();
+        if ($prev) {
+            $prev->current = false;
+            $prev->save();
+        }
+
+        return response()->json([
+            'data' => new UserResource($user),
+            'status' => 'success',
+            'message' => 'Contribution fee altered successfully!!'
+        ], 201);
     }
 
     public function loadMemberContributions(Request $request)
@@ -352,9 +392,9 @@ class ContributionController extends Controller
             'members' => 'required|array'
         ]);
 
-        if ($validation->fails()) {
+        if ($validator->fails()) {
             return response()->json([
-                'data' => $validation->errors(),
+                'data' => $validator->errors(),
                 'status' => 'error',
                 'message' => 'Please fix this errors before proceeding!'
             ], 500);
@@ -428,7 +468,7 @@ class ContributionController extends Controller
 
     public function update(Request $request, $contribution)
     {
-        // Code goes here...
+        //
     }
 
 

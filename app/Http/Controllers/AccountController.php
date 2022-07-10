@@ -22,7 +22,7 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -57,7 +57,7 @@ class AccountController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -98,8 +98,10 @@ class AccountController extends Controller
 
         // $this->datasends = $request->holder == "staff" ? new UserResource($this->holder) : null;
 
+        $data = isset($request->url) && $request->url === "profile-update" ? new UserResource($this->holder) : $account;
+
         return response()->json([
-            'data' => $account,
+            'data' => $data,
             'status' => 'success',
             'message' => 'Account has been created successfully!!'
         ], 201);
@@ -122,7 +124,7 @@ class AccountController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($account)
     {
@@ -145,7 +147,7 @@ class AccountController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($account)
     {
@@ -164,12 +166,56 @@ class AccountController extends Controller
         ], 200);
     }
 
+    public function makePrimary(Request $request, $account)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'primary' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => $validator->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the following errors:'
+            ], 500);
+        }
+
+        $account = Account::find($account);
+        $user = User::find($request->user_id);
+
+        if (! ($account && $user)) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid ID entered'
+            ], 422);
+        }
+
+        $previous = $user->accounts->where('primary', true)->first();
+
+        if ($previous && $previous->id != $account->id) {
+            $previous->primary = false;
+            $previous->save();
+        }
+
+        $account->update([
+            'primary' => $request->primary,
+        ]);
+
+        return response()->json([
+            'data' => new UserResource($user),
+            'status' => 'success',
+            'message' => 'Account has been made primary'
+        ], 200);
+    }
+
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $account)
     {
@@ -189,7 +235,7 @@ class AccountController extends Controller
         }
 
         $account = Account::find($account);
-        
+
         if (! $account) {
             return response()->json([
                 'data' => null,
@@ -216,7 +262,7 @@ class AccountController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($account)
     {

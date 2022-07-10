@@ -29,6 +29,7 @@ Route::get('get/budget/types', 'DependencyController@budgetHeadCategory');
 Route::get('budgetHead/loan/type', 'BudgetHeadController@loaners');
 Route::get('get/service/categories', 'DependencyController@serviceCategories');
 Route::post('portal/configuration', 'ConfigurationController@update');
+Route::patch('primary/accounts/{account}', 'AccountController@makePrimary');
 
 
 Route::apiResource('funds', 'FundController');

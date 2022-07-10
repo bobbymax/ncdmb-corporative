@@ -17,7 +17,7 @@ class DisbursementController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -51,7 +51,7 @@ class DisbursementController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -111,7 +111,7 @@ class DisbursementController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Disbursement  $disbursement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($disbursement)
     {
@@ -135,7 +135,7 @@ class DisbursementController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Disbursement  $disbursement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($disbursement)
     {
@@ -160,7 +160,7 @@ class DisbursementController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Disbursement  $disbursement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $disbursement)
     {
@@ -232,7 +232,7 @@ class DisbursementController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Disbursement  $disbursement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Disbursement $disbursement)
     {

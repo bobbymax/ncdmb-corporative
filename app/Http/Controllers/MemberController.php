@@ -749,7 +749,7 @@ class MemberController extends Controller
             ], 422);
         }
 
-        $password = Str::slug($request->firstname . " " . $request->surname);
+        $password = Str::slug($request->firstname . "." . $request->surname);
 
         $member = User::create([
             'staff_no' => $request->staff_no,
@@ -839,7 +839,7 @@ class MemberController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($user)
     {
@@ -966,7 +966,7 @@ class MemberController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $user)
     {
@@ -974,10 +974,11 @@ class MemberController extends Controller
             'firstname' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'staff_no' => 'required',
-            'location' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            // 'location' => 'required|string|max:255',
             'designation' => 'required|string|max:255',
             'mobile' => 'required',
-            'type' => 'required|string|max:255',
+            // 'type' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -988,7 +989,7 @@ class MemberController extends Controller
             ], 500);
         }
 
-        $member = User::where('staff_no', $user)->first();
+        $member = User::find($user);
         if (!$member) {
             return response()->json([
                 'data' => null,
@@ -1002,17 +1003,18 @@ class MemberController extends Controller
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'surname' => $request->surname,
-            'location' => $request->location,
+            'email' => $request->email,
+            // 'location' => $request->location,
             'designation' => $request->designation,
             'mobile' => $request->mobile,
-            'type' => $request->type,
-            'date_joined' => Carbon::parse($request->date_joined),
+            // 'type' => $request->type,
+            // 'date_joined' => Carbon::parse($request->date_joined),
         ]);
 
         return response()->json([
             'data' => new UserResource($member),
             'status' => 'success',
-            'message' => 'Member has been created successfully!'
+            'message' => 'Member has been updated successfully!'
         ], 200);
     }
 
@@ -1020,7 +1022,7 @@ class MemberController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($user)
     {

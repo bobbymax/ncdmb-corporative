@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-
 // use App\Models\Loan;
 
 /*
@@ -17,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd('working');
+
+    $name = strtolower("MAKERA") . "." . strtolower("MAC-INEGITE"); 
+    dd($name);
 
     // $loan = Loan::find(7);
 

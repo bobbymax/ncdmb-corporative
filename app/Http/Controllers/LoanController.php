@@ -713,7 +713,7 @@ class LoanController extends Controller
             ], 422);
         }
 
-        $loan = Loan::find($loan);
+        $loan = Loan::find($request->loan);
 
         if (! $loan) {
             return response()->json([
@@ -844,7 +844,7 @@ class LoanController extends Controller
         ], 200);
     }
 
-    protected function insertInto($table, $chunks) 
+    protected function insertInto($table, $chunks)
     {
         foreach ($chunks as $chunk) {
             DB::table($table)->insert($chunk->toArray());
