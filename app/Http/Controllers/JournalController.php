@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\JournalResource;
 use App\Models\Entry;
 use App\Models\Journal;
 use Carbon\Carbon;
@@ -29,10 +30,10 @@ class JournalController extends Controller
                 'data' => null,
                 'status' => 'info',
                 'message' => 'No data found!'
-            ], 204);
+            ], 200);
         }
         return response()->json([
-            'data' => $journals,
+            'data' => JournalResource::collection($journals),
             'status' => 'success',
             'message' => 'Journal List'
         ], 200);
@@ -48,6 +49,25 @@ class JournalController extends Controller
         //
     }
 
+    public function fetchAllEntries()
+    {
+        $entries = Entry::latest()->get();
+
+        if ($entries->count() < 1) {
+            return response()->json([
+                'data' => [],
+                'status' => 'info',
+                'message' => 'No Data Found!!'
+            ], 200);
+        }
+
+        return response()->json([
+            'data' => $entries,
+            'status' => 'success',
+            'message' => 'Entries List'
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -58,14 +78,12 @@ class JournalController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'account_code_id' => 'required|integer',
+            'chart_of_account_id' => 'required|integer',
             'budget_head_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'entry_date' => 'required|date',
             'amount' => 'required',
             'description' => 'required|min:3',
-            'payment_type' => 'required|in:credit,debit',
             'payment_methods' => 'required|in:electronic,check,cash',
-            'entries' => 'required'
+            'entries' => 'required|array'
         ]);
 
         if ($validator->fails()) {
@@ -78,12 +96,10 @@ class JournalController extends Controller
 
         $journal = Journal::create([
             'account_code_id' => $request->account_code_id,
+            'chart_of_account_id' => $request->chart_of_account_id,
             'budget_head_id' => $request->budget_head_id,
-            'name' => $request->name,
-            'entry_date' => Carbon::parse($request->entry_date),
             'amount' => $request->amount,
             'description' => $request->description,
-            'payment_type' => $request->payment_type,
             'payment_methods' => $request->payment_methods,
         ]);
 
@@ -94,12 +110,13 @@ class JournalController extends Controller
                 $entry->journal_id = $journal->id;
                 $entry->payment_type = $value['payment_type'];
                 $entry->amount = $value['amount'];
-                $entry->entryable()->save($value['object']);
+                $entry->description = $value['description'];
+                $entry->save();
             }
         }
 
         return response()->json([
-            'data' => $journal,
+            'data' => new JournalResource($journal),
             'status' => 'success',
             'message' => 'Journal entries have been created successfully!!'
         ], 201);
@@ -124,7 +141,7 @@ class JournalController extends Controller
         }
 
         return response()->json([
-            'data' => $journal,
+            'data' => new JournalResource($journal),
             'status' => 'success',
             'message' => 'Journal details'
         ], 200);
@@ -149,7 +166,7 @@ class JournalController extends Controller
         }
 
         return response()->json([
-            'data' => $journal,
+            'data' => new JournalResource($journal),
             'status' => 'success',
             'message' => 'Journal details'
         ], 200);

@@ -30,4 +30,9 @@ class ChartOfAccount extends Model
     {
         return $this->belongsTo(AccountCode::class, 'account_code_id');
     }
+
+    public function expenditures()
+    {
+        return $this->hasMany(Disbursement::class);
+    }
 }

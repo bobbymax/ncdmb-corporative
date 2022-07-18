@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Disbursement;
+use App\Models\Journal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\DisbursementResource;
@@ -59,7 +61,7 @@ class DisbursementController extends Controller
             'budget_head_id' => 'required|integer',
             'chart_of_account_id' => 'required|integer',
             'payment_type' => 'required|string|in:member-payment,staff-payment,third-party,custom',
-            // 'type' => 'required|string|in:loan,expense,salary,contribution,dividend,other',
+            'flag' => 'required|string|in:inflow,outflow',
             'code' => 'required|string|unique:disbursements',
             'beneficiary' => 'required|string|max:255',
             'description' => 'required',
@@ -84,25 +86,35 @@ class DisbursementController extends Controller
             'description' => $request->description,
             'amount' => $request->amount,
             'loan_id' => $request->loan_id,
+            'flag' => $request->flag
         ]);
 
         $fund = $disbursement->budgetHead->fund($this->getBudgetYear());
 
         if ($fund) {
-            $fund->booked_expenditure += $disbursement->amount;
-            $fund->booked_balance -= $disbursement->amount;
-            $fund->save();
+            switch ($disbursement->flag) {
+                case "inflow":
+                    $fund->booked_balance += $disbursement->amount;
+                    $fund->actual_balance += $disbursement->amount;
+                    $fund->save();
+                    break;
+                default:
+                    $fund->booked_expenditure += $disbursement->amount;
+                    $fund->booked_balance -= $disbursement->amount;
+                    $fund->save();
 
-            if ($disbursement->loan_id > 0) {
-                $disbursement->loan->status = "disbursed";
-                $disbursement->loan->save();
+                    if ($disbursement->loan_id > 0) {
+                        $disbursement->loan->status = "disbursed";
+                        $disbursement->loan->save();
+                    }
+                    break;
             }
         }
 
         return response()->json([
             'data' => new DisbursementResource($disbursement),
             'status' => 'success',
-            'message' => 'Expenditure has been created successfully!!'
+            'message' => 'Payment has been added successfully!!'
         ], 201);
 
     }
@@ -116,6 +128,24 @@ class DisbursementController extends Controller
     public function show($disbursement)
     {
         $disbursement = Disbursement::find($disbursement);
+
+        if (! $disbursement) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token entered!'
+            ], 422);
+        }
+        return response()->json([
+            'data' => new DisbursementResource($disbursement),
+            'status' => 'success',
+            'message' => 'Data found!'
+        ], 200);
+    }
+
+    public function fetchPayment($disbursement)
+    {
+        $disbursement = Disbursement::where('code', $disbursement)->first();
 
         if (! $disbursement) {
             return response()->json([

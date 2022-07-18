@@ -73,6 +73,7 @@ Route::patch('modify/members/contribution/{member}', 'MemberController@modifyMem
 Route::post('credit/members/account', 'ContributionController@memberBulkCreditPayment');
 Route::get('load/settings', 'SettingController@loader');
 Route::get('fetch/loans/{loan}', 'LoanController@getLoanFromCode');
+Route::get('fetch/disbursements/{disbursement}', 'DisbursementController@fetchPayment');
 
 // Loan Checker
 Route::post('category/budget/check', 'ExpenditureController@budgetChecker');

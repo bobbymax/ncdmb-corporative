@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BundleResource extends JsonResource
 {
+    protected $payment_type;
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,21 @@ class BundleResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
+
+        $batchCode = substr($this->batch_no, 0, 3);
+
+        switch ($batchCode) {
+            case "MMP":
+                $this->payment_type = "Member Payment";
+                break;
+            case "STP":
+                $this->payment_type = "Staff Payment";
+                break;
+            default:
+                $this->payment_type = "Third Party Payment";
+                break;
+        }
+        
         return [
             'id' => $this->id,
             'batch_no' => $this->batch_no,
@@ -22,6 +37,7 @@ class BundleResource extends JsonResource
             'amount' => $this->amount,
             'expenditures' => DisbursementResource::collection($this->expenditures),
             'status' => $this->status,
+            'payment_type' => $this->payment_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\Contribution;
+use App\Models\Disbursement;
 use App\Models\User;
 use App\Models\Setting;
 use App\Http\Resources\SettingResource;
@@ -535,15 +536,13 @@ class ContributionController extends Controller
                 $member->wallet->available += $value['fee'];
                 $member->wallet->current += $value['fee'];
                 $member->wallet->save();
-
-                // Create debit expenditures for each payment
             }
         }
 
+
+
         // Create credit payment to the cooperative
-
         $setting = Setting::where('key', 'credit_member_accounts')->first();
-
         if (! $setting) {
             return response()->json([
                 'data' => null,

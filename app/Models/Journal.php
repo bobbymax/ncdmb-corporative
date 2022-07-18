@@ -13,7 +13,12 @@ class Journal extends Model
 
     public function accountType()
     {
-        return $this->belongsTo(AccountCode::class);
+        return $this->belongsTo(AccountCode::class, 'account_code_id');
+    }
+
+    public function chartOfAccount()
+    {
+        return $this->belongsTo(ChartOfAccount::class, 'chart_of_account_id');
     }
 
     public function entries()
