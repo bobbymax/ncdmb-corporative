@@ -13,9 +13,4 @@ class Entry extends Model
     {
         return $this->belongsTo(Journal::class);
     }
-
-    public function entryable()
-    {
-        return $this->morphTo();
-    }
 }

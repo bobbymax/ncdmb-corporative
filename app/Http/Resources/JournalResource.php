@@ -24,6 +24,7 @@ class JournalResource extends JsonResource
             'description' => $this->description,
             'payment_methods' => $this->payment_methods,
             'entries' => $this->entries,
+            'paid' => $this->paid == 1,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

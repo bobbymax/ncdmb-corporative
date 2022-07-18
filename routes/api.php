@@ -63,6 +63,7 @@ Route::apiResource('settings', 'SettingController');
 Route::apiResource('mandates', 'MandateController');
 Route::apiResource('disbursements', 'DisbursementController');
 Route::apiResource('bundles', 'BundleController');
+Route::get('entries', 'JournalController@fetchAllEntries');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');

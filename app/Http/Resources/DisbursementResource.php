@@ -38,6 +38,7 @@ class DisbursementResource extends JsonResource
             'amount' => $this->amount,
             'flag' => $this->flag,
             'status' => $this->status,
+            'journal_entered' => $this->journal_entered == 1 ? true : false,
             'closed' => $this->closed == 1 ? true : false,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

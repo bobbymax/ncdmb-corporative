@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EntryResource;
 use App\Http\Resources\JournalResource;
+use App\Models\Disbursement;
 use App\Models\Entry;
 use App\Models\Journal;
 use Carbon\Carbon;
@@ -62,7 +64,7 @@ class JournalController extends Controller
         }
 
         return response()->json([
-            'data' => $entries,
+            'data' => EntryResource::collection($entries),
             'status' => 'success',
             'message' => 'Entries List'
         ], 200);
@@ -77,6 +79,7 @@ class JournalController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'disbursement_id' => 'required|integer',
             'account_code_id' => 'required|integer',
             'chart_of_account_id' => 'required|integer',
             'budget_head_id' => 'required|integer',
@@ -92,6 +95,16 @@ class JournalController extends Controller
                 'status' => 'error',
                 'message' => 'Please fix the following errors:'
             ], 500);
+        }
+
+        $disbursement = Disbursement::find($request->disbursement_id);
+
+        if (! $disbursement) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token entered'
+            ], 422);
         }
 
         $journal = Journal::create([
@@ -114,6 +127,9 @@ class JournalController extends Controller
                 $entry->save();
             }
         }
+
+        $disbursement->journal_entered = true;
+        $disbursement->save();
 
         return response()->json([
             'data' => new JournalResource($journal),
