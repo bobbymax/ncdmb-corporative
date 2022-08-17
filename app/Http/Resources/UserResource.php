@@ -41,7 +41,9 @@ class UserResource extends JsonResource
             'roleLabels' => $this->roles->pluck('label')->toArray(),
             'accounts' => $this->accounts,
             'status' => $this->status,
-            'activeLoans' => $this->loans->where('active', 1)->count()
+            'installments' => InstructionResource::collection($this->installments),
+            'activeLoans' => $this->loans->where('active', 1)->count(),
+            'administrator' => $this->isAdministrator == 1
         ];
     }
 }

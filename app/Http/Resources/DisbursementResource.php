@@ -22,6 +22,7 @@ class DisbursementResource extends JsonResource
             'controllerName' => $this->controller->firstname . " " . $this->controller->surname,
             'controller' => new UserResource($this->controller),
             'budget_head_id' => $this->budget_head_id,
+            'beneficiary_id' => $this->beneficiary_id,
             'budgetHeadName' => $this->budgetHead->description,
             'budgetHeadCode' => $this->budgetHead->code,
             'account_code_id' => $this->chartOfAccount->accountCode->id,

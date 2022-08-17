@@ -35,4 +35,9 @@ class Disbursement extends Model
     {
         return $this->belongsTo(Bundle::class, 'bundle_id');
     }
+
+    public function journal()
+    {
+        return $this->hasOne(Journal::class);
+    }
 }

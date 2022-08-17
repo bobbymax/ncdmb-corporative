@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ServiceResource;
 use App\Models\Service;
+use App\Models\ServiceField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -418,13 +420,13 @@ class ServiceController extends Controller
 
         if ($services->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'status' => 'info',
                 'message' => 'No data found!'
-            ], 404);
+            ], 200);
         }
         return response()->json([
-            'data' => $services,
+            'data' => ServiceResource::collection($services),
             'status' => 'success',
             'message' => $services->count() . ' data found!'
         ], 200);
@@ -449,8 +451,8 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'description' => 'required|min:5',
-            'category' => 'required|string',
+            'service_category_id' => 'required|integer',
+            'code' => 'required|string|max:255|unique:services',
         ]);
 
         if ($validation->fails()) {
@@ -462,16 +464,32 @@ class ServiceController extends Controller
         }
 
         $service = Service::create([
-            'user_id' => $request->user()->id,
-            'category' => $request->category,
-            'serviceCode' => time(),
-            'request_date' => Carbon::parse($request->request_date),
-            'payment_method' => $request->payment_method,
-            'description' => $request->description
+            'user_id' => auth()->user()->id,
+            'service_category_id' => $request->service_category_id,
+            'code' => $request->code,
         ]);
 
+        if ($service) {
+            $field = ServiceField::create([
+                'service_id' => $service->id,
+                'loan_id' => $request->loan_id,
+                'takeOff' => $request->takeOff ?? "undefined",
+                'destination' => $request->destination ?? "undefined",
+                'from' => $request->from,
+                'to' => $request->to,
+                'airline' => $request->airline,
+                'type' => $request->type ?? "other",
+                'trip' => $request->trip ?? "other",
+                'liquidate' => $request->liquidate ?? "other",
+                'timeOfDay' => $request->timeOfDay ?? "other",
+                'amount' => $request->amount,
+                'month' => $request->month,
+                'passengers' => json_encode($request->passengers)
+            ]);
+        }
+
         return response()->json([
-            'data' => $service,
+            'data' => new ServiceResource($service),
             'status' => 'success',
             'message' => 'Service request created successfully!'
         ], 201);
@@ -496,7 +514,26 @@ class ServiceController extends Controller
         }
 
         return response()->json([
-            'data' => $service,
+            'data' => new ServiceResource($service),
+            'status' => 'success',
+            'message' => 'Data entry found!'
+        ], 200);
+    }
+
+    public function fetchByCode($service)
+    {
+        $service = Service::where('code', $service)->first();
+
+        if (! $service) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Data entry is invalid!'
+            ], 422);
+        }
+
+        return response()->json([
+            'data' => new ServiceResource($service),
             'status' => 'success',
             'message' => 'Data entry found!'
         ], 200);
@@ -521,7 +558,7 @@ class ServiceController extends Controller
         }
 
         return response()->json([
-            'data' => $service,
+            'data' => new ServiceResource($service),
             'status' => 'success',
             'message' => 'Data entry found!'
         ], 200);
@@ -537,8 +574,7 @@ class ServiceController extends Controller
     public function update(Request $request, $service)
     {
         $validation = Validator::make($request->all(), [
-            'description' => 'required|min:5',
-            'category' => 'required|string',
+            'action' => 'required|string|in:approved,denied',
         ]);
 
         if ($validation->fails()) {
@@ -560,14 +596,11 @@ class ServiceController extends Controller
         }
 
         $service->update([
-            'category' => $request->category,
-            'request_date' => Carbon::parse($request->request_date),
-            'payment_method' => $request->payment_method,
-            'description' => $request->description
+            'status' => $request->action,
         ]);
 
         return response()->json([
-            'data' => $service,
+            'data' => new ServiceResource($service),
             'status' => 'success',
             'message' => 'Service request updated successfully!'
         ], 200);
@@ -591,12 +624,13 @@ class ServiceController extends Controller
             ], 422);
         }
 
+        $old = $service;
         $service->delete();
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'status' => 'success',
-            'message' => 'Data entry deleted successfully!'
+            'message' => 'Service entry deleted successfully!'
         ], 200);
     }
 }

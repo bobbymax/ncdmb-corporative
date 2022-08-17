@@ -68,6 +68,11 @@ class Loan extends Model
         return $this->morphOne(Receive::class, 'receiveable');
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function guarantors()
     {
         return $this->morphToMany(User::class, 'guarantorable')->withPivot('remarks', 'status');
@@ -76,11 +81,6 @@ class Loan extends Model
     public function sponsors()
     {
         return $this->hasMany(Guarantor::class);
-    }
-
-    public function transactions()
-    {
-        return $this->morphMany(Transaction::class, 'transactionable');
     }
 
     public function approvals()

@@ -80,6 +80,7 @@ class DisbursementController extends Controller
             'user_id' => auth()->user()->id,
             'budget_head_id' => $request->budget_head_id,
             'chart_of_account_id' => $request->chart_of_account_id,
+            'beneficiary_id' => $request->beneficiary_id,
             'payment_type' => $request->payment_type,
             'code' => $request->code,
             'beneficiary' => $request->beneficiary,

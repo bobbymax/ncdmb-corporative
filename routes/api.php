@@ -40,6 +40,7 @@ Route::apiResource('loans', 'LoanController');
 Route::apiResource('schedules', 'ScheduleController');
 Route::apiResource('permissions', 'PermissionController');
 Route::apiResource('roles', 'RoleController');
+Route::apiResource('serviceCategories', 'ServiceCategoryController');
 Route::apiResource('services', 'ServiceController');
 Route::apiResource('specifications', 'SpecificationController');
 Route::apiResource('contributions', 'ContributionController');
@@ -64,6 +65,8 @@ Route::apiResource('mandates', 'MandateController');
 Route::apiResource('disbursements', 'DisbursementController');
 Route::apiResource('bundles', 'BundleController');
 Route::get('entries', 'JournalController@fetchAllEntries');
+Route::get('services/code/{service}', 'ServiceController@fetchByCode');
+Route::post('admin/loans', 'LoanController@adminStore');
 
 // URL
 Route::post('assign/member/role', 'RoleController@addMember');

@@ -18,15 +18,15 @@ class ServiceCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $serviceCategories = ServiceCategory::all();
+        $serviceCategories = ServiceCategory::latest()->get();
 
         if ($serviceCategories->count() < 1) {
             return response()->json([
-                'data' => null,
+                'data' => [],
                 'message' => 'No data found!',
                 'status' => 'info'
             ], 200);
@@ -54,12 +54,14 @@ class ServiceCategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:service_categories',
             'description' => 'required'
         ]);
 
@@ -74,6 +76,8 @@ class ServiceCategoryController extends Controller
         $serviceCategory = ServiceCategory::create([
             'name' => $request->name,
             'label' => Str::slug($request->name),
+            'type' => $request->type,
+            'code' => $request->code,
             'description' => $request->description,
         ]);
 
@@ -88,7 +92,7 @@ class ServiceCategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\ServiceCategory  $serviceCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($serviceCategory)
     {
@@ -113,7 +117,7 @@ class ServiceCategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\ServiceCategory  $serviceCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($serviceCategory)
     {
@@ -139,12 +143,14 @@ class ServiceCategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\ServiceCategory  $serviceCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $serviceCategory)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:service_categories',
             'description' => 'required'
         ]);
 
@@ -169,6 +175,8 @@ class ServiceCategoryController extends Controller
         $serviceCategory->update([
             'name' => $request->name,
             'label' => Str::slug($request->name),
+            'type' => $request->type,
+            'code' => $request->code,
             'description' => $request->description,
         ]);
 
@@ -183,7 +191,7 @@ class ServiceCategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ServiceCategory  $serviceCategory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($serviceCategory)
     {
@@ -196,11 +204,11 @@ class ServiceCategoryController extends Controller
                 'status' => 'error'
             ], 422);
         }
-
+        $old = $serviceCategory;
         $serviceCategory->delete();
 
         return response()->json([
-            'data' => null,
+            'data' => $old,
             'message' => 'Service category deleted successfully!',
             'status' => 'success'
         ], 200);

@@ -21,6 +21,11 @@ class Journal extends Model
         return $this->belongsTo(ChartOfAccount::class, 'chart_of_account_id');
     }
 
+    public function payment()
+    {
+        return $this->belongsTo(Disbursement::class, 'disbursement_id');
+    }
+
     public function budgetHead()
     {
         return $this->belongsTo(BudgetHead::class, 'budget_head_id');

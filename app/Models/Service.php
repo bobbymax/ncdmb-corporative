@@ -30,18 +30,18 @@ class Service extends Model
 
     protected $guarded = [''];
 
-    public function getRouteKeyName()
-    {
-    	return 'label';
-    }
-
     public function member()
     {
-    	return $this->belongsTo(Member::class, 'user_id');
+    	return $this->belongsTo(User::class, 'user_id');
     }
 
     public function category()
     {
-    	return $this->belongsTo(Category::class, 'category_id');
+    	return $this->belongsTo(ServiceCategory::class, 'service_category_id');
+    }
+
+    public function field()
+    {
+        return $this->hasOne(ServiceField::class);
     }
 }

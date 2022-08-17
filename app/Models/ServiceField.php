@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Instruction extends Model
+class ServiceField extends Model
 {
     use HasFactory;
 
     protected $guarded = [''];
-    protected $dates = ['due'];
 
-    public function loan()
+    public function service()
     {
-        return $this->belongsTo(Loan::class, 'loan_id');
+        return $this->belongsTo(Service::class, 'service_id');
     }
-
 }

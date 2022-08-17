@@ -34,7 +34,6 @@ class LoanResource extends JsonResource
             'budget_head_name' => $this->fund->description,
             'created_at' => $this->created_at,
             'closed' => $this->closed ? 'Yes' : 'No',
-            // 'schedules' => ScheduleResource::collection($this->schedules),
             'instructions' => $this->instructions,
             'sponsors' => GuarantorResource::collection($this->sponsors),
             'level' => $this->level,

@@ -20,6 +20,7 @@ class JournalResource extends JsonResource
             'account_code_id' => $this->account_code_id,
             'chart_of_account_id' => $this->chart_of_account_id,
             'budget_head_id' => $this->budget_head_id,
+            'disbursement_id' => $this->disbursement_id,
             'amount' => $this->amount,
             'description' => $this->description,
             'payment_methods' => $this->payment_methods,

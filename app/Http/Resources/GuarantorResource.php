@@ -30,7 +30,9 @@ class GuarantorResource extends JsonResource
             // 'loan' => new LoanResource($this->sponsored),
             'member' => new UserResource($this->member),
             'remark' => $this->remark,
-            'status' => $this->status
+            'status' => $this->status,
+            'created_at' => $this->created_at->format('d F, Y'),
+            'updated_at' => $this->updated_at->format('d F, Y'),
         ];
     }
 }

@@ -450,6 +450,79 @@ class LoanController extends Controller
         //
     }
 
+    public function adminStore(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'budget_head_id' => 'required|integer',
+            'amount' => 'required',
+            'reason' => 'required|string|max:255',
+            'code' => 'required|string|unique:loans',
+            'instructions' => 'required|array',
+            'capitalSum' => 'required',
+            'committment' => 'required',
+            'interestSum' => 'required',
+            'totalPayable' => 'required',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'data' => $validation->errors(),
+                'status' => 'error',
+                'message' => 'Please fix the errors!'
+            ], 500);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (! $user) {
+            return response()->json([
+                'data' => null,
+                'status' => 'error',
+                'message' => 'Invalid token entered'
+            ], 422);
+        }
+
+        $loan = Loan::create([
+            'user_id' => $user->id,
+            'budget_head_id' => $request->budget_head_id,
+            'code' => $request->code,
+            'amount' => $request->amount,
+            'reason' => $request->reason,
+            'capitalSum' => $request->capitalSum,
+            'committment' => $request->committment,
+            'interestSum' => $request->interestSum,
+            'totalPayable' => $request->totalPayable,
+        ]);
+
+        if ($loan) {
+            foreach ($request->instructions as $instruction) {
+                $insertData = [
+                    'loan_id' => $loan->id,
+                    'capital' => $instruction['capital'],
+                    'installment' => $instruction['installment'],
+                    'interest' => $instruction['interest'],
+                    'interestSum' => $instruction['interestSum'],
+                    'remain' => $instruction['remain'],
+                    'due' => Carbon::parse($instruction['index']),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ];
+                $dataChunk[] = $insertData;
+            }
+
+            $dataChunk = collect($dataChunk);
+            $chunks = $dataChunk->chunk(100);
+            $this->insertInto('instructions', $chunks);
+        }
+
+        return response()->json([
+            'data' => new LoanResource($loan),
+            'status' => 'success',
+            'message' => 'Loan has been registered successfully!'
+        ], 201);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

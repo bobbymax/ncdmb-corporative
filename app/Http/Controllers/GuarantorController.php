@@ -332,11 +332,11 @@ class GuarantorController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $guarantors = Guarantor::all();
+        $guarantors = Guarantor::latest()->get();
         if ($guarantors->count() < 1) {
             return response()->json([
                 'data' => [],

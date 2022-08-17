@@ -111,6 +111,7 @@ class JournalController extends Controller
             'account_code_id' => $request->account_code_id,
             'chart_of_account_id' => $request->chart_of_account_id,
             'budget_head_id' => $request->budget_head_id,
+            'disbursement_id' => $disbursement->id,
             'amount' => $request->amount,
             'description' => $request->description,
             'payment_methods' => $request->payment_methods,
