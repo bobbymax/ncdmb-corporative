@@ -79,9 +79,11 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::get('load/settings', 'SettingController@loader');
     Route::get('fetch/loans/{loan}', 'LoanController@getLoanFromCode');
     Route::get('fetch/disbursements/{disbursement}', 'DisbursementController@fetchPayment');
+    Route::get('onboard/members', 'MailingController@onBoardMembers');
 
     // Loan Checker
     Route::post('category/budget/check', 'ExpenditureController@budgetChecker');
+    Route::patch('password/reset/{member}', 'MailingController@resetMemberPassword');
 
     Route::post('login', 'LoginController@login');
 
