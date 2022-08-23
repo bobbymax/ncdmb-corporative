@@ -25,7 +25,8 @@ class MailingController extends Controller
 
         foreach ($users as $user) {
             if ($user->email !== "") {
-                dispatch(new OnboardMembersJob($user));
+                $job = (new OnboardMembersJob($user))->delay(now()->addSeconds(2));
+                dispatch($job);
             }
         }
 
