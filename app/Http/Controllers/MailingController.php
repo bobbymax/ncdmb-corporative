@@ -23,6 +23,10 @@ class MailingController extends Controller
             return $member->isAdministrator != 1;
         });
 
+//        User::where('isAdministrator', 1)->chunk(50, function($users) {
+//
+//        });
+
         foreach ($users as $user) {
             if ($user->email !== "") {
                 $job = (new OnboardMembersJob($user))->delay(now()->addSeconds(2));
