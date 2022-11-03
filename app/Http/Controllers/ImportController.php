@@ -47,6 +47,8 @@ class ImportController extends Controller
                 break;
             case "credit-members" :
                 $this->result = $this->creditMembersWallet($request->data);
+            case "update-contributions" :
+                $this->result = $this->updateMemberContributions($request->data);
             default :
                 $this->result = [];
                 break;
@@ -83,7 +85,7 @@ class ImportController extends Controller
         return $this->addRolesToMembers($data);
     }
 
-    protected function importMembersRecords(array $data) 
+    protected function importMembersRecords(array $data)
     {
         $dataChunk = [];
 
@@ -140,6 +142,44 @@ class ImportController extends Controller
         $dataChunk = collect($dataChunk);
         $chunks = $dataChunk->chunk(100);
         return $this->insertInto('contributions', $chunks);
+    }
+
+    protected function updateLoanStatus(array $data) {
+        //
+    }
+
+    protected function updateMemberContributions(array $data) {
+        $dataChunk = [];
+
+        foreach($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if ($member) {
+                $member->wallet->update([
+                    'current' => $value['total-contribution'],
+                    'available' => $value['total-contribution']
+                ]);
+
+                $recent = Contribution::where('user_id', $member->id)->where('current', true)->first();
+
+                if ($recent) {
+                    $recent->update([
+                        'current' => false
+                    ]);
+
+                    Contribution::create([
+                        'user_id' => $member->id,
+                        'fee' => $value['contribution-fee'] ?? 0,
+                        'month' => 'October',
+                        'current' => true
+                    ]);
+                }
+
+                $dataChunk[] = $member;
+            }
+        }
+
+        return $dataChunk;
     }
 
     protected function importMembersWallets(array $data)
@@ -252,7 +292,7 @@ class ImportController extends Controller
         return $this->bulkRecords;
     }
 
-    protected function insertInto($table, $chunks) 
+    protected function insertInto($table, $chunks)
     {
         foreach ($chunks as $chunk) {
             DB::table($table)->insert($chunk->toArray());

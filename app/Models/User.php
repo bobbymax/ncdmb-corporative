@@ -82,7 +82,7 @@ class User extends Authenticatable
         return $this->firstname . " "  . $this->middlename ?? null .  " " . $this->surname;
     }
 
-    public function contributions()
+    public function contributions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Contribution::class);
     }
