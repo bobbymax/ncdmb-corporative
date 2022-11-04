@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BudgetHead;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,8 +15,10 @@ use App\Models\Contribution;
 use App\Http\Resources\UserResource;
 use Carbon\Carbon;
 use App\Mail\WelcomeMail;
+use Illuminate\Support\Str;
 use Mail;
 use DB;
+use function PHPUnit\Framework\matches;
 
 class ImportController extends Controller
 {
@@ -26,7 +30,7 @@ class ImportController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function import(Request $request)
+    public function import(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'data' => 'required|array',
@@ -47,8 +51,13 @@ class ImportController extends Controller
                 break;
             case "credit-members" :
                 $this->result = $this->creditMembersWallet($request->data);
+                break;
             case "update-contributions" :
                 $this->result = $this->updateMemberContributions($request->data);
+                break;
+            case "loans" :
+                $this->result = $this->updateLoanStatus($request->data);
+                break;
             default :
                 $this->result = [];
                 break;
@@ -129,7 +138,7 @@ class ImportController extends Controller
                 $insertData = [
                     'user_id' => $member->id,
                     'month' => Carbon::now()->format('F'),
-                    'fee' => isset($value['current-contribution']) ? $value['current-contribution'] : 0,
+                    'fee' => $value['current-contribution'] ?? 0,
                     'current' => true,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
@@ -144,11 +153,57 @@ class ImportController extends Controller
         return $this->insertInto('contributions', $chunks);
     }
 
-    protected function updateLoanStatus(array $data) {
-        //
+    protected function getLoanType($category)
+    {
+        switch ($category) {
+            case "SPECIAL LOAN":
+                return "special";
+            case "CAR LOAN":
+                return "car";
+            default:
+                return "regular";
+        }
     }
 
-    protected function updateMemberContributions(array $data) {
+    protected function updateLoanStatus(array $data) {
+        $dataChunk = [];
+
+        foreach ($data as $value) {
+            $member = User::where("membership_no", $value['membership-no'])->first();
+
+            if ($member) {
+                $category = $this->getLoanType($value['loan-category']);
+                $loanCategory = BudgetHead::where('description', strtoupper($category))->first();
+
+                if ($loanCategory) {
+                    $commitment = $value['amount-approved'] * ($loanCategory->commitment / 100);
+                    $interest = $value['amount-approved'] * ($loanCategory->interest / 100);
+                    Loan::create([
+                        'user_id' => $member->id,
+                        'budget_head_id' => $loanCategory->id,
+                        'code' => Str::random(12),
+                        'amount' => $value['amount-approved'],
+                        'reason' => "Dummy Text",
+                        'status' => 'disbursed',
+                        'level' => 4,
+                        'stage' => 'accounts-officer',
+                        'capitalSum' => $value['amount-approved'],
+                        'commitment' => $commitment,
+                        'interestSum' => $interest,
+                        'totalPayable' => $value['amount-approved'] + $interest,
+                        'guaranteed' => true
+                    ]);
+                }
+
+                $dataChunk[] = $member;
+            }
+        }
+
+        return $dataChunk;
+    }
+
+    protected function updateMemberContributions(array $data): array
+    {
         $dataChunk = [];
 
         foreach($data as $value) {
@@ -240,7 +295,7 @@ class ImportController extends Controller
         return $role;
     }
 
-    protected function membersBulkAdd(array $data)
+    protected function membersBulkAdd(array $data): array
     {
         foreach($data as $value) {
             $member = User::where('membership_no', $value['membership-no'])->first();

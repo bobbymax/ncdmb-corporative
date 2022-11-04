@@ -17,6 +17,8 @@ class UserResource extends JsonResource
     {
         // parent::toArray($request);
 
+        $outstanding = Loan::where('status', 'disbursed')->latest()->get();
+
         return [
             'id' => $this->id,
             'membership_no' => $this->membership_no,
@@ -29,8 +31,9 @@ class UserResource extends JsonResource
             'type' => $this->type,
             'date_joined' => $this->date_joined != null ? $this->date_joined->format('d M, Y') : null,
             'mobile' => $this->mobile ?? null,
-            'isActivated' => $this->membership_no !== null ? true : false,
+            'isActivated' => $this->membership_no !== null,
             'location' => $this->location ?? null,
+            'running_loan_amount' => $this->runningLoans->sum('totalPayable'),
             'address' => $this->address ?? null,
             'contributions' => $this->contributions,
             'contribution' => $this->contributions->where('current', true)->first() ?? null,
@@ -43,7 +46,8 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'installments' => InstructionResource::collection($this->installments),
             'activeLoans' => $this->loans->where('active', 1)->count(),
-            'administrator' => $this->isAdministrator == 1
+            'administrator' => $this->isAdministrator == 1,
+            'total_outstanding' => $outstanding->sum('totalPayable'),
         ];
     }
 }

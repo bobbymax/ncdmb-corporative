@@ -117,6 +117,11 @@ class User extends Authenticatable
         return $this->hasMany(Loan::class);
     }
 
+    public function runningLoans()
+    {
+        return $this->hasMany(Loan::class)->where('status', 'disbursed');
+    }
+
     public function approvals()
     {
         return $this->morphedByMany(Loan::class, 'approveable')->withPivot('remark', 'status');
