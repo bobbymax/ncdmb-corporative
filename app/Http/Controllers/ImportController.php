@@ -155,17 +155,23 @@ class ImportController extends Controller
             $member = User::where("membership_no", $value['membership-no'])->first();
 
             if ($member) {
-                $member->wallet->update([
-                    'current' => $value['total-contribution'],
-                    'available' => $value['total-contribution']
-                ]);
+                $wallet = Wallet::where('user_id', $member->id)->first();
+
+                if ($wallet) {
+                    $wallet->current = $value['total-contribution'];
+                    $wallet->available = $value['total-contribution'];
+                    $wallet->save();
+                }
+//                $member->wallet->update([
+//                    'current' => $value['total-contribution'],
+//                    'available' => $value['total-contribution']
+//                ]);
 
                 $recent = Contribution::where('user_id', $member->id)->where('current', true)->first();
 
                 if ($recent) {
-                    $recent->update([
-                        'current' => false
-                    ]);
+                    $recent->current = false;
+                    $recent->save();
 
                     Contribution::create([
                         'user_id' => $member->id,

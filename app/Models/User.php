@@ -137,7 +137,7 @@ class User extends Authenticatable
         return $this->morphedByMany(Loan::class, 'guarantorable')->withPivot('remarks', 'status');
     }
 
-    public function wallet()
+    public function wallet(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Wallet::class);
     }

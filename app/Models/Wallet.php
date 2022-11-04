@@ -31,17 +31,17 @@ class Wallet extends Model
 
     protected $guarded = [''];
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
     	return 'identifier';
     }
 
-    public function member()
+    public function member(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
     	return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function transactions()
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
