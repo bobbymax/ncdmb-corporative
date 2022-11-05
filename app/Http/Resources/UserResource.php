@@ -33,7 +33,7 @@ class UserResource extends JsonResource
             'mobile' => $this->mobile ?? null,
             'isActivated' => $this->membership_no !== null,
             'location' => $this->location ?? null,
-            'running_loan_amount' => $this->runningLoans->sum('totalPayable'),
+            'running_loan_amount' => $this->runningLoans->sum('amount'),
             'address' => $this->address ?? null,
             'contributions' => $this->contributions,
             'contribution' => $this->contributions->where('current', true)->first() ?? null,
@@ -47,7 +47,7 @@ class UserResource extends JsonResource
             'installments' => InstructionResource::collection($this->installments),
             'activeLoans' => $this->loans->where('active', 1)->count(),
             'administrator' => $this->isAdministrator == 1,
-            'total_outstanding' => $outstanding->sum('totalPayable'),
+            'total_outstanding' => $outstanding->sum('amount'),
         ];
     }
 }
